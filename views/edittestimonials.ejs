@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+    <style>
+        body {
+            font-family: "DM Sans", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: hsla(30, 8%, 5%, 1);
+            font-weight: 400;
+            margin: 0;
+            height: auto;
+            overflow: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .headline-1 {
+            font-size: calc(2rem + 2.5vw);
+        }
+
+        .old{
+            max-width: 600px;
+            margin-inline: auto;
+            margin-block-start: 60px;
+        }
+
+        p{
+            color: hsl(38, 61%, 73%);
+        }
+
+        .display-1,
+        .headline-1,
+        .headline-2,
+        .title-1,
+        .title-2,
+        .title-3,
+        .title-4 {
+            color: hsla(0, 0%, 100%, 1);
+            font-family: "Forum", cursive;
+            font-weight: 400;
+            line-height: 1.2em;
+            -webkit-text-stroke: 0.6px hsl(38, 61%, 73%);
+        }
+
+        .section {
+            position: relative;
+            padding-block: 70px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .section-subtitle {
+            position: relative;
+            color: hsl(38, 61%, 73%);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            margin-block-end: 12px;
+        }
+
+        .section-subtitle::after {
+            content: url(./separator.svg);
+            display: block;
+            width: 100px;
+            margin-inline: auto;
+            margin-block-start: 5px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: red;
+            color: #fff;
+            padding: 5px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        a,
+        img,
+        data,
+        span,
+        input,
+        button,
+        select,
+        ion-icon,
+        textarea {
+            display: block;
+        }
+
+        input,
+        button,
+        select,
+        textarea {
+            border: none;
+            font: inherit;
+        }
+
+        input[type="checkbox"]{
+            height: 2rem;
+            width: 2rem;
+        }
+
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+
+        .formlabel {
+            position: relative;
+            color: hsl(38, 61%, 73%);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            display: block;
+            margin-block-start: 100px;
+            margin-block-end: 12px;
+        }
+
+        #myFile {
+            color: red;
+        }
+
+        .imageupload{
+            margin-block-start: 3rem;
+        }
+
+
+        .btn {
+            position: relative;
+            color: hsl(38, 61%, 73%);
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            max-width: max-content;
+            border: 2px solid hsl(38, 61%, 73%);
+            background-color: transparent;
+            padding: 5px 30px;
+            overflow: hidden;
+            z-index: 1;
+            margin-block-start: 15px;
+        }
+
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: hsl(38, 61%, 73%);
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="headline-1 section-title" style="text-align: center;">Edit your Hero Section</h1>
+    <div class= "old">
+        <p>OLD Name</p><input type="text" name="label" value="<%= data[0].name %>">
+        <p>OLD Review</p><input type="text" name="title" value="<%=data[0].review  %>">
+        <h1><a href="<%=data[0].profilephoto%>" target="_blank" style="color: greenyellow;" >View image!</a></h1>
+    </div>
+
+
+    <br>
+    <br>
+
+    <form method="post" action="/edittestimonial/<%=data[0]._id%>/?_method=PATCH">
+        <p>Edit Name</p><input type="text" name="name" value="<%= data[0].name %>">
+        <p>Edit Review</p><input type="text" name="review" value="<%=data[0].review  %>">
+        <br>
+        <br>
+        <p>Upload New Image ? (click the checkbox to edit image)</p>
+        <input type="checkbox" name="imagecheckbox" id="imagecheck">
+        <div class="imageupload">
+            <p>Edit Image(Click on choose file copy the location of folder where image is and select the image also)</p>
+            <input type="text" id="name" name="profilephoto" placeholder="Copy the file path of chosen image">
+            <input type="file" id="myFile" name="myFile" />
+        </div>
+        <button class="btn">Make Changes</button>
+    </form>
+
+    <script>
+        let imageDiv = document.querySelector(".imageupload");
+        imageDiv.style.display = "none";
+        let imagecheck = document.querySelector("#imagecheck");
+
+        imagecheck.addEventListener("click", () => {
+            if (imagecheck.checked) {
+                imageDiv.style.display = "block";
+            } else {
+                imageDiv.style.display = "none";
+            }
+        })
+    </script>
+</body>
+
+</html>
