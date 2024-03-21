@@ -18,7 +18,7 @@ const multer  = require('multer');
 //storage has 2 functions destination: kaha pai upload karna hai and fileName: what to set
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null,path.join( __dirname,"/uploads"));
+    cb(null,"./uploads");
   },
   filename: function (req, file, cb) {
     // let extArray = file.mimetype.split("/");
@@ -119,7 +119,7 @@ app.post("/herosection", upload.single('myFile'), async (req, res) => {
   title = title.toString();
   text = text.toString();
   myFile = req.file.originalname;
-  fileLocation = path.join(__dirname,"/uploads",myFile);
+  fileLocation = path.join("./uploads",myFile);
   // console.log(myFile);
   // console.log(fileLocation);
   fs.readFile(fileLocation, async (err, data) => {
