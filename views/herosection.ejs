@@ -265,12 +265,12 @@
             </div>
 
 
-            <form id="addfield" class="addfield" action="/herosection" method="post">
+            <form id="addfield" class="addfield" enctype="multipart/form-data" action="/herosection" method="post">
                 <label for="name" class="formlabel">Add a new slider</label>
                 <input type="text" id="name" name="label" placeholder="label" required>
                 <input type="text" name="title" placeholder="title" required>
                 <input type="text" name="text" placeholder="text below title" required>
-                <input type="text" name="image" placeholder="Copy the file path of chosen image" required>
+                <!-- <input type="text" name="image" placeholder="Copy the file path of chosen image" required> -->
                 <input type="file" id="myFile" name="myFile" />
                 <button type="submit" class="btn btn-primary">ADD!</button>
             </form>
