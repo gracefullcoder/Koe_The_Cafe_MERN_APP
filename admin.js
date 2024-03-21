@@ -147,11 +147,11 @@ app.patch("/editHero/:id", async (req, res) => {
   text = text.toString();
   image = image.toString();
   myFile = myFile.toString();
-  image = image + "/" + myFile;
+  image = image + "\\" + myFile;
 
   console.log(req.body);
 
-  if (image == "/") {
+  if (image == "") {
     let document = await Heroslider.findOneAndUpdate({ _id: id }, { label: label, title: title, text: text });
   }
   else {
