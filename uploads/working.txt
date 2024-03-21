@@ -1,0 +1,4 @@
+This is the working process, why this folder is created
+using multer and fs package admin is uploading files from the local storage to
+the server which is done using multer and all the file system operation like 
+deleting the file and from where to read the file is done using fs package.
