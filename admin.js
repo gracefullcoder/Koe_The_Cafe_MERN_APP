@@ -103,7 +103,7 @@ app.post("/herosection", async (req, res) => {
   text = text.toString();
   image = image.toString();
   myFile = myFile.toString();
-  image = image + "/" + myFile;
+  image = image + "\\" + myFile;
   console.log(image);
   fs.readFile(image, async (err, data) => {
 
@@ -147,7 +147,7 @@ app.patch("/editHero/:id", async (req, res) => {
   text = text.toString();
   image = image.toString();
   myFile = myFile.toString();
-  image = image + "\\" + myFile;
+  image = image + "/" + myFile;
 
   console.log(req.body);
 
