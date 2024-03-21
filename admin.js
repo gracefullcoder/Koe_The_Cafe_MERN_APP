@@ -51,38 +51,6 @@ app.listen(PORT, () => {
 });
 
 
-
-// const Cafe = mongoose.model('Cafe', cafeSchema);
-// const Booking = mongoose.model("Booking", bookingSchema);
-
-
-
-
-// let newHero = new Heroslider({
-//   label:"cofee shop",
-//   title:"done by vaibhav",
-//   text:"tho kaise ho bhai log"
-// });
-
-// newHero.save();
-
-
-
-
-
-// app.get('/login', async (req, res) => {
-//   res.render("login.ejs");
-// });
-
-// app.post('/edit', async (req, res) => {
-//   if (req.body.n1 == 'akshat' && req.body.pass == 'cafe') {
-//     const { n1, pass } = req.body;
-//      let heroSliders = await Heroslider.find();
-//     res.render("select.ejs");
-//   } else {
-//     res.send('<h1>incorrect</h1>');
-//   }});
-
 //section page
 app.get("/", async (req, res) => {
   res.render("select.ejs");
@@ -147,18 +115,18 @@ app.post("/herosection", async (req, res) => {
       if (error) console.log(error);
       else {
         // console.log(result);
-        image = result.url;
-        let imageid = result.fileId;
+        image = await result.url;
+        let imageid = await result.fileId;
         let data = new Heroslider({ label: label, title: title, text: text, image: image, imageid: imageid })
         await data.save();
         console.log(data);
+        res.redirect("/herosection");
       }
     });
   });
 
   // console.log(data);
 
-  res.redirect("/herosection");
 })
 
 //get request to edit hero section
