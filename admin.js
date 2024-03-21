@@ -12,6 +12,23 @@ const Event = require("./models/events.js");
 const Testimonial = require("./models/testimonials.js");
 const Booking = require("./models/booking.js");
 const Workshop = require("./models/workshop.js");
+const multer  = require('multer');
+
+
+//storage has 2 functions destination: kaha pai upload karna hai and fileName: what to set
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null,path.join( __dirname,"/uploads"));
+  },
+  filename: function (req, file, cb) {
+    // let extArray = file.mimetype.split("/");
+    // console.log(extArray);
+    // let extension = extArray[extArray.length - 1];
+    cb(null, file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage })
 
 const ImageKit = require("imagekit");
 const fs = require('fs');
@@ -96,18 +113,18 @@ app.get("/herosection", async (req, res) => {
 
 
 //post request on herosection
-app.post("/herosection", async (req, res) => {
-  let { label, title, text, image, myFile } = req.body;
+app.post("/herosection", upload.single('myFile'), async (req, res) => {
+  let { label, title, text} = req.body;
   label = label.toString();
   title = title.toString();
   text = text.toString();
-  image = image.toString();
-  myFile = myFile.toString();
-  image = image + "\\" + myFile;
-  console.log(image);
-  fs.readFile(image, async (err, data) => {
-
+  myFile = req.file.originalname;
+  fileLocation = path.join(__dirname,"/uploads",myFile);
+  // console.log(myFile);
+  // console.log(fileLocation);
+  fs.readFile(fileLocation, async (err, data) => {
     if (err) throw err; // Fail if the file can't be read.
+    
     imagekit.upload({
       file: data, //required
       fileName: myFile, //required
@@ -115,11 +132,12 @@ app.post("/herosection", async (req, res) => {
       if (error) console.log(error);
       else {
         // console.log(result);
-        image = await result.url;
+        let image = await result.url;
         let imageid = await result.fileId;
         let data = new Heroslider({ label: label, title: title, text: text, image: image, imageid: imageid })
         await data.save();
         console.log(data);
+        fs.unlinkSync(fileLocation);
         res.redirect("/herosection");
       }
     });
@@ -229,7 +247,7 @@ app.post("/specialsection", async (req, res) => {
   image = image.toString();
   myFile = myFile.toString();
   image = image + "/" + myFile;
-  // console.log(image);
+  console.log(image);
   fs.readFile(image, async (err, data) => {
 
     if (err) throw err; // Fail if the file can't be read.
