@@ -467,6 +467,7 @@ app.patch("/editevent/:id", upload.single('myFile'), async (req, res) => {
               .catch(error => {
                 console.log(error);
               });
+              fs.unlinkSync(fileLocation);
               res.redirect("/events");
           }
         });
@@ -476,7 +477,7 @@ app.patch("/editevent/:id", upload.single('myFile'), async (req, res) => {
 }
 );
 
-//delete request on herosection page and again redirect to same page
+//delete request on eventroute and again redirect to same page
 app.delete("/events/:id", async (req, res) => {
   let { id } = req.params;
   id = id.toString();
@@ -496,10 +497,7 @@ app.delete("/events/:id", async (req, res) => {
 })
 
 
-//herosection ends here
-
-//event section ends here
-
+//events route ends here
 
 //testimonials section starts here
 
@@ -511,15 +509,13 @@ app.get("/testimonials", async (req, res) => {
 })
 
 //post request on testimonials
-app.post("/testimonials", async (req, res) => {
-  let { name, review, profilephoto, myFile } = req.body;
+app.post("/testimonials",upload.single('myFile'), async (req, res) => {
+  let { name, review} = req.body;
   name = name.toString();
   review = review.toString();
-  profilephoto = profilephoto.toString();
-  myFile = myFile.toString();
-  profilephoto = profilephoto + "/" + myFile;
-  console.log(req.body, profilephoto);
-  fs.readFile(profilephoto, async (err, data) => {
+  let myFile = req.file.originalname;
+  let fileLocation = path.join("./uploads",myFile);
+  fs.readFile(fileLocation, async (err, data) => {
 
     if (err) throw err; // Fail if the file can't be read.
     imagekit.upload({
@@ -529,18 +525,16 @@ app.post("/testimonials", async (req, res) => {
       if (error) console.log(error);
       else {
         // console.log(result);
-        profilephoto = result.url;
+        let profilephoto = result.url;
         let imageid = result.fileId;
         let data = new Testimonial({ name: name, review: review, profilephoto: profilephoto, imageid: imageid })
         await data.save();
         console.log(data);
+        fs.unlinkSync(fileLocation);
+        res.redirect("/testimonials");
       }
     });
   });
-
-  // console.log(data);
-
-  res.redirect("/testimonials");
 })
 
 
@@ -554,22 +548,22 @@ app.get("/edittestimonial/:id", async (req, res) => {
 })
 
 //patch request on edittestimonials redirect to testimoniasl
-app.patch("/edittestimonial/:id", async (req, res) => {
+app.patch("/edittestimonial/:id",upload.single('myFile'), async (req, res) => {
   let { id } = req.params;
-  let { name, review, profilephoto, myFile } = req.body;
+  let { name, review,imagecheckbox} = req.body;
   name = name.toString();
   review = review.toString();
-  profilephoto = profilephoto.toString();
-  myFile = myFile.toString();
-  profilephoto = profilephoto + "/" + myFile;
 
   console.log(req.body);
 
-  if (profilephoto == "/") {
+  if (!imagecheckbox) {
     let document = await Testimonial.findOneAndUpdate({ _id: id }, { name: name, review: review });
+    res.redirect("/testimonials");
   }
   else {
-    fs.readFile(profilephoto, async (err, data) => {
+    let myFile = req.file.originalname;
+    let fileLocation = path.join("./uploads",myFile);
+    fs.readFile(fileLocation, async (err, data) => {
 
       if (err) throw err;   // Fail if the file can't be read.
       imagekit.upload({
@@ -580,7 +574,7 @@ app.patch("/edittestimonial/:id", async (req, res) => {
           if (error) console.log(error);
           else {
             // console.log(result);
-            profilephoto = result.url;
+            let profilephoto = result.url;
             let imageid = result.fileId;
             let document = await Testimonial.findOneAndReplace({ _id: id }, { name: name, review: review, profilephoto: profilephoto, imageid: imageid });
 
@@ -593,12 +587,13 @@ app.patch("/edittestimonial/:id", async (req, res) => {
               .catch(error => {
                 console.log(error);
               });
+              fs.unlinkSync(fileLocation);
+              res.redirect("/testimonials");
           }
         });
     });
   }
 
-  res.redirect("/testimonials");
 }
 );
 

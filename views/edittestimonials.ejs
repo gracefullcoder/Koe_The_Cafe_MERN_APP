@@ -228,7 +228,7 @@
     <br>
     <br>
 
-    <form method="post" action="/edittestimonial/<%=data[0]._id%>/?_method=PATCH">
+    <form method="post" enctype="multipart/form-data" action="/edittestimonial/<%=data[0]._id%>/?_method=PATCH">
         <p>Edit Name</p><input type="text" name="name" value="<%= data[0].name %>">
         <p>Edit Review</p><input type="text" name="review" value="<%=data[0].review  %>">
         <br>
@@ -236,8 +236,8 @@
         <p>Upload New Image ? (click the checkbox to edit image)</p>
         <input type="checkbox" name="imagecheckbox" id="imagecheck">
         <div class="imageupload">
-            <p>Edit Image(Click on choose file copy the location of folder where image is and select the image also)</p>
-            <input type="text" id="name" name="profilephoto" placeholder="Copy the file path of chosen image">
+            <!-- <p>Edit Image(Click on choose file copy the location of folder where image is and select the image also)</p> -->
+            <!-- <input type="text" id="name" name="profilephoto" placeholder="Copy the file path of chosen image"> -->
             <input type="file" id="myFile" name="myFile" />
         </div>
         <button class="btn">Make Changes</button>
