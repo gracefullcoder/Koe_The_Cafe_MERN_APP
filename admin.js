@@ -12,13 +12,13 @@ const Event = require("./models/events.js");
 const Testimonial = require("./models/testimonials.js");
 const Booking = require("./models/booking.js");
 const Workshop = require("./models/workshop.js");
-const multer  = require('multer');
+const multer = require('multer');
 
 
 //storage has 2 functions destination: kaha pai upload karna hai and fileName: what to set
 let storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null,"./uploads");
+    cb(null, "./uploads");
   },
   filename: function (req, file, cb) {
     // let extArray = file.mimetype.split("/");
@@ -88,16 +88,16 @@ app.post("/", async (req, res) => {
   }
   else if (section == "countdownsection") {
     res.redirect("/countdownsection");
-  }else if(section == "events"){
+  } else if (section == "events") {
     res.redirect("/events");
   }
   else if (section == "testimonialssection") {
     res.redirect("/testimonials")
   }
-  else if(section == "bookings"){
+  else if (section == "bookings") {
     res.redirect("/bookings");
   }
-  else if(section == "workshop"){
+  else if (section == "workshop") {
     res.redirect("/workshop");
   }
 });
@@ -114,17 +114,17 @@ app.get("/herosection", async (req, res) => {
 
 //post request on herosection
 app.post("/herosection", upload.single('myFile'), async (req, res) => {
-  let { label, title, text} = req.body;
+  let { label, title, text } = req.body;
   label = label.toString();
   title = title.toString();
   text = text.toString();
   myFile = req.file.originalname;
-  fileLocation = path.join("./uploads",myFile);
+  fileLocation = path.join("./uploads", myFile);
   // console.log(myFile);
   // console.log(fileLocation);
   fs.readFile(fileLocation, async (err, data) => {
     if (err) throw err; // Fail if the file can't be read.
-    
+
     imagekit.upload({
       file: data, //required
       fileName: myFile, //required
@@ -157,23 +157,22 @@ app.get("/editHero/:id", async (req, res) => {
 })
 
 //patch request on herosection redirect to herosection
-app.patch("/editHero/:id", async (req, res) => {
+app.patch("/editHero/:id",upload.single('myFile'), async (req, res) => {
   let { id } = req.params;
-  let { label, title, text, image, myFile } = req.body;
+  let { label, title, text,imagecheckbox } = req.body;
   label = label.toString();
   title = title.toString();
   text = text.toString();
-  image = image.toString();
-  myFile = myFile.toString();
-  image = image + "/" + myFile;
+  // console.log(imagecheckbox);
 
-  console.log(req.body);
-
-  if (image == "") {
+  if (!imagecheckbox) {
     let document = await Heroslider.findOneAndUpdate({ _id: id }, { label: label, title: title, text: text });
+    res.redirect("/herosection");
   }
   else {
-    fs.readFile(image, async (err, data) => {
+    let myFile = req.file.originalname;
+    let fileLocation = path.join("./uploads", myFile);
+    fs.readFile(fileLocation, async (err, data) => {
 
       if (err) throw err;   // Fail if the file can't be read.
       imagekit.upload({
@@ -184,7 +183,7 @@ app.patch("/editHero/:id", async (req, res) => {
           if (error) console.log(error);
           else {
             // console.log(result);
-            image = result.url;
+            let image = result.url;
             let imageid = result.fileId;
             let document = await Heroslider.findOneAndReplace({ _id: id }, { label: label, title: title, text: text, image: image, imageid: imageid });
 
@@ -197,12 +196,14 @@ app.patch("/editHero/:id", async (req, res) => {
               .catch(error => {
                 console.log(error);
               });
+
+              fs.unlinkSync(fileLocation);
+              res.redirect("/herosection");
           }
         });
     });
+   
   }
-
-  res.redirect("/herosection");
 }
 );
 
@@ -239,16 +240,15 @@ app.get("/specialsection", async (req, res) => {
 
 
 //post request on herosection
-app.post("/specialsection", async (req, res) => {
-  let { label, title, text, image, myFile } = req.body;
+app.post("/specialsection", upload.single('myFile'),async (req, res) => {
+  let { label, title, text} = req.body;
   label = label.toString();
   title = title.toString();
   text = text.toString();
-  image = image.toString();
-  myFile = myFile.toString();
-  image = image + "/" + myFile;
-  console.log(image);
-  fs.readFile(image, async (err, data) => {
+  myFile = req.file.originalname;
+  fileLocation = path.join("./uploads", myFile);
+  // console.log(image);
+  fs.readFile(fileLocation, async (err, data) => {
 
     if (err) throw err; // Fail if the file can't be read.
     imagekit.upload({
@@ -258,18 +258,16 @@ app.post("/specialsection", async (req, res) => {
       if (error) console.log(error);
       else {
         // console.log(result);
-        image = result.url;
+        let image = result.url;
         let imageid = result.fileId;
         let data = new Specialslider({ label: label, title: title, text: text, image: image, imageid: imageid })
         await data.save();
         console.log(data);
+        fs.unlinkSync(fileLocation);
+        res.redirect("/specialsection");
       }
     });
   });
-
-  // console.log(data);
-
-  res.redirect("/specialsection");
 })
 
 
@@ -390,7 +388,7 @@ app.get("/events", async (req, res) => {
 
 //post request on herosection
 app.post("/events", async (req, res) => {
-  let { date,subtitle,title,image,myFile } = req.body;
+  let { date, subtitle, title, image, myFile } = req.body;
   date = date.toString();
   subtitle = subtitle.toString();
   title = title.toString();
@@ -398,7 +396,7 @@ app.post("/events", async (req, res) => {
   myFile = myFile.toString();
   image = image + "/" + myFile;
   // console.log(req.body);
-  console.log(date,subtitle,title,image,myFile);
+  console.log(date, subtitle, title, image, myFile);
   fs.readFile(image, async (err, data) => {
 
     if (err) throw err; // Fail if the file can't be read.
@@ -435,7 +433,7 @@ app.get("/editevent/:id", async (req, res) => {
 //patch request on herosection redirect to herosection
 app.patch("/editevent/:id", async (req, res) => {
   let { id } = req.params;
-  let { date, subtitle,title,image, myFile } = req.body;
+  let { date, subtitle, title, image, myFile } = req.body;
   date = date.toString();
   subtitle = subtitle.toString();
   title = title.toString();
@@ -562,7 +560,7 @@ app.get("/edittestimonial/:id", async (req, res) => {
 //patch request on edittestimonials redirect to testimoniasl
 app.patch("/edittestimonial/:id", async (req, res) => {
   let { id } = req.params;
-  let { name, review, profilephoto,myFile} = req.body;
+  let { name, review, profilephoto, myFile } = req.body;
   name = name.toString();
   review = review.toString();
   profilephoto = profilephoto.toString();
@@ -572,7 +570,7 @@ app.patch("/edittestimonial/:id", async (req, res) => {
   console.log(req.body);
 
   if (profilephoto == "/") {
-    let document = await Testimonial.findOneAndUpdate({ _id: id }, { name: name, review: review});
+    let document = await Testimonial.findOneAndUpdate({ _id: id }, { name: name, review: review });
   }
   else {
     fs.readFile(profilephoto, async (err, data) => {
@@ -632,14 +630,14 @@ app.delete("/testimonials/:id", async (req, res) => {
 
 
 //booking section
-app.get("/bookings",async (req,res)=>{
+app.get("/bookings", async (req, res) => {
   let bookings = await Booking.find();
   console.log(bookings);
-  res.render("bookatable.ejs",{bookings})
+  res.render("bookatable.ejs", { bookings })
 })
 
-app.delete("/bookings/:id",async(req,res) => {
-  let {id} = req.params;
+app.delete("/bookings/:id", async (req, res) => {
+  let { id } = req.params;
   id = id.toString();
   let document = await Booking.findByIdAndDelete(id);
   res.redirect("/bookings");
@@ -648,14 +646,14 @@ app.delete("/bookings/:id",async(req,res) => {
 //boojing section ends here
 
 //workshop section
-app.get("/workshop",async (req,res)=>{
+app.get("/workshop", async (req, res) => {
   let registrations = await Workshop.find();
   console.log(registrations);
-  res.render("workshopregistrations.ejs",{registrations})
+  res.render("workshopregistrations.ejs", { registrations })
 })
 
-app.delete("/workshop/:id",async(req,res) => {
-  let {id} = req.params;
+app.delete("/workshop/:id", async (req, res) => {
+  let { id } = req.params;
   id = id.toString();
   let document = await Workshop.findByIdAndDelete(id);
   res.redirect("/workshop");

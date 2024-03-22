@@ -229,7 +229,7 @@
     <br>
     <br>
 
-    <form method="post" action="/editHero/<%=data[0]._id%>/?_method=PATCH">
+    <form method="post" enctype="multipart/form-data" action="/editHero/<%=data[0]._id%>/?_method=PATCH">
         <p>Edit LABEL</p><input type="text" name="label" value="<%= data[0].label %>">
         <p>Edit Title</p><input type="text" name="title" value="<%=data[0].title  %>">
         <p>Edit Text below title</p><input type="text" name="text" value="<%=data[0].text  %>">
@@ -239,7 +239,7 @@
         <input type="checkbox" name="imagecheckbox" id="imagecheck">
         <div class="imageupload">
             <p>Edit Image(Click on choose file copy the location of folder where image is and select the image also)</p>
-            <input type="text" id="name" name="image" placeholder="Copy the file path of chosen image">
+            <!-- <input type="text" id="name" name="image" placeholder="Copy the file path of chosen image"> -->
             <input type="file" id="myFile" name="myFile" />
         </div>
         <button class="btn">Make Changes</button>
