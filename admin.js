@@ -245,11 +245,10 @@ app.post("/specialsection", upload.single('myFile'),async (req, res) => {
   label = label.toString();
   title = title.toString();
   text = text.toString();
-  myFile = req.file.originalname;
+  let myFile = req.file.originalname;
   fileLocation = path.join("./uploads", myFile);
   // console.log(image);
   fs.readFile(fileLocation, async (err, data) => {
-
     if (err) throw err; // Fail if the file can't be read.
     imagekit.upload({
       file: data, //required
@@ -281,23 +280,22 @@ app.get("/editspecial/:id", async (req, res) => {
 })
 
 //patch request on herosection redirect to herosection
-app.patch("/editspecialsection/:id", async (req, res) => {
+app.patch("/editspecialsection/:id",upload.single('myFile'), async (req, res) => {
   let { id } = req.params;
-  let { label, title, text, image, myFile } = req.body;
+  let { label, title, text,imagecheckbox } = req.body;
   label = label.toString();
   title = title.toString();
   text = text.toString();
-  image = image.toString();
-  myFile = myFile.toString();
-  image = image + "/" + myFile;
+  // console.log(req.body);
 
-  console.log(req.body);
-
-  if (image == "/") {
+  if (!imagecheckbox) {
     let document = await Specialslider.findOneAndUpdate({ _id: id }, { label: label, title: title, text: text });
+    res.redirect("/specialsection");
   }
   else {
-    fs.readFile(image, async (err, data) => {
+    let myFile = req.file.originalname;
+    let fileLocation = path.join("./uploads", myFile);
+    fs.readFile(fileLocation, async (err, data) => {
 
       if (err) throw err;   // Fail if the file can't be read.
       imagekit.upload({
@@ -308,7 +306,7 @@ app.patch("/editspecialsection/:id", async (req, res) => {
           if (error) console.log(error);
           else {
             // console.log(result);
-            image = result.url;
+            let image = result.url;
             let imageid = result.fileId;
             let document = await Specialslider.findOneAndReplace({ _id: id }, { label: label, title: title, text: text, image: image, imageid: imageid });
 
@@ -321,12 +319,14 @@ app.patch("/editspecialsection/:id", async (req, res) => {
               .catch(error => {
                 console.log(error);
               });
+
+              fs.unlinkSync(fileLocation);
+              res.redirect("/specialsection");
           }
         });
     });
   }
 
-  res.redirect("/specialsection");
 }
 );
 
