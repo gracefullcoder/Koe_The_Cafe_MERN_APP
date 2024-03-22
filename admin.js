@@ -118,8 +118,8 @@ app.post("/herosection", upload.single('myFile'), async (req, res) => {
   label = label.toString();
   title = title.toString();
   text = text.toString();
-  myFile = req.file.originalname;
-  fileLocation = path.join("./uploads", myFile);
+  let myFile = req.file.originalname;
+  let fileLocation = path.join("./uploads", myFile);
   // console.log(myFile);
   // console.log(fileLocation);
   fs.readFile(fileLocation, async (err, data) => {
@@ -239,7 +239,7 @@ app.get("/specialsection", async (req, res) => {
 })
 
 
-//post request on herosection
+//post request on specialsection
 app.post("/specialsection", upload.single('myFile'),async (req, res) => {
   let { label, title, text} = req.body;
   label = label.toString();
@@ -270,7 +270,7 @@ app.post("/specialsection", upload.single('myFile'),async (req, res) => {
 })
 
 
-//get request to edit hero section
+//get request to edit special section
 app.get("/editspecial/:id", async (req, res) => {
   let { id } = req.params;
   id = id.toString();
@@ -279,7 +279,7 @@ app.get("/editspecial/:id", async (req, res) => {
   res.render("editspecialsection.ejs", { data });
 })
 
-//patch request on herosection redirect to herosection
+//patch request on special redirect to specialsection
 app.patch("/editspecialsection/:id",upload.single('myFile'), async (req, res) => {
   let { id } = req.params;
   let { label, title, text,imagecheckbox } = req.body;
@@ -330,7 +330,7 @@ app.patch("/editspecialsection/:id",upload.single('myFile'), async (req, res) =>
 }
 );
 
-//delete request on herosection page and again redirect to same page
+//delete request on specialsection page and again redirect to same page
 app.delete("/specialsection/:id", async (req, res) => {
   let { id } = req.params;
   id = id.toString();
@@ -376,9 +376,8 @@ app.patch("/countdownsection/:id", async (req, res) => {
 
 //event section starts here
 
-//herosection starts here
 
-//get request for herosection route
+//get request for events route
 app.get("/events", async (req, res) => {
   let events = await Event.find();
   console.log(events);
@@ -386,18 +385,17 @@ app.get("/events", async (req, res) => {
 })
 
 
-//post request on herosection
-app.post("/events", async (req, res) => {
-  let { date, subtitle, title, image, myFile } = req.body;
+//post request on eventsroute
+app.post("/events",upload.single('myFile'), async (req, res) => {
+  let { date, subtitle, title } = req.body;
   date = date.toString();
   subtitle = subtitle.toString();
   title = title.toString();
-  image = image.toString();
-  myFile = myFile.toString();
-  image = image + "/" + myFile;
+  let myFile = req.file.originalname;
+  let fileLocation = path.join("./uploads", myFile);
   // console.log(req.body);
-  console.log(date, subtitle, title, image, myFile);
-  fs.readFile(image, async (err, data) => {
+  // console.log(date, subtitle, title, image, myFile);
+  fs.readFile(fileLocation, async (err, data) => {
 
     if (err) throw err; // Fail if the file can't be read.
     imagekit.upload({
@@ -407,21 +405,19 @@ app.post("/events", async (req, res) => {
       if (error) console.log(error);
       else {
         // console.log(result);
-        image = result.url;
+        let image = result.url;
         let imageid = result.fileId;
         let data = new Event({ date: date, image: image, subtitle: subtitle, title: title, imageid: imageid });
         await data.save();
         console.log(data);
+        fs.unlinkSync(fileLocation);
+        res.redirect("/events");
       }
     });
   });
-
-  // console.log(data);
-
-  res.redirect("/events");
 })
 
-//get request to edit hero section
+//get request to edit events section
 app.get("/editevent/:id", async (req, res) => {
   let { id } = req.params;
   id = id.toString();
@@ -430,25 +426,25 @@ app.get("/editevent/:id", async (req, res) => {
   res.render("editevent.ejs", { data });
 })
 
-//patch request on herosection redirect to herosection
-app.patch("/editevent/:id", async (req, res) => {
+//patch request on editevents redirect to events route
+app.patch("/editevent/:id", upload.single('myFile'), async (req, res) => {
   let { id } = req.params;
-  let { date, subtitle, title, image, myFile } = req.body;
+  let { date, subtitle, title,imagecheckbox} = req.body;
   date = date.toString();
   subtitle = subtitle.toString();
   title = title.toString();
-  image = image.toString();
-  myFile = myFile.toString();
-  image = image + "/" + myFile;
+  
 
   console.log(req.body);
 
-  if (image == "/") {
+  if (!imagecheckbox) {
     let document = await Event.findOneAndUpdate({ _id: id }, { date: date, subtitle: subtitle, title: title });
+    res.redirect("/events");
   }
   else {
-    fs.readFile(image, async (err, data) => {
-
+    let myFile = req.file.originalname;
+    let fileLocation = path.join("./uploads", myFile);
+    fs.readFile(fileLocation, async (err, data) => {
       if (err) throw err;   // Fail if the file can't be read.
       imagekit.upload({
         file: data,   //required
@@ -458,7 +454,7 @@ app.patch("/editevent/:id", async (req, res) => {
           if (error) console.log(error);
           else {
             // console.log(result);
-            image = result.url;
+            let image = result.url;
             let imageid = result.fileId;
             let document = await Event.findOneAndReplace({ _id: id }, { date: date, subtitle: subtitle, title: title, image: image, imageid: imageid });
 
@@ -471,12 +467,12 @@ app.patch("/editevent/:id", async (req, res) => {
               .catch(error => {
                 console.log(error);
               });
+              res.redirect("/events");
           }
         });
     });
   }
 
-  res.redirect("/events");
 }
 );
 

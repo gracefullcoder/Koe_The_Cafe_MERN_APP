@@ -265,13 +265,13 @@
             </div>
 
 
-            <form id="addfield" class="addfield" method="post" action="/events" >
+            <form id="addfield" enctype="multipart/form-data" class="addfield" method="post" action="/events" >
                 <label for="name" class="formlabel">Add a new Event</label>
                 <input type="date" id="name" name="date" placeholder="Date" required>
                 <br>
                 <input type="text" name="subtitle" placeholder="subtitle" required>
                 <input type="text" name="title" placeholder="title" required>
-                <input type="text" name="image" placeholder="Copy the file path of chosen image" required>
+                <!-- <input type="text" name="image" placeholder="Copy the file path of chosen image" required> -->
                 <input type="file" id="myFile" name="myFile" />
                 <button type="submit" class="btn btn-primary">ADD!</button>
             </form>

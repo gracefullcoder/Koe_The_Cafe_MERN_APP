@@ -229,7 +229,7 @@
     <br>
     <br>
 
-    <form method="post" action="/editevent/<%=data[0]._id%>/?_method=PATCH">
+    <form method="post" enctype="multipart/form-data" action="/editevent/<%=data[0]._id%>/?_method=PATCH">
         <p>Edit DATE</p><input type="date" name="date" value="<%= data[0].date %>">
         <p>Edit SubTitle</p><input type="text" name="subtitle" value="<%=data[0].subtitle  %>">
         <p>Edit Title</p><input type="text" name="title" value="<%=data[0].title  %>">
@@ -238,8 +238,8 @@
         <p>Upload New Image ? (click the checkbox to edit image)</p>
         <input type="checkbox" name="imagecheckbox" id="imagecheck">
         <div class="imageupload">
-            <p>Edit Image(Click on choose file copy the location of folder where image is and select the image also)</p>
-            <input type="text" id="name" name="image" placeholder="Copy the file path of chosen image">
+            <!-- <p>Edit Image(Click on choose file copy the location of folder where image is and select the image also)</p> -->
+            <!-- <input type="text" id="name" name="image" placeholder="Copy the file path of chosen image"> -->
             <input type="file" id="myFile" name="myFile" />
         </div>
         <button class="btn">Make Changes</button>
