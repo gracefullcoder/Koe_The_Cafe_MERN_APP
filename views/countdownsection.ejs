@@ -272,12 +272,12 @@
 
             <form id="addfield" class="addfield"  method="post" action="/countdownsection/<%=countdown[0]._id%>?_method=PATCH">
                 <label for="name" class="formlabel">Edit CountDownSection</label>
-                <input type="text" id="name" name="label" placeholder="label" required>
-                <input type="text" name="title" placeholder="title" required>
-                <input type="text" name="text" placeholder="text below title" required>
-                <p style="margin-block-start: 1rem;margin-block-end: 1rem;">Enter the Date of the event</p>
+                <input type="text" id="name" name="label" placeholder="label" value ="<%=countdown[0].label%>" >
+                <input type="text" name="title" placeholder="title" value ="<%=countdown[0].title %> " >
+                <input type="text" name="text" placeholder="text below title"  value ="<%=countdown[0].text%>">
+                <p style="margin-block-start: 1rem;margin-block-end: 1rem;color:hsl(38, 61%, 73%);">Enter the Date of the event</p>
                 <input type="date" id="myFile" name="date" />
-                <p style="margin-block-start: 1rem;margin-block-end: 1rem;">Enter the time of the event</p>
+                <p style="margin-block-start: 1rem;margin-block-end: 1rem;color:hsl(38, 61%, 73%);">Enter the time of the event</p>
                 <input type="time" name="time" required>
                 <button type="submit" class="btn btn-primary">ADD!</button>
             </form>

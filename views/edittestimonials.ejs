@@ -229,8 +229,8 @@
     <br>
 
     <form method="post" enctype="multipart/form-data" action="/edittestimonial/<%=data[0]._id%>/?_method=PATCH">
-        <p>Edit Name</p><input type="text" name="name" value="<%= data[0].name %>">
-        <p>Edit Review</p><input type="text" name="review" value="<%=data[0].review  %>">
+        <p>Edit Name</p><input type="text" name="name" value="<%=data[0].name %>">
+        <p>Edit Review</p><input type="text" name="review" value="<%=data[0].review%>">
         <br>
         <br>
         <p>Upload New Image ? (click the checkbox to edit image)</p>
