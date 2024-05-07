@@ -17,8 +17,6 @@ const createEvent = async (req, res) => {
     title = title.toString();
     let myFile = req.file.originalname;
     let fileLocation = path.join("./uploads", myFile);
-    // console.log(req.body);
-    // console.log(date, subtitle, title, image, myFile);
     fs.readFile(fileLocation, async (err, data) => {
   
       if (err) throw err; // Fail if the file can't be read.

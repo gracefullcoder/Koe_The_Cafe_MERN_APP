@@ -1,0 +1,317 @@
+* {
+    margin: 0;
+    /* overflow-x: hidden; */
+}
+
+:root {
+    --gradient-1: linear-gradient(to top, hsla(0, 0%, 0%, 0.9), hsla(0, 0%, 0%, 0.7), transparent);
+    --gold-crayola: hsl(38, 61%, 73%);
+}
+
+body {
+    font-family: 'Forum';
+    color: hsla(0, 0%, 100%, 1);
+    font-weight: var(--weight-regular);
+    line-height: 1.2em;
+    -webkit-text-stroke: 0.6px hsl(38, 61%, 73%);
+    /* margin: 2px; */
+    padding: 0;
+    box-sizing: border-box;
+    background-color: hsla(40, 12%, 5%, 1);
+    background-image: url(top-view-basket-full-breads-as-baguette-bagel-rye-with-sunflower-seeds-black-surfacebg.jpg);
+    /* background-color: #69545457; */
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    overflow-x: hidden;
+    /* user-select: none; */
+    /* filter: brightness(0.4); */
+}
+
+
+/* header starts here  */
+
+header {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-block-end: 4rem;
+    text-align: center;
+    margin-block-start: 5rem;
+}
+
+.header-title {
+    line-height: 3rem;
+    margin-block-end: 1.7rem;
+    /* color: hsla(40, 12%, 5%, 1); */
+}
+
+header .shape {
+    width: 30%;
+    height:18rem;
+}
+
+.shape {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    max-width: max-content;
+    transition: top 0.5s ease, right 0.5s ease;
+}
+
+.move-anim {
+    animation: move 5s linear infinite;
+}
+
+@keyframes move {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(30px);
+    }
+}
+
+
+.bread-bag{
+    position: relative;
+}
+
+.basket-img {
+    position: absolute;
+    bottom: 0%;
+    left: 0;
+    height: 17rem;
+    width: 20rem;
+}
+
+/* header end here  */
+
+
+/* main starts here  */
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5rem 2rem;
+    padding-top: 3rem;
+    padding-bottom: 15rem;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+
+/* bread cards */
+
+.bread-card {
+    /* border: 1px solid #fff; */
+    background-color: rgb(32, 31, 28);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transition: all 200ms ease 0ms;
+    /* transition: ; */
+}
+
+.bread-card:hover {
+    transform: scale(1.01);
+    /* box-shadow: 0.1rem 0.1rem 2rem rgb(155, 7, 7); */
+    box-shadow: 0.1rem 0.1rem 2rem #fff;
+    transform: translateX(10px);
+}
+
+.bread-image {
+    height: 25rem;
+    width: 100%;
+}
+
+.bread-description {
+    /* align-self: flex-end; */
+    /* margin-inline: auto; */
+    text-align: center;
+    line-height: 3rem;
+    position: absolute;
+    z-index: 2;
+    bottom: 0%;
+    width: 100%;
+    /* padding: 2rem; */
+    background-image: var(--gradient-1);
+}
+
+.bread-description h2 {
+    margin-block-start: 3rem;
+    font-size: 3rem;
+    /* margin-block-end: 1rem; */
+}
+
+.bread-description p {
+    line-height: 1.2rem;
+    margin: 0rem 2rem;
+    margin-block-start: 1.2rem;
+    margin-block-end: 3rem;
+    color: #fff;
+    font-size: 1.4rem;
+}
+
+.shine-effect {
+    display: flex;
+    justify-content: center;
+}
+
+.has-before,
+.has-after {
+    position: relative;
+    z-index: 2;
+    border-radius: 10px;
+}
+
+.has-before::before,
+.has-after::after {
+    content: "";
+    position: absolute;
+
+}
+
+.hover\:shine {
+    position: relative;
+}
+
+.hover\:shine::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background-image: linear-gradient(to right, transparent 0%, #fff6 100%);
+    transform: skewX(-0.08turn) translateX(-180%);
+}
+
+.hover\:shine:is(:hover, :focus-within)::after {
+    transform: skewX(-0.08turn) translateX(275%);
+    transition: 1000ms ease;
+}
+
+.hover\:shine:hover {
+    filter: brightness(1.2);
+}
+
+/* bread card completed */
+
+
+
+/*scrollbar*/
+
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: hsla(40, 12%, 5%, 1);
+    /* display: none; */
+    /* visibility: hidden; */
+    opacity: 0;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--gold-crayola);
+    border: none;
+    border-radius: 2rem;
+}
+
+
+
+
+/*media wueries starts here*/
+
+/*padding of container below 520px*/
+
+
+@media(max-width : 780px){
+    .shape{
+        height: 13rem;
+    }
+}
+
+@media(max-width:521px){
+    .container{
+        padding-bottom: 10rem;
+        padding-left: 10%;
+        padding-right: 10%;
+        /* gap: 1rem; */
+    }
+
+    header .shape{
+        height: 12rem;
+        width:40%;
+    }
+}
+
+
+
+/*media queries for low resolution screen below 320px */
+@media(min-width:0px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .bread-image {
+        height: 20rem;
+    }
+
+    .seprator {
+        width: 9rem;
+    }
+    .basket-img {
+        height: 8rem;
+        width: 12rem;
+    }
+}
+
+@media(min-width:320px){
+    .bread-image {
+        height: 20rem;
+    }
+}
+
+/*media queries for resolution screen below 780px*/
+@media(min-width:520px) {
+
+    .bread-image {
+        height: 25rem;
+    }
+
+    .seprator {
+        width: 10rem;
+    }
+    .basket-img {
+        height: 12rem;
+        width: 15rem;
+    }
+}
+
+@media(min-width:830){
+    .basket-img {
+        height: 17rem;
+        width: 20rem;
+    }
+}
+
+
+@media(min-width:990px) {
+    .container {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .bread-image {
+        height: 30rem;
+    }
+
+    .seprator {
+        width: 8rem;
+    }
+
+}

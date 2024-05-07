@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 8080;
 const connectDB = require('./config/dbconfig.js');
 
 //routes
+const homeRouter = require("./routes/homepageroute.js");
 const adminRouter = require("./routes/adminroutes.js");
 const herosectionRouter = require("./routes/herosectionroutes.js");
 const countdownRouter = require('./routes/countdownroute.js');
@@ -37,6 +38,9 @@ app.use(methodOverride("_method"));
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}/admin`);
 });
+
+
+app.use("/",homeRouter);
 
 app.use("/admin", adminRouter);
 
