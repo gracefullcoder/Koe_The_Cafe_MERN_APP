@@ -14,6 +14,9 @@ const Booking = require("./models/booking.js");
 const Workshop = require("./models/workshop.js");
 const multer = require('multer');
 
+//routes
+let adminRouter = require("./routes/adminroutes.js");
+
 
 //storage has 2 functions destination: kaha pai upload karna hai and fileName: what to set
 let storage = multer.diskStorage({
@@ -45,6 +48,7 @@ const imagekit = new ImageKit({
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
+
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
@@ -64,44 +68,12 @@ async function main() {
 
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}/admin`);
 });
 
 
 //section page
-app.get("/", async (req, res) => {
-  res.render("select.ejs");
-})
-
-//select page se ispe post and it will redirect ot other pages
-app.post("/", async (req, res) => {
-  let { section } = req.body;
-  section = section.toString().toLowerCase();
-
-  // console.log(req.body);
-  console.log(section);
-  if (section == 'herosection') {
-    res.redirect("/herosection");
-  }
-  else if (section == "specialitysection") {
-    res.redirect("/specialsection");
-  }
-  else if (section == "countdownsection") {
-    res.redirect("/countdownsection");
-  } else if (section == "events") {
-    res.redirect("/events");
-  }
-  else if (section == "testimonialssection") {
-    res.redirect("/testimonials")
-  }
-  else if (section == "bookings") {
-    res.redirect("/bookings");
-  }
-  else if (section == "workshop") {
-    res.redirect("/workshop");
-  }
-});
-
+app.use("/admin",adminRouter);
 
 //herosection starts here
 
