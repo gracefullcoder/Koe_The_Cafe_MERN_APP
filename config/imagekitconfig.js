@@ -7,6 +7,7 @@ const imagekit = new ImageKit({
     urlEndpoint: "https://ik.imagekit.io/vaibhav11"
 });
 
+//storage has 2 functions destination: kaha pai upload karna hai and fileName: what to set
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "./uploads");

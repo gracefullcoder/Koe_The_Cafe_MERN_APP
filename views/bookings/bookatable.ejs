@@ -21,7 +21,7 @@
   <!-- 
     - custom css link
   -->
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/style.css">
 
   <!-- 
     - preload images
@@ -132,7 +132,7 @@
                   <%=booking.message%>
                 </td>
                 <td>
-                  <form id="signupForm" class="signup-form" method="post" action="/bookings/<%= booking._id%>?_method=DELETE">
+                  <form id="signupForm" class="signup-form" method="post" action="/admin/bookings/<%= booking._id%>?_method=DELETE">
                     <button type="submit" class="btn btn-primary">
                       <span class="text text-1">DELETE</span>
                       <span class="text text-2" aria-hidden="true">DELETE</span>
