@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Koe - The Kafe </title>
+    <meta name="title" content="Koe - The Kafe ">
+    <meta name="description" content="This is a cafe html template">
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap"
+        rel="stylesheet">
+
+
+    <link rel="stylesheet" href="./assets/css/style.css">
+
+
+
+    <!-- Add this style block inside the <head> tag of your loged2.ejs file -->
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color:  hsla(40, 12%, 5%, 1);;
+            margin: 0;
+            height: auto;
+            overflow: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        #signupForm .btn {
+            background-color: transparent;
+            /* Set background color to transparent */
+        }
+
+        #signupForm .btn:hover {
+            background-color: #eee;
+            /* Change background color on hover (optional) */
+            color: #000;
+            /* Change text color on hover (optional) */
+        }
+    </style>
+
+</head>
+
+<body style="height: auto; overflow: auto;">
+
+
+
+    <section class="section countdown bg-black-10 text-center" aria-label="countdown" id="workshop">
+        
+        <form method="post" action="/admin">
+            <select id="section1" name="section">
+                <option>Select!</option>
+                <option>HeroSection</option>
+                <option>MenuSection</option>
+                <option>SpecialitySection</option>
+                <option>CountdownSection</option>
+                <option>Events</option>
+                <option>TestimonialsSection</option>
+                <option>Bookings</option>
+                <option>Workshop</option>
+            </select>
+            <button type="submit" class="btn btn-primary">
+                <span class="text text-1">Edit</span>
+                <span class="text text-2" aria-hidden="true">Edit</span>
+            </button>
+        </form>
+
+        </div>
+    </section>
+
+</body>
+
+</html>
