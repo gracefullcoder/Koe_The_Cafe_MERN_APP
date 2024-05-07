@@ -209,7 +209,6 @@
 <body style="overflow: auto;">
 
 
-
     <section class="section countdown bg-black-10 text-center" aria-label="countdown" id="workshop">
         <div class="container">
 
@@ -245,14 +244,14 @@
                                     <h1><a href="<%=heroslider.image%>" target="_blank" style="color: greenyellow;" >View!</a></h1>
                                 </td>
                                 <td>
-                                    <form method="post" action="/herosection/<%=heroslider._id%>?_method=DELETE">
+                                    <form method="post" action="/admin/herosection/<%=heroslider._id%>?_method=DELETE">
                                         <button>
                                             Delete!
                                         </button>
                                     </form>
                                 </td>
                                 <td>
-                                    <form method="get" action="/editHero/<%=heroslider._id%>">
+                                    <form method="get" action="/admin/herosection/edit/<%=heroslider._id%>">
                                         <button>
                                             EDIT!
                                         </button>
@@ -265,7 +264,7 @@
             </div>
 
 
-            <form id="addfield" class="addfield" enctype="multipart/form-data" action="/herosection" method="post">
+            <form id="addfield" class="addfield" enctype="multipart/form-data" action="/admin/herosection" method="post">
                 <label for="name" class="formlabel">Add a new slider</label>
                 <input type="text" id="name" name="label" placeholder="label" required>
                 <input type="text" name="title" placeholder="title" required>

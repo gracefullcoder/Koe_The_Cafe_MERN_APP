@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const path = require("path");
 const methodOverride = require("method-override");
 const PORT = process.env.PORT || 8080;
-const Heroslider = require("./models/herosection.js");
 const Specialslider = require('./models/specialsection.js');
 const Countdown = require("./models/countdown.js");
 const Event = require("./models/events.js");
@@ -16,6 +15,7 @@ const multer = require('multer');
 
 //routes
 let adminRouter = require("./routes/adminroutes.js");
+let herosectionRouter = require("./routes/herosectionroutes.js");
 
 
 //storage has 2 functions destination: kaha pai upload karna hai and fileName: what to set
@@ -24,9 +24,6 @@ let storage = multer.diskStorage({
     cb(null, "./uploads");
   },
   filename: function (req, file, cb) {
-    // let extArray = file.mimetype.split("/");
-    // console.log(extArray);
-    // let extension = extArray[extArray.length - 1];
     cb(null, file.originalname)
   }
 })
@@ -76,127 +73,7 @@ app.listen(PORT, () => {
 app.use("/admin",adminRouter);
 
 //herosection starts here
-
-//get request for herosection route
-app.get("/herosection", async (req, res) => {
-  let heroSliders = await Heroslider.find();
-  res.render("herosection.ejs", { heroSliders });
-})
-
-
-//post request on herosection
-app.post("/herosection", upload.single('myFile'), async (req, res) => {
-  let { label, title, text } = req.body;
-  label = label.toString();
-  title = title.toString();
-  text = text.toString();
-  let myFile = req.file.originalname;
-  let fileLocation = path.join("./uploads", myFile);
-  // console.log(myFile);
-  // console.log(fileLocation);
-  fs.readFile(fileLocation, async (err, data) => {
-    if (err) throw err; // Fail if the file can't be read.
-
-    imagekit.upload({
-      file: data, //required
-      fileName: myFile, //required
-    }, async function (error, result) {
-      if (error) console.log(error);
-      else {
-        // console.log(result);
-        let image = await result.url;
-        let imageid = await result.fileId;
-        let data = new Heroslider({ label: label, title: title, text: text, image: image, imageid: imageid })
-        await data.save();
-        console.log(data);
-        fs.unlinkSync(fileLocation);
-        res.redirect("/herosection");
-      }
-    });
-  });
-
-  // console.log(data);
-
-})
-
-//get request to edit hero section
-app.get("/editHero/:id", async (req, res) => {
-  let { id } = req.params;
-  id = id.toString();
-  let data = await Heroslider.find({ _id: id });
-  console.log(data);
-  res.render("editherosection.ejs", { data });
-})
-
-//patch request on herosection redirect to herosection
-app.patch("/editHero/:id",upload.single('myFile'), async (req, res) => {
-  let { id } = req.params;
-  let { label, title, text,imagecheckbox } = req.body;
-  label = label.toString();
-  title = title.toString();
-  text = text.toString();
-  // console.log(imagecheckbox);
-
-  if (!imagecheckbox) {
-    let document = await Heroslider.findOneAndUpdate({ _id: id }, { label: label, title: title, text: text });
-    res.redirect("/herosection");
-  }
-  else {
-    let myFile = req.file.originalname;
-    let fileLocation = path.join("./uploads", myFile);
-    fs.readFile(fileLocation, async (err, data) => {
-
-      if (err) throw err;   // Fail if the file can't be read.
-      imagekit.upload({
-        file: data,   //required
-        fileName: myFile,   //required
-      },
-        async function (error, result) {
-          if (error) console.log(error);
-          else {
-            // console.log(result);
-            let image = result.url;
-            let imageid = result.fileId;
-            let document = await Heroslider.findOneAndReplace({ _id: id }, { label: label, title: title, text: text, image: image, imageid: imageid });
-
-            let oldimageid = document.imageid;
-
-            imagekit.deleteFile(oldimageid)
-              .then(response => {
-                console.log(response);
-              })
-              .catch(error => {
-                console.log(error);
-              });
-
-              fs.unlinkSync(fileLocation);
-              res.redirect("/herosection");
-          }
-        });
-    });
-   
-  }
-}
-);
-
-//delete request on herosection page and again redirect to same page
-app.delete("/herosection/:id", async (req, res) => {
-  let { id } = req.params;
-  id = id.toString();
-  let delData = await Heroslider.findByIdAndDelete(id);
-
-  let imageid = delData.imageid;
-
-  imagekit.deleteFile(imageid)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  // console.log(id);
-  res.redirect("/herosection");
-})
+app.use("/admin/herosection",herosectionRouter);
 
 
 //herosection ends here
