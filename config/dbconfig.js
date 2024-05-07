@@ -7,7 +7,7 @@ connectDB()
   .catch(err => console.log(err));
 
 async function connectDB() {
-  const connectionString = 'mongodb+srv://vaibhav:Svnit1103@koethecafe.8x5wmra.mongodb.net/';
+  const connectionString = process.env.MONGO_ATLAS_URL;
   await mongoose.connect(connectionString);
 }
 

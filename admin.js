@@ -3,6 +3,11 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require("path");
 const methodOverride = require("method-override");
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const PORT = process.env.PORT || 8080;
 const connectDB = require('./config/dbconfig.js');
 

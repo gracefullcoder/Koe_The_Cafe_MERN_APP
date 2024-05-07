@@ -2,9 +2,9 @@ const ImageKit = require("imagekit");
 const multer = require('multer');
 
 const imagekit = new ImageKit({
-    publicKey: "public_W8TYxH4QXoUCiGDLGtP4HBEpjFc=",
-    privateKey: "private_QlHFE1GFwoAhSJB1qPJB0FiocTc=",
-    urlEndpoint: "https://ik.imagekit.io/vaibhav11"
+    publicKey: process.env.IMAGEKIT_PUBLICKEY,
+    privateKey: process.env.IMAGEKIT_PRIVATEKEY,
+    urlEndpoint:process.env.IMAGEKIT_URL_ENDPOINT 
 });
 
 //storage has 2 functions destination: kaha pai upload karna hai and fileName: what to set
