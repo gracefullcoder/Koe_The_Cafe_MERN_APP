@@ -16,7 +16,7 @@ const connectDB = require('./config/dbconfig.js');
 //routes
 const adminRouter = require("./routes/adminroutes.js");
 const herosectionRouter = require("./routes/herosectionroutes.js");
-
+const countdownRouter = require('./routes/countdownroute.js');
 connectDB;
 
 
@@ -75,26 +75,7 @@ app.use("/admin/specialitysection",herosectionRouter);
 
 //countdown section starts here
 
-app.get("/countdownsection", async (req, res) => {
-  let countdown = await Countdown.find();
-  console.log(countdown);
-  res.render("countdownsection.ejs", { countdown })
-})
-
-
-app.patch("/countdownsection/:id", async (req, res) => {
-  let { id } = req.params;
-  id = id.toString();
-  let { label, title, text, date, time } = req.body;
-  label = label.toString();
-  title = title.toString();
-  time = date.toString() + "T" + time.toString();
-  text = text.toString();
-
-  let document = await Countdown.findOneAndUpdate({ _id: id }, { label: label, title: title, time: time, text: text, new: true });
-  console.log(document);
-  res.redirect("/countdownsection");
-});
+app.use("/admin/countdownsection",countdownRouter);
 
 //countdown section ensd here
 
