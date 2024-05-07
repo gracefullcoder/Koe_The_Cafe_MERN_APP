@@ -74,129 +74,13 @@ app.use("/admin",adminRouter);
 
 //herosection starts here
 app.use("/admin/herosection",herosectionRouter);
-
-
 //herosection ends here
 
 
 //speciality section
+app.use("/admin/specialitysection",herosectionRouter);
+//speciality section ends here
 
-app.get("/specialsection", async (req, res) => {
-  let specialSliders = await Specialslider.find();
-  // let heroSliders = await Heroslider.find();
-  res.render("specialsection.ejs", { specialSliders });
-})
-
-
-//post request on specialsection
-app.post("/specialsection", upload.single('myFile'),async (req, res) => {
-  let { label, title, text} = req.body;
-  label = label.toString();
-  title = title.toString();
-  text = text.toString();
-  let myFile = req.file.originalname;
-  fileLocation = path.join("./uploads", myFile);
-  // console.log(image);
-  fs.readFile(fileLocation, async (err, data) => {
-    if (err) throw err; // Fail if the file can't be read.
-    imagekit.upload({
-      file: data, //required
-      fileName: myFile, //required
-    }, async function (error, result) {
-      if (error) console.log(error);
-      else {
-        // console.log(result);
-        let image = result.url;
-        let imageid = result.fileId;
-        let data = new Specialslider({ label: label, title: title, text: text, image: image, imageid: imageid })
-        await data.save();
-        console.log(data);
-        fs.unlinkSync(fileLocation);
-        res.redirect("/specialsection");
-      }
-    });
-  });
-})
-
-
-//get request to edit special section
-app.get("/editspecial/:id", async (req, res) => {
-  let { id } = req.params;
-  id = id.toString();
-  let data = await Specialslider.find({ _id: id });
-  console.log(data);
-  res.render("editspecialsection.ejs", { data });
-})
-
-//patch request on special redirect to specialsection
-app.patch("/editspecialsection/:id",upload.single('myFile'), async (req, res) => {
-  let { id } = req.params;
-  let { label, title, text,imagecheckbox } = req.body;
-  label = label.toString();
-  title = title.toString();
-  text = text.toString();
-  // console.log(req.body);
-
-  if (!imagecheckbox) {
-    let document = await Specialslider.findOneAndUpdate({ _id: id }, { label: label, title: title, text: text });
-    res.redirect("/specialsection");
-  }
-  else {
-    let myFile = req.file.originalname;
-    let fileLocation = path.join("./uploads", myFile);
-    fs.readFile(fileLocation, async (err, data) => {
-
-      if (err) throw err;   // Fail if the file can't be read.
-      imagekit.upload({
-        file: data,   //required
-        fileName: myFile,   //required
-      },
-        async function (error, result) {
-          if (error) console.log(error);
-          else {
-            // console.log(result);
-            let image = result.url;
-            let imageid = result.fileId;
-            let document = await Specialslider.findOneAndReplace({ _id: id }, { label: label, title: title, text: text, image: image, imageid: imageid });
-
-            let oldimageid = document.imageid;
-
-            imagekit.deleteFile(oldimageid)
-              .then(response => {
-                console.log(response);
-              })
-              .catch(error => {
-                console.log(error);
-              });
-
-              fs.unlinkSync(fileLocation);
-              res.redirect("/specialsection");
-          }
-        });
-    });
-  }
-
-}
-);
-
-//delete request on specialsection page and again redirect to same page
-app.delete("/specialsection/:id", async (req, res) => {
-  let { id } = req.params;
-  id = id.toString();
-  let delData = await Specialslider.findByIdAndDelete(id);
-
-  let imageid = delData.imageid;
-
-  imagekit.deleteFile(imageid)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  // console.log(id);
-  res.redirect("/specialsection");
-})
 
 //countdown section starts here
 

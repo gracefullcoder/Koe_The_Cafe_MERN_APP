@@ -249,14 +249,14 @@
                                     <h1><a href="<%=specialSlider.image%>" target="_blank" style="color: greenyellow;" >View!</a></h1>
                                 </td>
                                 <td>
-                                    <form method="post" action="/specialsection/<%=specialSlider._id%>?_method=DELETE">
+                                    <form method="post" action="/admin/specialsection/<%=specialSlider._id%>?_method=DELETE">
                                         <button>
                                             Delete!
                                         </button>
                                     </form>
                                 </td>
                                 <td>
-                                    <form method="get" action="/editspecial/<%=specialSlider._id%>">
+                                    <form method="get" action="/admin/specialitysection/edit/<%=specialSlider._id%>">
                                         <button>
                                             EDIT!
                                         </button>
@@ -269,7 +269,7 @@
             </div>
 
 
-            <form id="addfield" class="addfield" enctype="multipart/form-data" action="/specialsection" method="post">
+            <form id="addfield" class="addfield" enctype="multipart/form-data" action="/admin/specialsection" method="post">
                 <label for="name" class="formlabel">Add a new slider</label>
                 <input type="text" id="name" name="label" placeholder="label" required>
                 <input type="text" name="title" placeholder="title" required>
