@@ -5,17 +5,19 @@ const mongoose = require('mongoose');
 const path = require("path");
 const methodOverride = require("method-override");
 const PORT = process.env.PORT || 8080;
-const Specialslider = require('./models/specialsection.js');
 const Countdown = require("./models/countdown.js");
 const Event = require("./models/events.js");
 const Testimonial = require("./models/testimonials.js");
 const Booking = require("./models/booking.js");
 const Workshop = require("./models/workshop.js");
 const multer = require('multer');
+const connectDB = require('./config/dbconfig.js');
 
 //routes
-let adminRouter = require("./routes/adminroutes.js");
-let herosectionRouter = require("./routes/herosectionroutes.js");
+const adminRouter = require("./routes/adminroutes.js");
+const herosectionRouter = require("./routes/herosectionroutes.js");
+
+connectDB;
 
 
 //storage has 2 functions destination: kaha pai upload karna hai and fileName: what to set
@@ -51,17 +53,6 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-
-main()
-  .then(() => {
-    console.log("Connection was succesfull");
-  })
-  .catch(err => console.log(err));
-
-async function main() {
-  const connectionString = 'mongodb+srv://vaibhav:Svnit1103@koethecafe.8x5wmra.mongodb.net/';
-  await mongoose.connect(connectionString);
-}
 
 
 app.listen(PORT, () => {
