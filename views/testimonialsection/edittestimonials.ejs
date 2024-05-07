@@ -3,16 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Koe - The Kafe </title>
-    <meta name="title" content="Koe - The Kafe ">
-    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap"
-        rel="stylesheet">
-
-
+    <title>Edit</title>
     <style>
         body {
             font-family: "DM Sans", sans-serif;
@@ -35,6 +27,16 @@
 
         .headline-1 {
             font-size: calc(2rem + 2.5vw);
+        }
+
+        .old{
+            max-width: 600px;
+            margin-inline: auto;
+            margin-block-start: 60px;
+        }
+
+        p{
+            color: hsl(38, 61%, 73%);
         }
 
         .display-1,
@@ -137,8 +139,14 @@
             font: inherit;
         }
 
+        input[type="checkbox"]{
+            height: 2rem;
+            width: 2rem;
+        }
+
+
         form {
-            max-width: 400px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
@@ -166,6 +174,10 @@
 
         #myFile {
             color: red;
+        }
+
+        .imageupload{
+            margin-block-start: 3rem;
         }
 
 
@@ -202,77 +214,48 @@
             background-color: transparent;
         }
     </style>
-
-
 </head>
 
-<body style="overflow: auto;">
+<body>
+    <h1 class="headline-1 section-title" style="text-align: center;">Edit your Hero Section</h1>
+    <div class= "old">
+        <p>OLD Name</p><input type="text" name="label" value="<%= data[0].name %>">
+        <p>OLD Review</p><input type="text" name="title" value="<%=data[0].review  %>">
+        <h1><a href="<%=data[0].profilephoto%>" target="_blank" style="color: greenyellow;" >View image!</a></h1>
+    </div>
 
 
+    <br>
+    <br>
 
-    <section class="section countdown bg-black-10 text-center" aria-label="countdown" id="workshop">
-        <div class="container">
-
-            <p class="section-subtitle label-2">WELCOME</p>
-
-            <h2 class="headline-1 section-title">Testimonials Section Details</h2>
-            <div style="overflow-x: auto;">
-                <table class="table table-striped table-bordered border-white"
-                    style="color:antiquewhite; border: 10px; border-color: brown;">
-                    <thead>
-                        <tr>
-                           
-                            <th scope="col">NAME</th>
-                            <th scope="col">REVIEW</th>
-                            <th scope="col">Image</th>
-                            <th scope="col">Delete Slider</th>
-                            <th scope="col">Edit Slider</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for(testimonial of testimonials){ %>
-                            <tr>
-                                <td>
-                                    <%=testimonial.name%>
-                                </td>
-                                <td>
-                                    <%=testimonial.review%>
-                                </td>
-                                <td>
-                                    <h1><a href="<%=testimonial.profilephoto%>" target="_blank" style="color: greenyellow;" >View!</a></h1>
-                                </td>
-                                <td>
-                                    <form method="post" action="/testimonials/<%=testimonial._id%>?_method=DELETE">
-                                        <button>
-                                            Delete!
-                                        </button>
-                                    </form>
-                                </td>
-                                <td>
-                                    <form method="get" action="/edittestimonial/<%=testimonial._id%>">
-                                        <button>
-                                            EDIT!
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <% } %>
-                    </tbody>
-                </table>
-            </div>
-
-
-            <form id="addfield" enctype="multipart/form-data" class="addfield" method="post" action="/testimonials" >
-                <label for="name" class="formlabel">Add a new slider</label>
-                <input type="text" id="name" name="name" placeholder="NAME" required>
-                <input type="text" name="review" placeholder="REVIEW" required>
-                <!-- <input type="text" name="profilephoto" placeholder="Copy the file path of chosen image" required> -->
-                <input type="file" id="myFile" name="myFile" />
-                <button type="submit" class="btn btn-primary">ADD!</button>
-            </form>
-
+    <form method="post" enctype="multipart/form-data" action="/admin/testimonialsection/edit/<%=data[0]._id%>/?_method=PATCH">
+        <p>Edit Name</p><input type="text" name="name" value="<%=data[0].name %>">
+        <p>Edit Review</p><input type="text" name="review" value="<%=data[0].review%>">
+        <br>
+        <br>
+        <p>Upload New Image ? (click the checkbox to edit image)</p>
+        <input type="checkbox" name="imagecheckbox" id="imagecheck">
+        <div class="imageupload">
+            <!-- <p>Edit Image(Click on choose file copy the location of folder where image is and select the image also)</p> -->
+            <!-- <input type="text" id="name" name="profilephoto" placeholder="Copy the file path of chosen image"> -->
+            <input type="file" id="myFile" name="myFile" />
         </div>
-    </section>
+        <button class="btn">Make Changes</button>
+    </form>
+
+    <script>
+        let imageDiv = document.querySelector(".imageupload");
+        imageDiv.style.display = "none";
+        let imagecheck = document.querySelector("#imagecheck");
+
+        imagecheck.addEventListener("click", () => {
+            if (imagecheck.checked) {
+                imageDiv.style.display = "block";
+            } else {
+                imageDiv.style.display = "none";
+            }
+        })
+    </script>
 </body>
 
 </html>

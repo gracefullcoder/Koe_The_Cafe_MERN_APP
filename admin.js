@@ -18,7 +18,7 @@ const adminRouter = require("./routes/adminroutes.js");
 const herosectionRouter = require("./routes/herosectionroutes.js");
 const countdownRouter = require('./routes/countdownroute.js');
 const eventsectionRouter = require("./routes/eventsectionroute.js");
-
+const testimonialsectionRouter = require('./routes/testtimonialsectionroute.js');
 connectDB;
 
 
@@ -88,122 +88,7 @@ app.use("/admin/eventsection",eventsectionRouter);
 //events route ends here
 
 //testimonials section starts here
-
-
-//get request on testimonials
-app.get("/testimonials", async (req, res) => {
-  let testimonials = await Testimonial.find();
-  res.render("testimonials.ejs", { testimonials });
-})
-
-//post request on testimonials
-app.post("/testimonials",upload.single('myFile'), async (req, res) => {
-  let { name, review} = req.body;
-  name = name.toString();
-  review = review.toString();
-  let myFile = req.file.originalname;
-  let fileLocation = path.join("./uploads",myFile);
-  fs.readFile(fileLocation, async (err, data) => {
-
-    if (err) throw err; // Fail if the file can't be read.
-    imagekit.upload({
-      file: data, //required
-      fileName: myFile, //required
-    }, async function (error, result) {
-      if (error) console.log(error);
-      else {
-        // console.log(result);
-        let profilephoto = result.url;
-        let imageid = result.fileId;
-        let data = new Testimonial({ name: name, review: review, profilephoto: profilephoto, imageid: imageid })
-        await data.save();
-        console.log(data);
-        fs.unlinkSync(fileLocation);
-        res.redirect("/testimonials");
-      }
-    });
-  });
-})
-
-
-//get request to edit testimonials section
-app.get("/edittestimonial/:id", async (req, res) => {
-  let { id } = req.params;
-  id = id.toString();
-  let data = await Testimonial.find({ _id: id });
-  console.log(data);
-  res.render("edittestimonials.ejs", { data });
-})
-
-//patch request on edittestimonials redirect to testimoniasl
-app.patch("/edittestimonial/:id",upload.single('myFile'), async (req, res) => {
-  let { id } = req.params;
-  let { name, review,imagecheckbox} = req.body;
-  name = name.toString();
-  review = review.toString();
-
-  console.log(req.body);
-
-  if (!imagecheckbox) {
-    let document = await Testimonial.findOneAndUpdate({ _id: id }, { name: name, review: review });
-    res.redirect("/testimonials");
-  }
-  else {
-    let myFile = req.file.originalname;
-    let fileLocation = path.join("./uploads",myFile);
-    fs.readFile(fileLocation, async (err, data) => {
-
-      if (err) throw err;   // Fail if the file can't be read.
-      imagekit.upload({
-        file: data,   //required
-        fileName: myFile,   //required
-      },
-        async function (error, result) {
-          if (error) console.log(error);
-          else {
-            // console.log(result);
-            let profilephoto = result.url;
-            let imageid = result.fileId;
-            let document = await Testimonial.findOneAndReplace({ _id: id }, { name: name, review: review, profilephoto: profilephoto, imageid: imageid });
-
-            let oldimageid = document.imageid;
-
-            imagekit.deleteFile(oldimageid)
-              .then(response => {
-                console.log(response);
-              })
-              .catch(error => {
-                console.log(error);
-              });
-              fs.unlinkSync(fileLocation);
-              res.redirect("/testimonials");
-          }
-        });
-    });
-  }
-
-}
-);
-
-//delete request on testimonials page and again redirect to same page
-app.delete("/testimonials/:id", async (req, res) => {
-  let { id } = req.params;
-  id = id.toString();
-  let delData = await Testimonial.findByIdAndDelete(id);
-
-  let imageid = delData.imageid;
-
-  imagekit.deleteFile(imageid)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  // console.log(id);
-  res.redirect("/testimonials");
-})
-
+app.use("/admin/testimonialsection",testimonialsectionRouter)
 //testimonial section ends here
 
 
