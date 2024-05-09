@@ -386,33 +386,33 @@ signupForm.addEventListener('submit', function (event) {
   console.log(userName.value);
   console.log(userEmail.value);
 
-  let formData = {userName:userName.value, userEmail:userEmail.value};
+  let formData = { userName: userName.value, userEmail: userEmail.value };
   console.log(formData);
-  
+
   // Send data to server
   fetch('/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
   })
-  .then(response => {
+    .then(response => {
       if (!response.ok) {
-          throw new Error('Network response was not ok');
+        throw new Error('Network response was not ok');
       }
       return response.text();
-  })
-  .then((data) => {
+    })
+    .then((data) => {
       console.log(data); // Log server response
       data = JSON.parse(data);
-      let {name,status} = data;
+      let { name, status } = data;
       console.log(name, status);
-      window.alert(name+ " " + status);
-  })
-  .catch(error => {
+      window.alert(name + " " + status);
+    })
+    .catch(error => {
       console.error('Error:', error);
-  });
+    });
 });
 
 // script.js

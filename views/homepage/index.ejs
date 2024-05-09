@@ -107,7 +107,7 @@
             <a href="#home" class="navbar-link hover-underline active">
               <div class="separator"></div>
 
-              <span class="span">Home2</span>
+              <span class="span">Home</span>
             </a>
           </li>
 
@@ -800,7 +800,7 @@
 
 
       <section class="reservation" id="reservation">
-        <div class="container">
+        <div class="container" style="max-width: 1000px;">
 
           <div class="form reservation-form bg-black-10">
 
@@ -815,9 +815,9 @@
 
               <div class="input-wrapper">
                 <input type="text" name="name" placeholder="Your Name" autocomplete="off" class="input-field"
-                  style="background-color: rgb(27, 28, 29);">
+                  style="background-color: rgb(27, 28, 29);" required>
 
-                <input type="tel" name="phone" placeholder="Phone Number" autocomplete="off" class="input-field">
+                <input type="tel" name="phone" placeholder="Phone Number" autocomplete="off" class="input-field" id="booking-phonenumber" pattern="[0-9]{10}" required>
               </div>
 
               <div class="input-wrapper">
@@ -825,7 +825,7 @@
                 <div class="icon-wrapper">
                   <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
 
-                  <select name="person" class="input-field">
+                  <select name="person" class="input-field" required>
                     <option value="1-person">1 Person</option>
                     <option value="2-person">2 Person</option>
                     <option value="3-person">3 Person</option>
@@ -849,7 +849,7 @@
                 <div class="icon-wrapper">
                   <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
 
-                  <select name="time" class="input-field">
+                  <select name="time" class="input-field" required>
                     <option value="08:00am">08 : 00 am</option>
                     <option value="09:00am">09 : 00 am</option>
                     <option value="010:00am">10 : 00 am</option>
@@ -872,14 +872,14 @@
 
               </div>
 
-              <textarea name="message" placeholder="Message" autocomplete="off" class="input-field"></textarea>
+              <textarea name="message" placeholder="Message" autocomplete="off" class="input-field" required></textarea>
 
               <button type="submit" class="btn btn-secondary">
                 <span class="text text-1">Book A Table</span>
 
                 <span class="text text-2" aria-hidden="true">Book A Table</span>
               </button>
-
+              <span id = "Bookings-error"></span>
             </form>
 
             <div class="form-right text-center" style="background-image: url('../../assets/images/form-pattern.png')">
