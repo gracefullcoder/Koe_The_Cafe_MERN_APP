@@ -34,7 +34,7 @@ module.exports.validateTestimonial  = (req,res,next) =>{
 
 module.exports.validateCountdownEdit  = (req,res,next) =>{
     const {error} = countDownSchema.validate(req.body);
-    console.log(req.body);
+
     if(error){
         console.log(req.body);
         res.status(400).send(error.details[0].message);

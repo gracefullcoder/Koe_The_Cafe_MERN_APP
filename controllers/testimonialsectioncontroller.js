@@ -84,6 +84,10 @@ const updateTestimonial = async (req, res) => {
         res.redirect("/admin/testimonialsection");
     }
     else {
+        if(!req.file){
+            return res.status(400).send("File Must be added");
+            // throw new Error("File must be added");
+        }
         let myFile = req.file.originalname;
         let fileLocation = path.join("./uploads", myFile);
         fs.readFile(fileLocation, async (err, data) => {

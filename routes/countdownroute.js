@@ -4,7 +4,7 @@ const Countdown = require('../models/countdown.js');
 const {validateCountdownEdit} = require("../middlewares/adminmiddlewares.js");
 router.get("/", async (req, res) => {
     let countdown = await Countdown.find();
-    console.log(countdown);
+    // console.log(countdown);
     res.render("countdownsection/countdownsection.ejs", { countdown })
 })
 
@@ -20,7 +20,7 @@ router.patch("/:id",validateCountdownEdit, async (req, res) => {
 
     let document = await Countdown.findOneAndUpdate({ _id: id }, { label: label, title: title, time: time, text: text, new: true });
     console.log(document);
-    res.redirect("/admin/countdownsection");
+    res.redirect("/admin");
 });
 
 module.exports = router;
