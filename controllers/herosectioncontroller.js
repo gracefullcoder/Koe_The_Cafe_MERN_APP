@@ -13,6 +13,12 @@ const createHeroSlider = async (req, res) => {
     label = label.toString();
     title = title.toString();
     text = text.toString();
+    
+    if(!req.file){
+        return res.status(400).send("File Must be added");
+        // throw new Error("File must be added");
+    }
+
     let myFile = req.file.originalname; // multer nai parse karke de diya isliye read kar pa rahe req.file
     let fileLocation = path.join("./uploads", myFile);
 
@@ -22,7 +28,10 @@ const createHeroSlider = async (req, res) => {
             file: data, //required
             fileName: myFile, //required
         }, async function (error, result) {
-            if (error) console.log(error);
+            if (error){
+                console.log(error);
+                throw new Error("Add image in form or not uploaded properly!");
+            } 
             else {
                 // console.log(result);
                 let image = await result.url;
@@ -74,6 +83,11 @@ const updateHeroSlider = async (req, res) => {
         res.redirect("/admin/herosection");
     }
     else {
+        if(!req.file){
+            return res.status(400).send("File Must be added");
+            // throw new Error("File must be added");
+        }
+        
         let myFile = req.file.originalname;
         let fileLocation = path.join("./uploads", myFile);
         fs.readFile(fileLocation, async (err, data) => {

@@ -6,7 +6,8 @@ let testimonialSchema = {
         type:String
     },
     profilephoto:{
-        type:String
+        type:String,
+        default : "https://ik.imagekit.io/vaibhav11/user.png?updatedAt=1715345414819"
     },
     review:{
         type: String

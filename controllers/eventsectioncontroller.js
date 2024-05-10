@@ -15,6 +15,9 @@ const createEvent = async (req, res) => {
     date = date.toString();
     subtitle = subtitle.toString();
     title = title.toString();
+    if(!req.file){
+      return res.status(400).send("Event Image is necessary!")
+    }
     let myFile = req.file.originalname;
     let fileLocation = path.join("./uploads", myFile);
     fs.readFile(fileLocation, async (err, data) => {

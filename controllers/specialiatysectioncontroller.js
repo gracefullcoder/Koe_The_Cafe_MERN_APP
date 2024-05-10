@@ -14,6 +14,12 @@ const createSpecialitySlider = async (req, res) => {
     label = label.toString();
     title = title.toString();
     text = text.toString();
+
+    if(!req.file){
+        return res.status(400).send("File Must be added");
+        // throw new Error("File must be added");
+    }
+
     let myFile = req.file.originalname;
     fileLocation = path.join("./uploads", myFile);
     // console.log(image);

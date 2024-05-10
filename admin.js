@@ -15,6 +15,7 @@ const connectDB = require('./config/dbconfig.js');
 const homeRouter = require("./routes/homepageroute.js");
 const adminRouter = require("./routes/adminroutes.js");
 const herosectionRouter = require("./routes/herosectionroutes.js");
+const specialitysectionRouter = require("./routes/specialitysectionroutes.js");
 const countdownRouter = require('./routes/countdownroute.js');
 const eventsectionRouter = require("./routes/eventsectionroute.js");
 const testimonialsectionRouter = require('./routes/testtimonialsectionroute.js');
@@ -44,15 +45,15 @@ app.use("/",homeRouter);
 
 app.use("/admin", adminRouter);
 
-app.use("/admin/herosection", herosectionRouter)
+app.use("/admin/herosection", herosectionRouter);
 
-app.use("/admin/specialitysection", herosectionRouter);
+app.use("/admin/specialitysection", specialitysectionRouter);
 
 app.use("/admin/countdownsection", countdownRouter);
 
 app.use("/admin/eventsection", eventsectionRouter);
 
-app.use("/admin/testimonialsection", testimonialsectionRouter)
+app.use("/admin/testimonialsection", testimonialsectionRouter);
 
 app.use("/admin/bookings", bookingsRouter);
 

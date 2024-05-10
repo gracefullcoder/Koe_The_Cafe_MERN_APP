@@ -4,13 +4,14 @@ const multer = require('multer');
 const { storage } = require("../config/imagekitconfig.js");
 const { showTestimonials, createTestimonial, destroyTestimonial, renderEditForm, updateTestimonial } = require("../controllers/testimonialsectioncontroller.js")
 const upload = multer({ storage: storage });
+const {validateTestimonial} = require("../middlewares/adminmiddlewares.js");
 
 router.route("/")
     //get request on testimonials
     .get(showTestimonials)
 
     //post request on testimonials
-    .post(upload.single('myFile'), createTestimonial)
+    .post(upload.single('myFile'),validateTestimonial, createTestimonial)
 
 router.route("/edit/:id")
     //get request to edit testimonials section

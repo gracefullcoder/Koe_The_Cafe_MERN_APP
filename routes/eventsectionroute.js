@@ -4,14 +4,14 @@ const multer = require('multer');
 const { storage } = require("../config/imagekitconfig.js");
 const { showEvents, createEvent, destroyEvent, renderEditForm, updateEvent } = require("../controllers/eventsectioncontroller.js")
 const upload = multer({ storage: storage });
-
+const {validateEventSection} = require("../middlewares/adminmiddlewares.js");
 
 router.route("/")
     //get request for events route
     .get(showEvents)
 
     //post request on eventsroute
-    .post(upload.single('myFile'), createEvent)
+    .post(upload.single('myFile'), validateEventSection,createEvent)
 
 
 

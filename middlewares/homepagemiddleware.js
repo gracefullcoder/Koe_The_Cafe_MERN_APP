@@ -18,12 +18,12 @@ module.exports.validateBookings = async (req,res,next) => {
         console.log(error);
         res.status(400).send(error.details[0].message);
     } else{
-        // let person = req.body.person;
-        // console.log();
-        // if (person[0] <= 0 || person[0] > 8 || person.slice(2) != "person"){
-        //     throw new Error("Wrong Data");
-        //     res.status(400).send("Wrong Data of person!");
-        // }
+        let person = req.body.person;
+        console.log();
+        if (person[0] <= 0 || person[0] > 8 || person.slice(2) != "person"){
+            throw new Error("Wrong Data");
+            res.status(400).send("Wrong Data of person!");
+        }
         next();
     }
 }

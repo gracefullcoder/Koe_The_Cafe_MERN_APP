@@ -13,6 +13,13 @@ const createTestimonial = async (req, res) => {
     let { name, review } = req.body;
     name = name.toString();
     review = review.toString();
+
+    if(!req.file){
+        let data = new Testimonial({ name: name, review: review});
+        await data.save();
+        return res.redirect("/admin/testimonialsection");
+    }
+
     let myFile = req.file.originalname;
     let fileLocation = path.join("./uploads", myFile);
     fs.readFile(fileLocation, async (err, data) => {
@@ -27,7 +34,7 @@ const createTestimonial = async (req, res) => {
                 // console.log(result);
                 let profilephoto = result.url;
                 let imageid = result.fileId;
-                let data = new Testimonial({ name: name, review: review, profilephoto: profilephoto, imageid: imageid })
+                let data = new Testimonial({ name: name, review: review, profilephoto: profilephoto, imageid: imageid });
                 await data.save();
                 console.log(data);
                 fs.unlinkSync(fileLocation);
@@ -95,14 +102,15 @@ const updateTestimonial = async (req, res) => {
                         let document = await Testimonial.findOneAndReplace({ _id: id }, { name: name, review: review, profilephoto: profilephoto, imageid: imageid });
 
                         let oldimageid = document.imageid;
-
-                        imagekit.deleteFile(oldimageid)
+                        if(oldimageid){
+                            imagekit.deleteFile(oldimageid)
                             .then(response => {
                                 console.log(response);
                             })
                             .catch(error => {
                                 console.log(error);
                             });
+                        }
                         fs.unlinkSync(fileLocation);
                         res.redirect("/admin/testimonialsection");
                     }
