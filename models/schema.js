@@ -34,6 +34,14 @@ const testimonialSchema = Joi.object({
     myFile : Joi.string().allow("",null)
 })
 
+const countDownSchema = Joi.object({
+    label : Joi.string().required(),
+    title : Joi.string().required(), 
+    text:Joi.string().required(), 
+    date:Joi.date().required(), 
+    time:Joi.string().regex(/^([0-9]{2})\:([0-9]{2})$/)
+})
+
 const editSchema = Joi.object({
     label: Joi.string().required(),
     title: Joi.string().required(),
@@ -42,4 +50,4 @@ const editSchema = Joi.object({
     myFile: Joi.string().allow("", null)
 })
 
-module.exports = { workshopSchema, bookingsSchema, newSectionSchema,eventSchema,testimonialSchema,editSchema};
+module.exports = { workshopSchema, bookingsSchema, newSectionSchema,eventSchema,testimonialSchema,editSchema,countDownSchema};

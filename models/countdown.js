@@ -2,16 +2,20 @@ const mongoose = require("mongoose");
 
 countdownSchema = {
     label: {
-        type: String
+        type: String,
+        required:true
     },
     title: {
-        type: String
+        type: String,
+        required:true
     },
     time: {
-        type: Date
+        type: Date,
+        required:true
     },
     text: {
-        type: String
+        type: String,
+        required:true
     }
 };
 

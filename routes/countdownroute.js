@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Countdown = require('../models/countdown.js');
-
+const {validateCountdownEdit} = require("../middlewares/adminmiddlewares.js");
 router.get("/", async (req, res) => {
     let countdown = await Countdown.find();
     console.log(countdown);
@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
 })
 
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id",validateCountdownEdit, async (req, res) => {
     let { id } = req.params;
     id = id.toString();
     let { label, title, text, date, time } = req.body;

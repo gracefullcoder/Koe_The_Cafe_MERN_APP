@@ -2,19 +2,24 @@ const mongoose = require("mongoose");
 
 const eventSchema = {
     date: {
-        type: String
+        type: String,
+        required:true
     },
     image: {
-        type: String
+        type: String,
+        required:true
     },
     subtitle: {
-        type: String
+        type: String,
+        required:true
     },
     title: {
-        type: String
+        type: String,
+        required:true
     },
     imageid: {
-        type: String
+        type: String,
+        required:true
     }
 
 }

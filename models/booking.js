@@ -1,12 +1,30 @@
 const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
-  name: String,
-  phone: Number,
-  person: String,
-  date: String,
-  time: String,
-  message: String
+  name: {
+    type : String,
+    required:true
+  },
+  phone: {
+    type : Number,
+    required:true
+  },
+  person: {
+    type : String,
+    required:true
+  },
+  date: {
+    type : String,
+    required:true
+  },
+  time: {
+    type : String,
+    required:true
+  },
+  message: {
+    type : String,
+    required:true
+  }
 });
 
 const Booking = mongoose.model("Booking",bookingSchema);
