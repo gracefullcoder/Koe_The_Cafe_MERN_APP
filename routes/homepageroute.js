@@ -7,6 +7,7 @@ const Specialslider = require('../models/specialsection.js');
 const Testimonial = require('../models/testimonials.js');
 const Event = require("../models/events.js");
 const Booking = require("../models/booking.js");
+const {validateRegistration,validateBookings} = require("../middlewares/homepagemiddleware.js");
 
 router.get('/', async (req, res) => {
     let heroSliders = await Heroslider.find();
@@ -18,7 +19,7 @@ router.get('/', async (req, res) => {
     res.render("homepage/index.ejs", { allSection });
 });
 
-router.post('/', async (req, res) => {
+router.post('/',validateBookings, async (req, res) => {
     const name = req.body.name;
     const phone = req.body.phone;
     const person = req.body.person;
@@ -27,15 +28,17 @@ router.post('/', async (req, res) => {
     const message = req.body.message;
     const newbooking = new Booking({ name, phone, person, date, time, message });
     await newbooking.save();
-    const popupScript = `
-      <script>
-        alert("Yeah! ${name} Your Table is Booked!");
-      </script>
-    `;
+    // const popupScript = `
+    //   <script>
+    //     alert("Yeah! ${name} Your Table is Booked!");
+    //   </script>
+    // `;
     res.redirect("/");
 });
 
-router.post('/signup', async (req, res) => {
+
+
+router.post('/signup', validateRegistration , async (req, res) => {
     try {
         const { userName, userEmail } = req.body;
         const user = await Workshop.find({ email: userEmail });
