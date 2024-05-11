@@ -5,26 +5,28 @@ const { storage } = require("../config/imagekitconfig.js");
 const { showHeroSliders, createHeroSlider, destroyHeroSlider, renderEditForm, updateHeroSlider } = require("../controllers/herosectioncontroller.js")
 const upload = multer({ storage: storage });
 const {validateNewSection,validateEdit} = require("../middlewares/adminmiddlewares.js");
+const {wrapAsync} = require("../utils/wrapAsyncAndExpressError");
+
 
 router.route("/")
   //get request for herosection route
-  .get(showHeroSliders)
+  .get(wrapAsync(showHeroSliders))
 
   //post request on herosection
-  .post(upload.single('myFile'), validateNewSection,createHeroSlider)
+  .post(upload.single('myFile'), validateNewSection,wrapAsync(createHeroSlider))
 
 
 
 router.route("/edit/:id")
   //get request to edit hero section
-  .get(renderEditForm)
+  .get(wrapAsync(renderEditForm))
 
   //patch request on /hero/edit redirect to herosection
-  .patch(upload.single('myFile'),validateEdit, updateHeroSlider);
+  .patch(upload.single('myFile'),validateEdit, wrapAsync(updateHeroSlider));
 
 
 //delete request on herosection page and again redirect to same page
-router.delete("/:id", destroyHeroSlider);
+router.delete("/:id", wrapAsync(destroyHeroSlider));
 
 
 
