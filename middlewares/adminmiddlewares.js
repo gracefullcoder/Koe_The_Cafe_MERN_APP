@@ -55,9 +55,14 @@ module.exports.validateEdit = (req,res,next) => {
 
 
 module.exports.isAdmin = (req,res,next) => {
-    if(!req.isAuthenticated()){
-        return res.redirect("/auth/login")
+    if(req.isAuthenticated()){
+        if(req.user.role.admin){
+            next();
+        }else{
+            return res.send("You Don't Have Admin Rights further Logins attempt will lead to block of account!");
+        }
+    }else{
+        return res.redirect("/auth/login");
     }
-    next();
 }
 
