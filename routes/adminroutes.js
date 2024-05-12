@@ -1,18 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const {ExpressError,wrapAsync} = require("../utils/wrapAsyncAndExpressError");
-const {isAdmin} = require("../middlewares/adminmiddlewares");
+const {wrapAsync } = require("../utils/wrapAsyncAndExpressError");
+const fs = require('fs');
+const multer = require('multer');
+const { storage } = require("../config/imagekitconfig.js");
+const upload = multer({ storage: storage });
+const {selectSection,showUsers,destroyUser,assignAdmin,unAssignAdmin,renderEditForm,updateUser} = require("../controllers/adminusercontroller.js");
 
 router.route("/")
-  .get(isAdmin,(req, res) => {
+  .get((req, res) => {
     res.render("admindashboard/select.ejs");
   })
 
   //select page se ispe post and it will redirect ot other pages
-  .post(isAdmin,wrapAsync(async (req, res) => {
-    let { section } = req.body;
-    section = "/admin/" + section.toString().toLowerCase();
-    res.redirect(section);
-  }));
+  .post(wrapAsync(selectSection));
+
+router.route("/addadmin")
+  .get(wrapAsync(showUsers));
+
+router.route("/addadmin/:id")
+  .delete(wrapAsync(destroyUser))
+
+  .patch(wrapAsync(assignAdmin))
+
+router.patch("/removeadmin/:id", wrapAsync(unAssignAdmin))
+
+router.route("/addadmin/edit/:id")
+  .get(wrapAsync(renderEditForm))
+
+  .patch(upload.single('myFile'), wrapAsync(updateUser))
 
 module.exports = router;
