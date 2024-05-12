@@ -2,14 +2,15 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user.js");
+const {saveRedirectUrl} = require("../middlewares/adminmiddlewares.js")
 
 router.route("/login")
     .get((req, res) => {
         res.render("authentication/loginpage.ejs");
     })
 
-    .post(passport.authenticate("local", { failureRedirect: '/auth/signup' }), (req, res) => {
-        res.redirect("/");
+    .post(saveRedirectUrl,passport.authenticate("local", { failureRedirect: '/auth/signup' }), (req, res) => {
+        res.redirect(res.locals.redirectUrl);
     })
 
 
@@ -20,7 +21,7 @@ router.route("/signup")
     })
 
 
-    .post(async (req, res) => {
+    .post(saveRedirectUrl,async (req, res) => {
         const { fullname, useremail, gender, userpassword } = req.body;
         let profilepicture;
 
@@ -41,7 +42,7 @@ router.route("/signup")
                 throw new ExpressError(500, "Not able to authenticate user");
             }
             else {
-                res.redirect("/");
+                res.redirect(res.locals.redirectUrl);
             }
         });
     })
