@@ -3,16 +3,15 @@ const router = express.Router();
 const Countdown = require('../models/countdown.js');
 const {validateCountdownEdit} = require("../middlewares/adminmiddlewares.js");
 const {wrapAsync} = require("../utils/wrapAsyncAndExpressError");
-const {isAdmin} = require("../middlewares/adminmiddlewares.js");
 
-router.get("/", isAdmin, wrapAsync(async(req, res) => {
+router.get("/", wrapAsync(async(req, res) => {
     let countdown = await Countdown.find();
     // console.log(countdown);
     res.render("countdownsection/countdownsection.ejs", { countdown })
 }))
 
 
-router.patch("/:id",isAdmin,validateCountdownEdit, wrapAsync(async (req, res) => {
+router.patch("/:id",validateCountdownEdit, wrapAsync(async (req, res) => {
     let { id } = req.params;
     id = id.toString();
     let { label, title, text, date, time } = req.body;

@@ -101,6 +101,23 @@ form .content label{
 form .content .pass-link{
   color: "";
 }
+
+form select{
+  border-radius: 5rem;
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  border: 1px solid lightgrey;
+  background-color: #f8f9fa;
+  color: #343a40;
+  /* padding: 0.5rem; */
+  cursor: pointer;
+}
+
+form select::-ms-expand {
+  margin-left: 5%;
+}
+
 form .field input[type="submit"]{
   color: #fff;
   border: none;

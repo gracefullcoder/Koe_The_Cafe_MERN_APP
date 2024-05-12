@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const User = require("./models/user.js");
-
+const {isAdmin} = require("./middlewares/adminmiddlewares.js");
 const PORT = process.env.PORT || 8080;
 const connectDB = require('./config/dbconfig.js');
 
@@ -73,21 +73,21 @@ app.use("/", homeRouter);
 
 app.use("/auth",authRouter);
 
-app.use("/admin", adminRouter);
+app.use("/admin",isAdmin, adminRouter);
 
-app.use("/admin/herosection", herosectionRouter);
+app.use("/admin/herosection",isAdmin, herosectionRouter);
 
-app.use("/admin/specialitysection", specialitysectionRouter);
+app.use("/admin/specialitysection", isAdmin,specialitysectionRouter);
 
-app.use("/admin/countdownsection", countdownRouter);
+app.use("/admin/countdownsection",isAdmin, countdownRouter);
 
-app.use("/admin/eventsection", eventsectionRouter);
+app.use("/admin/eventsection",isAdmin, eventsectionRouter);
 
-app.use("/admin/testimonialsection", testimonialsectionRouter);
+app.use("/admin/testimonialsection",isAdmin, testimonialsectionRouter);
 
-app.use("/admin/bookings", bookingsRouter);
+app.use("/admin/bookings",isAdmin, bookingsRouter); 
 
-app.use("/admin/workshop", workshopRouter);
+app.use("/admin/workshop",isAdmin, workshopRouter);
 
 //error Handling if page not found
 // app.all("*", (req, res, next) => {
