@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Login Form Design | CodeLab</title>
+      <link rel="stylesheet" href="../../public/authstyle.css">
+   </head>
+   <body>
+      <div class="wrapper">
+         <div class="title">
+            Login Form
+         </div>
+         <form method="post" action="/auth/login"> <!-- onsubmit="return validateForm()"> -->
+             <div class="field">
+                 <input type="email" id="useremail" name="username" required>
+                 <label>Email Address</label>
+              </div>
+             <div class="field">
+                <input type="password" id="userpassword" name="password" required>
+                <label>Password</label>
+             </div>
+            
+            <div class="field">
+               <input type="submit" value="Login">
+            </div>
+            <div class="signup-link">
+               Not a member? <a href="/auth/signup">Signup now</a>
+            </div>
+         </form>
+      </div>
+      <script>
+         function validateForm() {
+             var email = document.getElementById("useremail").value;
+             var password = document.getElementById("userpassword").value;
+             
+             if (!isValidEmail(email)) {
+                 alert("Please enter a valid email address.");
+                 return false;
+             }
+             
+             if (password.length < 6) {
+                 alert("Password must be at least 6 characters long.");
+                 return false;
+             }
+             
+             return true;
+         }
+         
+         function isValidEmail(email) {
+             var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+             return emailRegex.test(email);
+         }
+      </script>
+   </body>
+</html>

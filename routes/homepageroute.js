@@ -11,6 +11,7 @@ const { validateRegistration, validateBookings } = require("../middlewares/homep
 const { wrapAsync } = require("../utils/wrapAsyncAndExpressError.js")
 
 router.get('/', wrapAsync(async (req, res) => {
+    console.log(req.user);
     let heroSliders = await Heroslider.find();
     let countdown = await Countdown.find();
     let specialSection = await Specialslider.find();

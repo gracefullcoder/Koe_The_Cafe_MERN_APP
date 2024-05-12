@@ -6,11 +6,12 @@ const { showHeroSliders, createHeroSlider, destroyHeroSlider, renderEditForm, up
 const upload = multer({ storage: storage });
 const {validateNewSection,validateEdit} = require("../middlewares/adminmiddlewares.js");
 const {wrapAsync} = require("../utils/wrapAsyncAndExpressError");
+const {isAdmin} = require("../middlewares/adminmiddlewares.js");
 
 
 router.route("/")
   //get request for herosection route
-  .get(wrapAsync(showHeroSliders))
+  .get(isAdmin,wrapAsync(showHeroSliders))
 
   //post request on herosection
   .post(upload.single('myFile'), validateNewSection,wrapAsync(createHeroSlider))
@@ -22,11 +23,11 @@ router.route("/edit/:id")
   .get(wrapAsync(renderEditForm))
 
   //patch request on /hero/edit redirect to herosection
-  .patch(upload.single('myFile'),validateEdit, wrapAsync(updateHeroSlider));
+  .patch(upload.single('myFile'),isAdmin,validateEdit, wrapAsync(updateHeroSlider));
 
 
 //delete request on herosection page and again redirect to same page
-router.delete("/:id", wrapAsync(destroyHeroSlider));
+router.delete("/:id",isAdmin, wrapAsync(destroyHeroSlider));
 
 
 

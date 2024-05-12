@@ -6,13 +6,14 @@ const { showSpecialitySliders, createSpecialitySlider, destroySpecialSlider, ren
 const upload = multer({ storage: storage });
 const {validateNewSection,validateEdit} = require("../middlewares/adminmiddlewares.js");
 const {wrapAsync} = require("../utils/wrapAsyncAndExpressError");
+const {isAdmin} = require("../middlewares/adminmiddlewares.js");
 
 router.route("/")
   //get request for specialsection route
-  .get(wrapAsync(showSpecialitySliders))
+  .get(isAdmin , wrapAsync(showSpecialitySliders))
 
   //post request on specialsection
-  .post(upload.single('myFile'),validateNewSection, wrapAsync(createSpecialitySlider))
+  .post(upload.single('myFile'),isAdmin , validateNewSection, wrapAsync(createSpecialitySlider))
 
 
 router.route("/edit/:id")
@@ -20,11 +21,11 @@ router.route("/edit/:id")
   .get(wrapAsync(renderEditForm))
 
   //patch request on special redirect to specialsection
-  .patch(upload.single('myFile'),validateEdit,wrapAsync(updateSpecialitySlider));
+  .patch(upload.single('myFile'),isAdmin , validateEdit,wrapAsync(updateSpecialitySlider));
 
 
 //delete request on specialsection page and again redirect to same page
-router.delete("/:id", wrapAsync(destroySpecialSlider));
+router.delete("/:id",isAdmin ,  wrapAsync(destroySpecialSlider));
 
 module.exports = router;
 
