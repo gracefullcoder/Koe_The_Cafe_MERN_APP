@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user.js");
-const { nextTick } = require("process");
 
 router.route("/login")
     .get((req, res) => {
@@ -22,9 +21,19 @@ router.route("/signup")
 
 
     .post(async (req, res) => {
-        const { fullname, useremail, userpassword } = req.body;
-        let user = new User({ username: useremail, fullname: fullname });
+        const { fullname, useremail, gender, userpassword } = req.body;
+        let profilepicture;
+
+        if (gender.toLowerCase() == "male") {
+            profilepicture.imagelink = process.env["MALE_PROFILE" + Math.floor(Math.random() * 6 + 1)];
+        } else {
+            profilepicture.imagelink = process.env["FEMALE_PROFILE" + Math.floor(Math.random() * 8 + 1)];
+        }
+        console.log(profilepicture);
+
+        let user = new User({ username: useremail, fullname: fullname, gender: gender, profilepicture });
         let registeredUser = await User.register(user, userpassword);//register will only register the user
+        console.log(user);
 
         //ye req.login(user,cb) is a fnx provide by passport aab user ka log aa gaya
         req.login(registeredUser, (err) => {
@@ -38,12 +47,12 @@ router.route("/signup")
     })
 
 
-router.get("/logout",(req,res)=>{
+router.get("/logout", (req, res) => {
     //similar to req.login ye bhi inbuilt function hai which takes callback and uses serializ and deserialize method to logout the user 
-    req.logout((err)=>{
-        if(err){
+    req.logout((err) => {
+        if (err) {
             nextTick(err);
-        }else{
+        } else {
             res.redirect("/");
         }
     })
