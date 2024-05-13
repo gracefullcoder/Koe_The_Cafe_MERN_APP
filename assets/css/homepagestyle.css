@@ -917,22 +917,23 @@ body.nav-active {
   height: 4.5rem;
   width: 4.5rem;
   margin: 0px;
-  position: absolute;
-  right: 2%;
+  /* position: absolute; */
+  /* right: 2%; */
 }
 
 .account-options {
   position: absolute;
-  right: 6%;
-  top: 10rem;
+  right: 4%;
+  top: 11rem;
   background-color: var(--smoky-black-1);
   padding: 3rem;
   border-radius: 2rem;
-  transition: box-shadow 0.2s ease 0.1s;
+  transition: 0.5s ease 0.2s;
 }
 
 .account-options:hover {
   box-shadow: 3px 3px 6px var(--gold-crayola);
+  transform: scale(1.03);
 }
 
 .account-field,
@@ -952,11 +953,13 @@ body.nav-active {
 
 .account-field-link {
   position: relative;
+  transition: 0.5s ease;
 }
 
 .account-field-link:hover{
   /* text-decoration: underline var(--gold-crayola); */
   color: var(--gold-crayola);
+  transform: scale(1.1);
 }
 
 .account-field-link span {
@@ -1612,6 +1615,26 @@ body.popup .menu-container {
   overflow-x: hidden;
 }
 
+.selector-container img{
+  border-radius: 10px; 
+  margin: auto;
+}
+
+.selector-container select{
+  width: 80%;
+  text-align: center;
+  background-color: var(--gold-crayola);
+  margin-inline: auto;
+}
+
+.selector-container label{
+  color: white;
+}
+
+select option:hover{
+  background-color: #1a1a1a !important;
+}
+
 #pairingResult {
   margin-top: 2rem;
   font-size: 18px;
@@ -1889,10 +1912,10 @@ body.popup .menu-container {
   animation: rotate360 15s linear infinite;
 }
 
-.profile .img {
+.testi-slider .img {
   margin-inline: auto;
-  border-radius: var(--radius-circle);
-  margin-block-end: 15px;
+  border-radius: 2rem;
+  /* margin-block-end: 15px; */
 }
 
 .testi .profile-name {
@@ -2216,6 +2239,11 @@ textarea.input-field {
  */
 
 @media (max-width: 575px) {
+  /* navbar */
+  .logo-img{
+    width: 10rem;
+  }
+
   /*menu-section images*/
 
   /*item-1*/
@@ -2429,6 +2457,10 @@ textarea.input-field {
   .header .btn {
     display: block;
     margin-inline-start: auto;
+  }
+
+  .header .signin-text{
+    display: none;
   }
 
   /**
@@ -3519,106 +3551,6 @@ select {
   border: 1px solid #ccc;
   border-radius: 5px;
   outline: none;
-}
-
-/**
-   * Special Dish
-   */
-
-/* .special-dish-btn {
-  transform: scale(0.7);
-} */
-
-/**
-     * Special Dish
-     */
-
-/* .special-dish .slider-btn {
-  display: grid;
-  position: absolute;
-  z-index: 1;
-  color: var(--gold-crayola);
-  font-size: 2.4rem;
-  border: 1px solid var(--gold-crayola);
-  width: 45px;
-  height: 45px;
-  place-items: center;
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-  transition: var(--transition-1);
-}
-
-.special-dish .slider-btn ion-icon {
-  transform: rotate(-45deg);
-}
-
-.special-dish .slider-btn.prev {
-  left: 30px;
-}
-
-.special-dish .slider-btn.next {
-  right: 30px;
-}
-
-.special-dish .slider-btn:is(:hover, :focus-visible) {
-  background-color: var(--gold-crayola);
-  color: var(--black);
-} */
-
-/**
-     * Special Dish
-     */
-
-/* .special-dish {
-  height: 880px;
-}
-
-.special-dish-btn {
-  bottom: 50px;
-  right: 50px;
-  transform: scale(1);
-} */
-
-.combine {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.container {
-  max-width: 800px;
-  margin: auto;
-}
-
-h2 {
-  text-align: center;
-  font-size: 2em;
-  margin-bottom: 30px;
-}
-
-.selector-container {
-  margin-bottom: 30px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #555;
-  border-radius: 5px;
-  color: #333;
-  background-color: #fff;
-  margin-bottom: 10px;
-}
-
-img {
-  display: block;
-  margin: auto;
-  border-radius: 10px;
 }
 
 /* Add a subtle hover effect */
