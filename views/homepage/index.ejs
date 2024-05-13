@@ -160,11 +160,43 @@
 
       </nav>
 
-      <a href="#reservation" class="btn btn-secondary">
-        <span class="text text-1">Find A Table</span>
-
-        <span class="text text-2" aria-hidden="true">Find A Table</span>
-      </a>
+      <% if(!allSection.user){ %>
+        <a href="/auth/login" class="btn btn-secondary">
+          <span class="text text-1">Login</span>
+  
+          <span class="text text-2" aria-hidden="true">Sign Up!</span>
+        </a>
+        <% } else { %>
+  
+          <img id="profilepicture" src="<%=allSection.user.profilepicture.imagelink%>" alt="DP">
+          <div id="account-options" class="account-options">
+            <div class="account-field-name">Hi <%=allSection.user.fullname%>!</div>
+            <div class="account-field">
+              <a href="" class="account-field-link">
+                <div class="separator"></div>
+                <span class="span">Account Details</span>
+              </a>
+            </div>
+            <div class="account-field">
+              <a href="" class="account-field-link">
+                <div class="separator"></div>
+                <span class="span">Notifications</span>
+              </a>
+            </div>
+            <div class="account-field">
+              <a href="" class="account-field-link">
+                <div class="separator"></div>
+                <span class="span">Activity</span>
+              </a>
+            </div>
+            <div class="account-field">
+              <a href="/auth/logout" class="account-field-link">
+                <div class="separator"></div>
+                <span>Logout</span> 
+              </a>
+            </div>
+          </div>
+          <%}%>
 
       <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
         <span class="line line-1"></span>

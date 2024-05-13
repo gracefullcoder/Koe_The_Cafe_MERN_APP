@@ -16,6 +16,30 @@ window.addEventListener("load", function () {
 });
 
 
+//account options;
+function accountClickToggler(accountClickCount,accountDiv){
+  console.log("i am called");
+  if(accountClickCount % 2 == 0) accountDiv.style.display = "none";
+  else accountDiv.style.display = "block";
+}
+
+let profilepicture = document.querySelector("#profilepicture");
+let accountDiv = document.querySelector("#account-options");
+
+let accountClickCount = 0;
+if(accountDiv){
+  accountClickToggler(accountClickCount,accountDiv);
+}
+if(accountDiv){
+  profilepicture.addEventListener("click",() => {
+    accountClickCount++;
+    accountClickToggler(accountClickCount,accountDiv)
+  });
+}
+
+
+
+
 
 /**
  * add event listener on multiple elements

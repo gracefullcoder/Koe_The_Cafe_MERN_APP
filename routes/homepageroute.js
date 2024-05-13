@@ -11,13 +11,13 @@ const { validateRegistration, validateBookings } = require("../middlewares/homep
 const { wrapAsync } = require("../utils/wrapAsyncAndExpressError.js")
 
 router.get('/', wrapAsync(async (req, res) => {
-    console.log(req.user);
     let heroSliders = await Heroslider.find();
     let countdown = await Countdown.find();
     let specialSection = await Specialslider.find();
     let testimonials = await Testimonial.find();
     let events = await Event.find();
-    let allSection = { heroSliders, countdown, specialSection, testimonials, events };
+    let allSection = { heroSliders, countdown, specialSection, testimonials, events,user:req.user };
+    console.log(allSection);
     res.render("homepage/index.ejs", { allSection });
 }));
 

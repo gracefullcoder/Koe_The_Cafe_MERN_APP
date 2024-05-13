@@ -2,28 +2,31 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user.js");
-const {saveRedirectUrl} = require("../middlewares/adminmiddlewares.js")
+const { saveRedirectUrl } = require("../middlewares/adminmiddlewares.js")
+const isAlreadyLogin= require("../middlewares/authmiddlewares.js");
 
 router.route("/login")
-    .get((req, res) => {
+    .get(isAlreadyLogin, (req, res) => {
         res.render("authentication/loginpage.ejs");
     })
 
-    .post(saveRedirectUrl,passport.authenticate("local", { failureRedirect: '/auth/signup' }), (req, res) => {
-        res.redirect(res.locals.redirectUrl);
+    .post(isAlreadyLogin, saveRedirectUrl, passport.authenticate("local", { failureRedirect: '/auth/signup' }), (req, res) => {
+        console.log("got post request");
+        let redirectUrl = res.locals.redirectUrl || "/";
+        res.redirect(redirectUrl);
     })
 
 
 router.route("/signup")
 
-    .get((req, res) => {
+    .get(isAlreadyLogin, (req, res) => {
         res.render("authentication/signup.ejs");
     })
 
 
-    .post(saveRedirectUrl,async (req, res) => {
+    .post(isAlreadyLogin, saveRedirectUrl, async (req, res) => {
         const { fullname, useremail, gender, userpassword } = req.body;
-        let profilepicture;
+        let profilepicture = { isUpdated: false };
 
         if (gender.toLowerCase() == "male") {
             profilepicture.imagelink = process.env["MALE_PROFILE" + Math.floor(Math.random() * 6 + 1)];
@@ -42,7 +45,8 @@ router.route("/signup")
                 throw new ExpressError(500, "Not able to authenticate user");
             }
             else {
-                res.redirect(res.locals.redirectUrl);
+                let redirectUrl = res.locals.redirectUrl || "/";
+                res.redirect(redirectUrl);
             }
         });
     })

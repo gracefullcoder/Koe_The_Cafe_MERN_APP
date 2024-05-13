@@ -65,7 +65,7 @@ passport.deserializeUser(async (id, done) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}/admin`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 
