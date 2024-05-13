@@ -9,6 +9,7 @@ const Event = require("../models/events.js");
 const Booking = require("../models/booking.js");
 const { validateRegistration, validateBookings } = require("../middlewares/homepagemiddleware.js");
 const { wrapAsync } = require("../utils/wrapAsyncAndExpressError.js")
+const {isLogedIn} = require("../middlewares/authmiddlewares.js");
 
 router.get('/', wrapAsync(async (req, res) => {
     let heroSliders = await Heroslider.find();
@@ -21,7 +22,7 @@ router.get('/', wrapAsync(async (req, res) => {
     res.render("homepage/index.ejs", { allSection });
 }));
 
-router.post('/', validateBookings, wrapAsync(async (req, res) => {
+router.post('/',isLogedIn ,validateBookings, wrapAsync(async (req, res) => {
     const name = req.body.name;
     const phone = req.body.phone;
     const person = req.body.person;
@@ -40,7 +41,7 @@ router.post('/', validateBookings, wrapAsync(async (req, res) => {
 
 
 
-router.post('/signup', validateRegistration, wrapAsync(async (req, res) => {
+router.post('/signup',isLogedIn, validateRegistration, wrapAsync(async (req, res) => {
     const { userName, userEmail } = req.body;
     const user = await Workshop.find({ email: userEmail });
     if (user.length == 0) {

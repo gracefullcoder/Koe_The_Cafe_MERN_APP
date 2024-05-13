@@ -160,49 +160,53 @@
 
       </nav>
 
-      <% if(!allSection.user){ %>
-        <a href="/auth/login" class="btn btn-secondary">
-          <span class="text text-1">Login</span>
-  
-          <span class="text text-2" aria-hidden="true">Sign Up!</span>
-        </a>
-        <% } else { %>
-  
-          <img id="profilepicture" src="<%=allSection.user.profilepicture.imagelink%>" alt="DP">
-          <div id="account-options" class="account-options">
-            <div class="account-field-name">Hi <%=allSection.user.fullname%>!</div>
-            <div class="account-field">
-              <a href="" class="account-field-link">
-                <div class="separator"></div>
-                <span class="span">Account Details</span>
-              </a>
-            </div>
-            <div class="account-field">
-              <a href="" class="account-field-link">
-                <div class="separator"></div>
-                <span class="span">Notifications</span>
-              </a>
-            </div>
-            <div class="account-field">
-              <a href="" class="account-field-link">
-                <div class="separator"></div>
-                <span class="span">Activity</span>
-              </a>
-            </div>
-            <div class="account-field">
-              <a href="/auth/logout" class="account-field-link">
-                <div class="separator"></div>
-                <span>Logout</span> 
-              </a>
-            </div>
-          </div>
-          <%}%>
 
-      <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
-        <span class="line line-1"></span>
-        <span class="line line-2"></span>
-        <span class="line line-3"></span>
-      </button>
+      <div style="display: flex;align-items: center;">
+        <%if(!allSection.user){%>
+          <a href="/auth/login" class="btn btn-secondary">
+            <span class="text text-1">Login</span>
+
+            <span class="text text-2" aria-hidden="true">Sign Up!</span>
+          </a>
+          <a href="/auth/login" class="signin-text">Sign in</a>
+          <%} else{%>
+            <img id="profilepicture" src="<%=allSection.user.profilepicture.imagelink%>" alt="DP">
+            <div id="account-options" class="account-options">
+              <div class="account-field-name">Hi <%=allSection.user.fullname%>!</div>
+              <div class="account-field">
+                <a href="" class="account-field-link">
+                  <div class="separator"></div>
+                  <span class="span">Account Details</span>
+                </a>
+              </div>
+              <div class="account-field">
+                <a href="" class="account-field-link">
+                  <div class="separator"></div>
+                  <span class="span">Notifications</span>
+                </a>
+              </div>
+              <div class="account-field">
+                <a href="" class="account-field-link">
+                  <div class="separator"></div>
+                  <span class="span">Activity</span>
+                </a>
+              </div>
+              <div class="account-field">
+                <a href="/auth/logout" class="account-field-link">
+                  <div class="separator"></div>
+                  <span>Logout</span>
+                </a>
+              </div>
+            </div>
+            <%}%>
+
+              <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
+                <span class="line line-1"></span>
+                <span class="line line-2"></span>
+                <span class="line line-3"></span>
+              </button>
+      </div>
+
 
       <div class="overlay" data-nav-toggler data-overlay></div>
 
@@ -337,8 +341,8 @@
 
                   <a class="has-before hover:shine">
                     <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                      <img src="../../assets/menu-images/soup.jpg" width="285" height="336" loading="lazy" alt="Breakfast"
-                        class="img-cover">
+                      <img src="../../assets/menu-images/soup.jpg" width="285" height="336" loading="lazy"
+                        alt="Breakfast" class="img-cover">
                     </figure>
                   </a>
 
@@ -413,8 +417,8 @@
 
                   <a class="has-before hover:shine">
                     <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                      <img src="../../assets/menu-images/curry.jpg" width="285" height="336" loading="lazy" alt="Breakfast"
-                        class="img-cover">
+                      <img src="../../assets/menu-images/curry.jpg" width="285" height="336" loading="lazy"
+                        alt="Breakfast" class="img-cover">
                     </figure>
                   </a>
 
@@ -464,8 +468,8 @@
 
                   <a class="has-before hover:shine">
                     <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                      <img src="../../assets/menu-images/burger.jpg" width="285" height="336" loading="lazy" alt="Drinks"
-                        class="img-cover">
+                      <img src="../../assets/menu-images/burger.jpg" width="285" height="336" loading="lazy"
+                        alt="Drinks" class="img-cover">
                     </figure>
                   </a>
 
@@ -517,8 +521,8 @@
 
                   <a class="has-before hover:shine">
                     <figure class="card-banner img-holder" style="--width: 285; --height: 336;">
-                      <img src="../../assets/menu-images/beverages.jpg" width="285" height="336" loading="lazy" alt="Drinks"
-                        class="img-cover">
+                      <img src="../../assets/menu-images/beverages.jpg" width="285" height="336" loading="lazy"
+                        alt="Drinks" class="img-cover">
                     </figure>
                   </a>
 
@@ -621,11 +625,18 @@
 
             <label for="email">Email:</label>
             <input type="email" id="email" name="emailid" required>
+            <% if(allSection.user){ %>
+              <button type="submit" class="btn btn-primary">
+                <span class="text text-1">Register!</span>
+                <span class="text text-2" aria-hidden="true">Register!</span>
+              </button>
+              <% }else{ %>
 
-            <button type="submit" class="btn btn-primary">
-              <span class="text text-1">Sign Up</span>
-              <span class="text text-2" aria-hidden="true">Sign Up</span>
-            </button>
+                <a href="/auth/login" class="btn btn-primary">
+                  <span class="text text-1">Sign in to Register!</span>
+                  <span class="text text-2" aria-hidden="true">Sign in to Register!</span>
+                </a>
+                <% } %>
           </form>
           <br>
           <!-- <script>
@@ -707,8 +718,8 @@
             </div>
             <div class="cheese">
               <a href="../../assets/cheese and bread/cheese.html" target="_blank" class="has-before ">
-                <img src="../../assets/cheese and bread/cheese_thumbnail.jpeg" width="246"
-                  height="212" class="bread-and-cheese-img">
+                <img src="../../assets/cheese and bread/cheese_thumbnail.jpeg" width="246" height="212"
+                  class="bread-and-cheese-img">
               </a>
               <div class="cheese-heading headline-2">
                 Cheeses
@@ -724,31 +735,28 @@
 
       <section class="pairing-section">
         <div class="container">
-          <h2>Coffee and Cheese Pairing</h2>
+          <h2 class="headline-1">Coffee and Cheese Pairing</h2>
 
           <div class="selector-container">
-            <label for="coffeeSelector" style="color: white;">Select a Coffee Blend:</label>
+            <label for="coffeeSelector">Select a Coffee Blend:</label>
             <select id="coffeeSelector">
               <option value="mediumRoast" data-image="mediumRoast.jpg">Medium Roast</option>
               <option value="darkRoast" data-image="darkRoast.jpg">Dark Roast</option>
               <option value="flavouredCoffee" data-image="flavouredCoffee.jpg">Flavored Coffee</option>
             </select>
             <br />
-            <img id="coffeeImage" src="" alt="Coffee Image" width="70%" height="200px"
-              style="border-radius: 10px; margin: auto;">
-
+            <img id="coffeeImage" src="" alt="Coffee Image" width="80%" height="200px">
           </div>
 
           <div class="selector-container">
-            <label for="cheeseSelector" style="color: white;">Select a Cheese:</label>
+            <label for="cheeseSelector">Select a Cheese:</label>
             <select id="cheeseSelector">
               <option value="brie" data-image="brie.jpg">Brie</option>
               <option value="gouda" data-image="gouda.jpg">Gouda</option>
               <option value="blue" data-image="blue.jpg">Blue Cheese</option>
             </select>
             <br />
-            <img id="cheeseImage" src="" alt="Cheese Image" width="70%" height="300px"
-              style="border-radius: 10px; margin: auto;">
+            <img id="cheeseImage" src="" alt="Cheese Image" width="80%" height="300px">
           </div>
           <b><br />
             <div class="pairing-result-text hover:shine " id="pairingResult"
@@ -849,7 +857,8 @@
                 <input type="text" name="name" placeholder="Your Name" autocomplete="off" class="input-field"
                   style="background-color: rgb(27, 28, 29);" required>
 
-                <input type="tel" name="phone" placeholder="Phone Number" autocomplete="off" class="input-field" id="booking-phonenumber" pattern="[0-9]{10}" required>
+                <input type="tel" name="phone" placeholder="Phone Number" autocomplete="off" class="input-field"
+                  id="booking-phonenumber" pattern="[0-9]{10}" required>
               </div>
 
               <div class="input-wrapper">
@@ -906,12 +915,20 @@
 
               <textarea name="message" placeholder="Message" autocomplete="off" class="input-field" required></textarea>
 
-              <button type="submit" class="btn btn-secondary">
-                <span class="text text-1">Book A Table</span>
 
-                <span class="text text-2" aria-hidden="true">Book A Table</span>
-              </button>
-              <span id = "Bookings-error"></span>
+              <%if(allSection.user) {%>
+                <button type="submit" class="btn btn-secondary">
+                  <span class="text text-1">Book A Table</span>
+
+                  <span class="text text-2" aria-hidden="true">Book A Table</span>
+                </button>
+                <%}else{%>
+                  <a href="/auth/login" class="btn btn-secondary">
+                    <span class="text text-1">Sign Up First!</span>
+
+                    <span class="text text-2" aria-hidden="true">Sign Up to Book a Table!</span>
+                  </a>
+                  <% } %>
             </form>
 
             <div class="form-right text-center" style="background-image: url('../../assets/images/form-pattern.png')">
@@ -1249,7 +1266,8 @@
           </li>
 
           <li>
-            <a href=".../../assets/KoeCafeFood.pdf" target="_blank" class="label-2 footer-link hover-underline">Menus</a>
+            <a href=".../../assets/KoeCafeFood.pdf" target="_blank"
+              class="label-2 footer-link hover-underline">Menus</a>
           </li>
 
           <li>

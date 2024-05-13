@@ -27,7 +27,3 @@ module.exports.validateBookings = async (req,res,next) => {
         next();
     }
 }
-
-module.exports.isLogedIn = (req,res,next) => {
-    
-}

@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user.js");
-const { saveRedirectUrl } = require("../middlewares/adminmiddlewares.js")
-const isAlreadyLogin= require("../middlewares/authmiddlewares.js");
+const { saveRedirectUrl } = require("../middlewares/authmiddlewares.js")
+const {isAlreadyLogin} = require("../middlewares/authmiddlewares.js");
 
 router.route("/login")
     .get(isAlreadyLogin, (req, res) => {
