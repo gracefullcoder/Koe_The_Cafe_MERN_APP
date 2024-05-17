@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const eventSchema = {
+const eventSchema = new mongoose.Schema({
     date: {
         type: String,
         required:true
@@ -21,8 +21,7 @@ const eventSchema = {
         type: String,
         required:true
     }
-
-}
+})
 
 const Event = mongoose.model("Event", eventSchema);
 

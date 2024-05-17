@@ -1,4 +1,4 @@
-const { newSectionSchema, eventSchema, testimonialSchema, countDownSchema, editSchema } = require("../models/schema.js");
+const { newSectionSchema, eventSchema, testimonialSchema, workshopSchema, editSchema } = require("../models/schema.js");
 
 module.exports.validateNewSection = (req, res, next) => {
     const { error } = newSectionSchema.validate(req.body);
@@ -32,8 +32,8 @@ module.exports.validateTestimonial = (req, res, next) => {
     }
 }
 
-module.exports.validateCountdownEdit = (req, res, next) => {
-    const { error } = countDownSchema.validate(req.body);
+module.exports.validateWorkShopEdit = (req, res, next) => {
+    const { error } = workshopSchema.validate(req.body);
 
     if (error) {
         console.log(req.body);

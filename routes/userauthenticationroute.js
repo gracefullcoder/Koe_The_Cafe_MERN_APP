@@ -11,7 +11,6 @@ router.route("/login")
     })
 
     .post(isAlreadyLogin, saveRedirectUrl, passport.authenticate("local", { failureRedirect: '/auth/signup' }), (req, res) => {
-        console.log("got post request");
         let redirectUrl = res.locals.redirectUrl || "/";
         res.redirect(redirectUrl);
     })

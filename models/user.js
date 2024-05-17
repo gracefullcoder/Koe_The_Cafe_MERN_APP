@@ -1,9 +1,8 @@
-const { required, object } = require("joi");
 const mongoose = require("mongoose");
-const { type } = require("os");
 const passportLocalMongoose = require('passport-local-mongoose');
+const {Schema} = mongoose;
 
-const userSchema = mongoose.Schema({
+const userSchema =new mongoose.Schema({
     fullname: {
         type: String,
         required: true
@@ -17,13 +16,19 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    role:
+    role: //parent mai poora data one to few
     {
         _id: false,
         admin: Boolean,
         creatorname: String,
         creatoremail: String
-    }
+    },
+    workshops:[
+        {
+            type:Schema.ObjectId,
+            ref:"Worshop"
+        }
+    ]
 })
 
 userSchema.plugin(passportLocalMongoose);

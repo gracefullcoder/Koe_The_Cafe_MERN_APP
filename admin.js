@@ -21,11 +21,11 @@ const homeRouter = require("./routes/homepageroute.js");
 const adminRouter = require("./routes/adminroutes.js");
 const herosectionRouter = require("./routes/herosectionroutes.js");
 const specialitysectionRouter = require("./routes/specialitysectionroutes.js");
-const countdownRouter = require('./routes/countdownroute.js');
+const  workshopRouter = require('./routes/workshoproutes.js');
 const eventsectionRouter = require("./routes/eventsectionroute.js");
 const testimonialsectionRouter = require('./routes/testtimonialsectionroute.js');
 const bookingsRouter = require("./routes/bookingsroute.js");
-const workshopRouter = require("./routes/workshoproute.js");
+const registrationRouter = require("./routes/registrationroute.js");
 const authRouter = require("./routes/userauthenticationroute.js");
 
 const { ExpressError } = require('./utils/wrapAsyncAndExpressError.js');
@@ -79,15 +79,15 @@ app.use("/admin/herosection",isAdmin, herosectionRouter);
 
 app.use("/admin/specialitysection", isAdmin,specialitysectionRouter);
 
-app.use("/admin/countdownsection",isAdmin, countdownRouter);
+app.use("/admin/workshopsection",isAdmin, workshopRouter);
 
 app.use("/admin/eventsection",isAdmin, eventsectionRouter);
 
 app.use("/admin/testimonialsection",isAdmin, testimonialsectionRouter);
 
-app.use("/admin/bookings",isAdmin, bookingsRouter); 
+app.use("/admin/bookings",isAdmin, bookingsRouter);
 
-app.use("/admin/workshop",isAdmin, workshopRouter);
+app.use("/admin/workshopregistration", registrationRouter);
 
 //error Handling if page not found
 // app.all("*", (req, res, next) => {

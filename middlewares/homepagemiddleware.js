@@ -1,7 +1,7 @@
-const {workshopSchema,bookingsSchema} = require("../models/schema.js");
+const {registrationSchema,bookingsSchema} = require("../models/schema.js");
 
 module.exports.validateRegistration = (req, res, next) => {
-    let { error} = workshopSchema.validate(req.body);
+    let { error} = registrationSchema.validate(req.body);
     if (error) {
         console.log(error);
         res.status(400).send(error.details[0].message);

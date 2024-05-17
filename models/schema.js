@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const workshopSchema = Joi.object({
+const registrationSchema = Joi.object({
     userName: Joi.string().required(),
     userEmail: Joi.string().email().required()
 });
@@ -34,7 +34,7 @@ const testimonialSchema = Joi.object({
     myFile : Joi.string().allow("",null)
 })
 
-const countDownSchema = Joi.object({
+const workshopSchema = Joi.object({
     label : Joi.string().required(),
     title : Joi.string().required(), 
     text:Joi.string().required(), 
@@ -50,4 +50,4 @@ const editSchema = Joi.object({
     myFile: Joi.string().allow("", null)
 })
 
-module.exports = { workshopSchema, bookingsSchema, newSectionSchema,eventSchema,testimonialSchema,editSchema,countDownSchema};
+module.exports = { registrationSchema, bookingsSchema, newSectionSchema,eventSchema,testimonialSchema,editSchema,workshopSchema};
