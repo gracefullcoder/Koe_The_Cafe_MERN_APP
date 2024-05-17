@@ -1,7 +1,3 @@
-'use strict';
-
-
-
 /**
  * PRELOAD
  * 
@@ -17,9 +13,9 @@ window.addEventListener("load", function () {
 
 
 //account options;
-function accountClickToggler(accountClickCount,accountDiv){
+function accountClickToggler(accountClickCount, accountDiv) {
   console.log("i am called");
-  if(accountClickCount % 2 == 0) accountDiv.style.display = "none";
+  if (accountClickCount % 2 == 0) accountDiv.style.display = "none";
   else accountDiv.style.display = "block";
 }
 
@@ -27,13 +23,13 @@ let profilepicture = document.querySelector("#profilepicture");
 let accountDiv = document.querySelector("#account-options");
 
 let accountClickCount = 0;
-if(accountDiv){
-  accountClickToggler(accountClickCount,accountDiv);
+if (accountDiv) {
+  accountClickToggler(accountClickCount, accountDiv);
 }
-if(accountDiv){
-  profilepicture.addEventListener("click",() => {
+if (accountDiv) {
+  profilepicture.addEventListener("click", () => {
     accountClickCount++;
-    accountClickToggler(accountClickCount,accountDiv)
+    accountClickToggler(accountClickCount, accountDiv)
   });
 }
 
@@ -58,7 +54,7 @@ const addEventOnElements = function (elements, eventType, callback) {
  */
 
 const navbar = document.querySelector("[data-navbar]");
-console.log(navbar);
+// console.log(navbar);
 const navTogglers = document.querySelectorAll("[data-nav-toggler]");
 const overlay = document.querySelector("[data-overlay]");
 
@@ -72,7 +68,7 @@ addEventOnElements(navTogglers, "click", toggleNavbar);
 
 
 let navLinks = document.querySelectorAll(".navbar-list a");
-console.log(navLinks);
+// console.log(navLinks);
 
 function resizeFn() {
   if (window.innerWidth < 1200) {
@@ -235,7 +231,7 @@ var swiper = new Swiper(".menu_swipper", {
 });
 
 let menuBtn = document.querySelectorAll(".btn-view-menu");
-console.log(menuBtn);
+// console.log(menuBtn);
 let menuContainer = document.querySelector("#popup-section");
 let closebtn = document.querySelectorAll(".cross");
 let head = document.querySelector("header");
@@ -353,18 +349,47 @@ window.addEventListener("mousemove", function (event) {
 let time = document.querySelector(".gettime").textContent;
 console.log(time);
 const workshopDate = new Date(time); // Replace with the actual date and time
+let start = true;
 
 // Function to update the countdown timer
 function updateCountdown() {
   const now = new Date();
   const timeDifference = workshopDate - now;
 
-  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+  let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  let minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+  let seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+  let countdownElement = document.getElementById('countdown');
 
-  const countdownElement = document.getElementById('countdown');
+  if (days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0) {
+    days = 0;
+    minutes = 0;
+    hours = 0;
+    seconds = 0;
+    const sectionTitle = document.querySelector("#countdown-title");
+    sectionTitle.innerText = "Workshop Registrations Ended!";
+    countdownElement.innerHTML = `<div class="countdown-item">
+    <span class="countdown-number">${days}</span>
+    <span class="countdown-label">Days</span>
+  </div>
+  <div class="countdown-item">
+    <span class="countdown-number">${hours}</span>
+    <span class="countdown-label">Hours</span>
+  </div>
+  <div class="countdown-item">
+    <span class="countdown-number">${minutes}</span>
+    <span class="countdown-label">Minutes</span>
+  </div>
+  <div class="countdown-item">
+    <span class="countdown-number">${seconds}</span>
+    <span class="countdown-label">Seconds</span>
+  </div>`;
+
+    clearInterval(countdownTimer);
+    return;
+  }
+
   countdownElement.innerHTML = `
     <div class="countdown-item">
       <span class="countdown-number">${days}</span>
@@ -386,7 +411,8 @@ function updateCountdown() {
 }
 
 // Update the countdown every second
-setInterval(updateCountdown, 1000);
+let countdownTimer = setInterval(updateCountdown, 1000);
+
 
 // Form submission logic
 // const signupForm = document.getElementById('signupForm');
@@ -405,38 +431,46 @@ signupForm.addEventListener('submit', function (event) {
   const submitter = document.querySelectorAll("button[value=save]");
   // Get form data
   // var formData = new FormData(this);
-  let userName = document.querySelector("#name");
-  let userEmail = document.querySelector("#email");
-  console.log(userName.value);
-  console.log(userEmail.value);
+  let userMessage = document.querySelector("#message");
+  let userPhone = document.querySelector("#phonenumber");
+  // console.log(userMessage.value);
+  // console.log(userPhone.value);
+  userPhone =userPhone.value.trim();
 
-  let formData = { userName: userName.value, userEmail: userEmail.value };
-  console.log(formData);
+  if (userPhone.length == 10 && parseInt(userPhone).toString().length == 10) {
 
-  // Send data to server
-  fetch('/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(formData)
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.text();
+    let postRoute = signupForm.getAttribute("action");
+    let formData = { userMessage: userMessage.value, userPhone: userPhone };
+    console.log(formData, postRoute);
+
+
+    // Send data to server
+    fetch(postRoute, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
     })
-    .then((data) => {
-      console.log(data); // Log server response
-      data = JSON.parse(data);
-      let { name, status } = data;
-      console.log(name, status);
-      window.alert(name + " " + status);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.text();
+      })
+      .then((data) => {
+        console.log(data); // Log server response
+        data = JSON.parse(data);
+        let { name, status } = data;
+        console.log(name, status);
+        window.alert(name + " " + status);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  } else {
+    window.alert("Please Enter a Valid Phone Number");
+  }
 });
 
 // script.js
@@ -510,7 +544,7 @@ const specialDishSliderNextBtn = document.querySelector("[data-hero-next-btn]");
 currentSlidePos = 0;
 let lastActiveSpecialSliderItem = specialDishSliderItems[0];
 
-console.log(specialDishSliderItems[0].innerHTML);
+// console.log(specialDishSliderItems[0].innerHTML);
 // console.log(specialDishSliderNextBtn.innerHTML);
 
 const updateSpecialDishSliderPos = function () {

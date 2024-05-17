@@ -88,7 +88,7 @@
     <div class="container">
 
       <a href="#top" class="logo">
-        <img src="../../assets/images/koe-logo.png" width="140rem" height="50" alt="Koe logo" class="logo-img">
+        <img src="../../assets/images/koe-logo.png" alt="Koe logo" class="logo-img">
       </a>
 
       <nav class="navbar" data-navbar>
@@ -585,14 +585,14 @@
       <section class="section countdown bg-black-10 text-center" aria-label="countdown" id="workshop">
         <div class="container">
           <p style="visibility: hidden;" class="gettime">
-            <%=allSection.countdown[0].time %>
+            <%=allSection.workshop[allSection.workshop.length - 1].time %>
           </p>
           <p class="section-subtitle label-2">
-            <%=allSection.countdown[0].label %>
+            <%=allSection.workshop[allSection.workshop.length - 1].label %>
           </p>
 
-          <h2 class="headline-1 section-title">
-            <%=allSection.countdown[0].title %>
+          <h2 class="headline-1 section-title" id="countdown-title">
+            <%=allSection.workshop[allSection.workshop.length - 1].title %>
           </h2>
 
           <div id="countdown" class="countdown-container">
@@ -615,23 +615,28 @@
           </div>
 
           <p class="section-text">
-            <%=allSection.countdown[0].text %>
+            <%=allSection.workshop[allSection.workshop.length - 1].text %>
           </p>
 
           <!-- Signup Form -->
-          <form id="signupForm" class="signup-form" action="/signup" method="post">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="userName" required>
+          <form id="signupForm" class="signup-form" action="/register/<%=allSection.workshop[allSection.workshop.length - 1]._id%>" method="post">
+            <label for="phonenumber">Phone Number:</label>
+            <input type="text" id="phonenumber" name="phonenumber" required>
+            
+            <label for="message">Message:</label>
+            <input type="text" id="message" name="userName" required>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="emailid" required>
-            <% if(allSection.user){ %>
-              <button type="submit" class="btn btn-primary">
-                <span class="text text-1">Register!</span>
-                <span class="text text-2" aria-hidden="true">Register!</span>
-              </button>
-              <% }else{ %>
-
+            <% if(!allSection.isWorkshop){ %>
+              <p class="btn btn-primary">
+                <span class="text text-1">Registrations are Over!</span>
+                <span class="text text-2" aria-hidden="true">Starts Soon!</span>
+              </p>
+            <%}else if(allSection.user) {%>
+                <button type="submit" class="btn btn-primary">
+                  <span class="text text-1">Register!</span>
+                  <span class="text text-2" aria-hidden="true">Register!</span>
+                </button>
+            <%}else{ %>
                 <a href="/auth/login" class="btn btn-primary">
                   <span class="text text-1">Sign in to Register!</span>
                   <span class="text text-2" aria-hidden="true">Sign in to Register!</span>
@@ -844,7 +849,7 @@
 
           <div class="form reservation-form bg-black-10">
 
-            <form action="/" class="form-left" method="post">
+            <form action="/" class="form-left" method="post" >
 
               <h2 class="headline-1 text-center">Online Reservation</h2>
 
@@ -874,6 +879,7 @@
                     <option value="5-person">5 Person</option>
                     <option value="6-person">6 Person</option>
                     <option value="7-person">7 Person</option>
+                    <option value="7-person">8 Person</option>
                   </select>
 
                   <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
@@ -887,29 +893,9 @@
                   <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
                 </div>
 
-                <div class="icon-wrapper">
-                  <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
-
-                  <select name="time" class="input-field" required>
-                    <option value="08:00am">08 : 00 am</option>
-                    <option value="09:00am">09 : 00 am</option>
-                    <option value="010:00am">10 : 00 am</option>
-                    <option value="011:00am">11 : 00 am</option>
-                    <option value="012:00am">12 : 00 am</option>
-                    <option value="01:00pm">01 : 00 pm</option>
-                    <option value="02:00pm">02 : 00 pm</option>
-                    <option value="03:00pm">03 : 00 pm</option>
-                    <option value="04:00pm">04 : 00 pm</option>
-                    <option value="05:00pm">05 : 00 pm</option>
-                    <option value="06:00pm">06 : 00 pm</option>
-                    <option value="07:00pm">07 : 00 pm</option>
-                    <option value="08:00pm">08 : 00 pm</option>
-                    <option value="09:00pm">09 : 00 pm</option>
-                    <option value="10:00pm">10 : 00 pm</option>
-                  </select>
-
-                  <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
-                </div>
+                  <div class="icon-wrapper">
+                    <input name="time" class="input-field" type="time" required>
+                  </div>
 
               </div>
 
@@ -1064,7 +1050,19 @@
               <p class="headline-2 testi-text">
                 <%=testimonial.review%>
               </p>
+              <%if(allSection.user) {%>
+                <button type="submit" class="btn btn-secondary">
+                  <span class="text text-1">Add Testimonial!</span>
 
+                  <span class="text text-2" aria-hidden="true">Add Testimonial!</span>
+                </button>
+                <%}else{%>
+                  <a href="/auth/login" class="btn btn-secondary">
+                    <span class="text text-1">Add Testimonial!</span>
+
+                    <span class="text text-2" aria-hidden="true">Sign Up First!</span>
+                  </a>
+                  <% } %>
             </li>
             <%}%>
 
@@ -1216,7 +1214,8 @@
         <div class="footer-brand has-before has-after">
 
           <a href="#" class="logo">
-            <img src="../../assets/images/koe-logo.png" width="160" height="50" loading="lazy" alt="Koe logo">
+            <img src="../../assets/images/koe-logo.png" width="160" height="50" loading="lazy" alt="Koe logo"
+              style="border-radius: 1rem;">
           </a>
 
           <address class="body-4">

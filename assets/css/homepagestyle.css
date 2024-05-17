@@ -742,6 +742,12 @@ body.nav-active {
   gap: 8px;
 }
 
+.header .logo-img{
+  width: 14rem;
+  height: auto;
+  border-radius: 1rem;
+}
+
 .nav-open-btn {
   padding: 12px;
   padding-inline-end: 0;
@@ -1986,8 +1992,10 @@ textarea.input-field {
 }
 
 .form-left .btn {
-  max-width: 100%;
   width: 100%;
+  /* margin-inline: auto; */
+  max-width: 100%;
+  text-align: center;
 }
 
 .form-right {
@@ -2240,7 +2248,7 @@ textarea.input-field {
 
 @media (max-width: 575px) {
   /* navbar */
-  .logo-img{
+  .header .logo-img{
     width: 10rem;
   }
 
@@ -2820,7 +2828,7 @@ textarea.input-field {
   }
 
   .reservation .input-wrapper:nth-child(4) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   /**
@@ -3320,7 +3328,11 @@ textarea.input-field {
    * TESTIMONIALS
    */
 
-  .form-left,
+  .form-left{
+    padding: 75px 0px 75px 30px;
+  }
+  
+
   .form-right {
     padding: 75px 60px;
   }
@@ -3462,6 +3474,10 @@ textarea.input-field {
 .countdown-label {
   font-size: 1rem;
   color: #888;
+}
+
+#signupForm label{
+  color: var(--gold-crayola);
 }
 
 /* Add this CSS to your existing stylesheet or within a <style> tag */
