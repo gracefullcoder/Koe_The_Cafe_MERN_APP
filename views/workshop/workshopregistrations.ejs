@@ -50,6 +50,8 @@
                             <th scope="col">Index</th>
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Message</th>
                             <th scope="col">Delete</th>
                         </tr>
                     </thead>
@@ -62,13 +64,19 @@
                                     <% index = index + 1%>
                                 </td>
                                 <td>
-                                    <%= registration.name %>
+                                    <%= registration.user.fullname %>
                                 </td>
                                 <td>
-                                    <%= registration.email %>
+                                    <%= registration.user.username %>
                                 </td>
                                 <td>
-                                    <form id="signupForm" class="signup-form"  method="post" action="/admin/workshop/<%=registration._id%>?_method=DELETE">
+                                    <%= registration.phoneNumber %>
+                                </td>
+                                <td>
+                                    <%= registration.message %>
+                                </td>
+                                <td>
+                                    <form id="signupForm" class="signup-form"  method="post" action="/admin/Workshopregistration/<%=registration._id%>?_method=DELETE">
                                         <button type="submit" class="btn btn-primary">
                                             <span class="text text-1">DELETE</span>
                                             <span class="text text-2" aria-hidden="true">DELETE</span>
@@ -90,9 +98,7 @@
 
 
 
-    <!-- 
-    - custom js link
-  -->
+    <!---custom js link-->
     <script src="./assets/js/script.js"></script>
 
 </body>
