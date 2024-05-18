@@ -73,19 +73,19 @@ app.use("/", homeRouter);
 
 app.use("/auth",authRouter);
 
-app.use("/admin",isAdmin, adminRouter);
+app.use("/admin", adminRouter);
 
-app.use("/admin/herosection",isAdmin, herosectionRouter);
+app.use("/admin/herosection", herosectionRouter);
 
 app.use("/admin/specialitysection", isAdmin,specialitysectionRouter);
 
-app.use("/admin/workshopsection",isAdmin, workshopRouter);
+app.use("/admin/workshopsection", workshopRouter);
 
 app.use("/admin/eventsection",isAdmin, eventsectionRouter);
 
-app.use("/admin/testimonialsection",isAdmin, testimonialsectionRouter);
+app.use("/admin/testimonialsection", testimonialsectionRouter);
 
-app.use("/admin/bookings",isAdmin, bookingsRouter);
+app.use("/admin/bookings", bookingsRouter);
 
 app.use("/admin/workshopregistration", registrationRouter);
 

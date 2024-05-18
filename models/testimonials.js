@@ -1,24 +1,24 @@
 const { MongoAPIError } = require("mongodb");
 const mongoose = require("mongoose");
+const { type } = require("os");
 
 let testimonialSchema = {
-    name:{
-        type:String,
-        required:true
-    },
-    profilephoto:{
-        type:String,
-        default : "https://ik.imagekit.io/vaibhav11/user.png?updatedAt=1715345414819"
-    },
-    review:{
-        type: String,
-        required:true
-    },
-    imageid:{
+    suggestion:{
         type:String
+    },
+    review: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date
+    },
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User"
     }
 }
 
-const Testimonial = mongoose.model("Testimonial",testimonialSchema);
+const Testimonial = mongoose.model("Testimonial", testimonialSchema);
 
 module.exports = Testimonial;
