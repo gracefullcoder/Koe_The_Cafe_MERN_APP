@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
+const { type } = require("os");
 const passportLocalMongoose = require('passport-local-mongoose');
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
-const userSchema =new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     fullname: {
         type: String,
         required: true
@@ -23,12 +24,23 @@ const userSchema =new mongoose.Schema({
         creatorname: String,
         creatoremail: String
     },
-    workshops:[
+    workshops: [
+        {
+            type: Schema.ObjectId,
+            ref: "Worshop"
+        }
+    ],
+    bookings : [
         {
             type:Schema.ObjectId,
-            ref:"Worshop"
+            ref:"Booking"
         }
-    ]
+    ],
+    testimonial:
+    {
+        type: Schema.ObjectId,
+        ref: "Testimonial"
+    }
 })
 
 userSchema.plugin(passportLocalMongoose);

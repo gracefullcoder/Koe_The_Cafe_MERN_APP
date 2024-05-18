@@ -9,6 +9,9 @@ router.get("/", wrapAsync(async(req, res) => {
     let currTime = new Date();
     let currWorkshops = [];
     let pastWorkshops = [];
+
+    // time = new Date(time); //agar schema mai string hota tho aise parse karke use karte
+
     workshops.forEach((workshop) => {
         if(currTime < workshop.time){
             currWorkshops.push(workshop);
@@ -39,7 +42,7 @@ router.post("/",wrapAsync(async(req,res) => {
     // console.log(req.body);
     label = label.toString();
     title = title.toString();
-    time = date.toString() + "T" + time.toString();
+    time = date.toString() + "T" + time.toString(); //T lagana must hai
     text = text.toString();
     let workshopDetails = {label: label, title: title, time: time, text: text};
     let newWorkshop = new Workshop(workshopDetails);

@@ -3,20 +3,22 @@ const path = require("path");
 const fs = require('fs');
 const { imagekit } = require("../config/imagekitconfig.js");
 const { ExpressError } = require("../utils/wrapAsyncAndExpressError.js");
+const User = require("../models/user.js");
 
 const showTestimonials = async (req, res) => {
-    let testimonials = await Testimonial.find();
+    let testimonials = await Testimonial.find().populate("user");
     res.render("testimonialsection/testimonials.ejs", { testimonials });
 }
 
 const createTestimonial = async (req, res, next) => {
-    let { name, review } = req.body;
-    name = name.toString();
-    review = review.toString();
-
+    let { suggestion, review } = req.body;
+    console.log("datata", req.body);
     if (!req.file) {
-        let data = new Testimonial({ name: name, review: review });
-        await data.save();
+        let testimonialData = new Testimonial({suggestion:suggestion, review: review });
+        testimonialData.profilephoto = req.user.profilepicture.imagelink;
+        testimonialData.user = req.user._id;
+        await testimonialData.save();
+        await User.findByIdAndUpdate(req.user._id, { testimonial: testimonialData._id })
         return res.redirect("/admin/testimonialsection");
     }
 
@@ -31,12 +33,17 @@ const createTestimonial = async (req, res, next) => {
         }, async function (error, result) {
             if (error) throw next(new ExpressError(406, "Error in Uploading Image!"));
             else {
-                // console.log(result);
                 let profilephoto = result.url;
                 let imageid = result.fileId;
-                let data = new Testimonial({ name: name, review: review, profilephoto: profilephoto, imageid: imageid });
-                await data.save();
-                console.log(data);
+                let testimonialData = new Testimonial({suggestion:suggestion, review: review});
+                testimonialData.user = req.user._id;
+                await testimonialData.save();
+                let profilePicture = {
+                    isUpdated: true,
+                    imageid: imageid,
+                    imagelink: profilephoto
+                }
+                await User.findByIdAndUpdate(req.user._id, { testimonial: testimonialData._id, profilepicture: profilePicture })
                 fs.unlinkSync(fileLocation);
                 res.redirect("/admin/testimonialsection");
             }
@@ -48,20 +55,14 @@ const createTestimonial = async (req, res, next) => {
 const destroyTestimonial = async (req, res) => {
     let { id } = req.params;
     id = id.toString();
-    let delData = await Testimonial.findByIdAndDelete(id);
+    let delTestimonial = await Testimonial.findByIdAndDelete(id);
+    await User.findByIdAndUpdate(delTestimonial.user, { testimonial: null });
 
-    let imageid = delData.imageid;
-
-    imagekit.deleteFile(imageid)
-        .then(response => {
-            console.log(response);
-        })
-        .catch(error => {
-            console.log(error);
-            throw error;
-        });
-
-    res.redirect("/admin/testimonialsection");
+    if(req.user.role.isAdmin){
+        return res.redirect("/admin/testimonialsection");
+    }else{
+        return res.redirect("/");
+    }
 }
 
 const renderEditForm = async (req, res) => {
@@ -72,60 +73,19 @@ const renderEditForm = async (req, res) => {
     res.render("testimonialsection/edittestimonials.ejs", { data });
 }
 
-const updateTestimonial = async (req, res,next) => {
+const updateTestimonial = async (req, res, next) => {
     let { id } = req.params;
-    let { name, review, imagecheckbox } = req.body;
-    name = name.toString();
-    review = review.toString();
+    let { suggestion, review } = req.body;
 
     console.log(req.body);
 
-    if (!imagecheckbox) {
-        let document = await Testimonial.findOneAndUpdate({ _id: id }, { name: name, review: review });
-        res.redirect("/admin/testimonialsection");
+    let document = await Testimonial.findOneAndUpdate({ _id: id }, {suggestion:suggestion, review: review });
+
+    if(req.user.role.admin){
+        return res.redirect("/admin/testimonialsection");
+    }else{
+        return res.redirect("/");
     }
-    else {
-        if (!req.file) {
-            return next(new ExpressError(400, "You have not added image,Add required image and submit!"));
-        }
-
-        let myFile = req.file.originalname;
-        let fileLocation = path.join("./uploads", myFile);
-        fs.readFile(fileLocation, async (err, data) => {
-            if (err) throw next(new ExpressError(400, "Please Enter Valid file image is required!"));
-
-            imagekit.upload({
-                file: data,   //required
-                fileName: myFile,   //required
-            },
-                async function (error, result) {
-                    if (error) {
-                        console.log(error);
-                        throw next(new ExpressError(406, "Error in Uploading Image!"))
-                    }
-                    else {
-                        // console.log(result);
-                        let profilephoto = result.url;
-                        let imageid = result.fileId;
-                        let document = await Testimonial.findOneAndReplace({ _id: id }, { name: name, review: review, profilephoto: profilephoto, imageid: imageid });
-
-                        let oldimageid = document.imageid;
-                        if (oldimageid) {
-                            imagekit.deleteFile(oldimageid)
-                                .then(response => {
-                                    console.log(response);
-                                })
-                                .catch(error => {
-                                    console.log(error);
-                                });
-                        }
-                        fs.unlinkSync(fileLocation);
-                        res.redirect("/admin/testimonialsection");
-                    }
-                });
-        });
-    }
-
 }
 
 module.exports = { showTestimonials, createTestimonial, destroyTestimonial, renderEditForm, updateTestimonial };
