@@ -1,84 +1,96 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-   <head>
-      <meta charset="utf-8">
-      <title>Signup to Koe Cafe</title>
-      <link rel="stylesheet" href="../../public/authstyle.css">
-   </head>
-   <body>
-      <div class="wrapper">
-         <div class="title">
-            SignUp Form
-         </div>
-         <form method="post" action="/auth/signup" onsubmit="return validateForm()">
-            <div class="field">
-               <input type="text" id="username" name="fullname" required>
-               <label>Full Name</label>
-               <div id="nameError" class="error"></div>
-            </div>
-            <div class="field">
-               <!-- <input type="text" id="gender" name="gender" required>
-               <label>Full Name</label> -->
-               <select name="gender" id="gender">
-                  <option value="select">Select</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-               </select>
-               <div id="nameError" class="error"></div>
-            </div>
-            <div class="field">
-                <input type="email" id="useremail" name="useremail" required>
-                <label>Email Address</label>
-                <div id="emailError" class="error"></div>
-             </div>
-            <div class="field">
-               <input type="password" id="userpassword" name="userpassword" required>
-               <label>Password</label>
-               <div id="passwordError" class="error"></div>
-            </div>
-            <div class="field">
-               <input type="submit" value="Sign Up!">
-            </div>
-            <div class="login-link">
-               Already a member? <a href="/auth/login">Login now</a>
-            </div>
-         </form>
+
+<head>
+   <meta charset="utf-8">
+   <title>Signup to Koe Cafe</title>
+   <link rel="stylesheet" href="../../public/authstyle.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+   <div class="wrapper">
+      <div class="title">
+         SignUp Form
       </div>
-      <script>
-         function validateForm() {
-             var name = document.getElementById("username").value;
-             var email = document.getElementById("useremail").value;
-             var password = document.getElementById("userpassword").value;
-             var nameError = document.getElementById("nameError");
-             var emailError = document.getElementById("emailError");
-             var passwordError = document.getElementById("passwordError");
-             
-             nameError.textContent = "";
-             emailError.textContent = "";
-             passwordError.textContent = "";
-             
-             if (name.trim() === "") {
-                 nameError.innerText = "Please enter your full name.";
-                 return false;
-             }
-             
-             if (!isValidEmail(email)) {
-                 emailError.innerText = "Please enter a valid email address.";
-                 return false;
-             }
-             
-             if (password.length < 6) {
-                 passwordError.innerText = "Password must be at least 6 characters long.";
-                 return false;
-             }
-             
-             return true;
+      <form method="post" action="/auth/signup" onsubmit="return validateForm()">
+         <div class="field">
+            <input type="text" id="username" name="fullname" required>
+            <label>Full Name</label>
+            <div id="nameError" class="error"></div>
+         </div>
+
+         <div class="gender-selection">
+            <label class="gender-option">
+               <input type="radio" name="gender" value="Male" required>
+               <img src="../../assets/images/male.png" height="40rem" width="40rem" alt="Male" class="icon">
+               <p>Male</p>
+            </label>
+            <label class="gender-option">
+               <input type="radio" name="gender" value="Female" required>
+               <img src="../../assets/images/female.png" height="40rem" width="40rem" alt="Female" class="icon"> Female
+            </label>
+            <div id="nameError" class="error"></div>
+         </div>
+         <p style="text-align: center;font-size: 1.2rem;margin-top: 20px;">Date of Birth</p>
+
+         <div class="field" style="margin-top: 5px;">
+             <input type="date" name="DOB" id="DOB" placeholder="Date of Birth" style="padding-right: 1rem;" required>
+         </div>
+         <div class="field">
+            <input type="email" id="useremail" name="useremail" required>
+            <label>Email Address</label>
+            <div id="emailError" class="error"></div>
+         </div>
+         <div class="field">
+            <input type="password" id="userpassword" name="userpassword" required>
+            <label>Password</label>
+            <div id="passwordError" class="error"></div>
+         </div>
+         <div class="field">
+            <input type="submit" value="Sign Up!">
+         </div>
+         <div class="login-link">
+            Already a member? <a href="/auth/login">Login now</a>
+         </div>
+      </form>
+   </div>
+   <script>
+      function validateForm() {
+         var name = document.getElementById("username").value;
+         var email = document.getElementById("useremail").value;
+         var password = document.getElementById("userpassword").value;
+         var nameError = document.getElementById("nameError");
+         var emailError = document.getElementById("emailError");
+         var passwordError = document.getElementById("passwordError");
+
+         nameError.textContent = "";
+         emailError.textContent = "";
+         passwordError.textContent = "";
+
+         if (name.trim() === "") {
+            nameError.innerText = "Please enter your full name.";
+            return false;
          }
-         
-         function isValidEmail(email) {
-             var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-             return emailRegex.test(email);
+
+         if (!isValidEmail(email)) {
+            emailError.innerText = "Please enter a valid email address.";
+            return false;
          }
-      </script>
-   </body>
+
+         if (password.length < 6) {
+            passwordError.innerText = "Password must be at least 6 characters long.";
+            return false;
+         }
+
+         return true;
+      }
+
+      function isValidEmail(email) {
+         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+         return emailRegex.test(email);
+      }
+   </script>
+</body>
+
 </html>

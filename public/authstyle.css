@@ -146,3 +146,45 @@ form .pass-link a:hover,
 form .signup-link a:hover{
   text-decoration: underline;
 }
+
+.gender-selection {
+  display: flex;
+  justify-content: space-around;
+  margin-block-start: 1rem;
+}
+
+.gender-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;  
+  gap: 1rem;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 0.6rem;
+  padding:0.5rem 1rem;
+  transition: 0.3s;
+}
+
+.gender-option:hover {
+  background-color: #f0f0f0;
+  border-color: #007bff;
+  transform: scale(1.05);
+}
+
+.gender-option input[type="radio"] {
+  display: none;
+}
+
+.gender-option .icon {
+  margin-right: 8px;
+  transition: transform 0.3s;
+}
+
+.gender-option input[type="radio"]:checked + .icon {
+  transform: scale(1.25);
+}
+
+.gender-option input[type="radio"]:checked + .icon{
+  border-radius: 50%;
+  background-color: #007bff; /* Blue for male */
+}

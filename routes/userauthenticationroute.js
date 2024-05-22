@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user.js");
-const { saveRedirectUrl } = require("../middlewares/authmiddlewares.js")
-const {isAlreadyLogin} = require("../middlewares/authmiddlewares.js");
+const { saveRedirectUrl } = require("../middlewares/authmiddlewares.js");
+const { isAlreadyLogin, validateUser } = require("../middlewares/authmiddlewares.js");
 
 router.route("/login")
     .get(isAlreadyLogin, (req, res) => {
@@ -23,8 +23,8 @@ router.route("/signup")
     })
 
 
-    .post(isAlreadyLogin, saveRedirectUrl, async (req, res) => {
-        const { fullname, useremail, gender, userpassword } = req.body;
+    .post(isAlreadyLogin, validateUser, saveRedirectUrl, async (req, res) => {
+        const { fullname, useremail, gender, DOB, userpassword } = req.body;
         let profilepicture = { isUpdated: false };
 
         if (gender.toLowerCase() == "male") {
@@ -32,9 +32,9 @@ router.route("/signup")
         } else {
             profilepicture.imagelink = process.env["FEMALE_PROFILE" + Math.floor(Math.random() * 8 + 1)];
         }
-        console.log(profilepicture);
+        console.log("user kaa", req.body);
 
-        let user = new User({ username: useremail, fullname: fullname, gender: gender, profilepicture });
+        let user = new User({ username: useremail, fullname: fullname, gender: gender, DOB: DOB, profilepicture });
         let registeredUser = await User.register(user, userpassword);//register will only register the user
         console.log(user);
 
