@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    nt
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="../../public/userdashboardstyle.css">
+
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <!--font awesome link-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+    <title>Admin Dashboard Panel</title>
+
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <title>Admin Dashboard Panel</title>
+</head>
+
+<body>
+
+    <!-- left side nav starting mai -->
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <a href="/"><img src="../../assets/images/koe-logo.png" alt=""></a>
+            </div>
+
+            <a href="/" style="text-decoration: none;"><span class="logo_name">Profile</span></a>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li id="dashboard"><a href="">
+                        <i class="uil uil-estate"></i>
+                        <span class="link-name">Dashboard</span>
+                    </a></li>
+
+                <li id="analytics"><a href="#activity">
+                        <i class="uil uil-chart"></i>
+                        <span class="link-name">Activity</span>
+                    </a></li>
+                <li id="messagebroadcast"><a href="#notifications">
+                        <i class="fa-regular fa-message"></i>
+                        <span class="link-name">Notifications</span>
+                    </a></li>
+
+            </ul>
+
+            <ul class="logout-mode">
+                <li><a href="/auth/logout">
+                        <i class="uil uil-signout"></i>
+                        <span class="link-name">Logout</span>
+                    </a></li>
+
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="dashboard" id="#dashboard">
+        <!-- top nav at small size -->
+        <div class="top">
+
+            <div class="top-clock" style="right: 0%;">
+                <i class="fa-regular fa-clock"></i>
+                <span id="clock"></span>
+            </div>
+
+            <ul class="logout-mode top-nav-logout">
+                <li><a href="/auth/logout">
+                        <i class="uil uil-signout"></i>
+                        <!-- <span class="link-name">Logout</span> -->
+                    </a></li>
+
+                </li>
+            </ul>
+
+            <ul class="top-nav">
+
+                <li id="dashboard">
+                    <div class="top-nav-elements">
+                        <i class="uil uil-estate"></i>
+                        <div class="nav-ele-name">Dashboard<div>
+                            </div>
+                </li>
+                <li id="analytics">
+                    <div class="top-nav-elements">
+                        <i class="uil uil-chart"></i>
+                        <div class="nav-ele-name">Activity</div>
+                    </div>
+                </li>
+
+                <li id="messagebroadcast">
+                    <div class="top-nav-elements">
+                        <div>
+                            <i class="fa-regular fa-message"></i>
+                        </div>
+                        <div class="nav-ele-name">Notifications</div>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="dash-content">
+            <div class="overview">
+                <div class="title">
+                    <i class="uil uil-tachometer-fast-alt"></i>
+                    <span class="text">Dashboard</span>
+                </div>
+
+                <div class="user-content">
+                    <div class="user-details">
+                        <div>
+                            <h3 class="user-details-label">Username:</h3>
+                            <p type="text" class="user-input-nochange">
+                                <%=userData.username %>
+                            </p>
+                        </div>
+
+                        <form id="user-form" enctype="multipart/form-data" method="post"
+                            action="/dashboard/edit/<%=userData._id%>/?_method=PATCH">
+                            <div>
+                                <h3 class="user-details-label">Name:</h3>
+                                <input id="user-input" type="text" name="name" class="user-input"
+                                    value="<%= userData.fullname %>" required>
+                            </div>
+                            <div>
+                                <h3 class="user-details-label">Gender:</h3>
+                                <div class="gender-selection">
+
+                                    <% if(userData.gender=="Male" ) {%>
+                                        <label class="gender-option" style="  background-color: #007bff;">
+                                            <input id="user-input" type="radio" name="gender" value="Male" required
+                                                checked>
+                                            <img src="../assets/images/male.png" height="40rem" width="40rem" alt="Male"
+                                                class="icon">
+                                            <p>Male</p>
+                                        </label>
+
+                                        <label class="gender-option">
+
+                                            <input id="user-input" type="radio" name="gender" value="Female" required>
+                                            <img src="../assets/images/female.png" height="40rem" width="40rem"
+                                                alt="Female" class="icon"> Female
+                                        </label>
+
+                                        <% }else {%>
+                                            <label class="gender-option">
+                                                <input id="user-input" type="radio" name="gender" value="Male" required>
+                                                <img src="../assets/images/male.png" height="40rem" width="40rem"
+                                                    alt="Male" class="icon">
+                                                <p>Male</p>
+                                            </label>
+
+                                            <label class="gender-option" style="background-color:#ff69b4;">
+                                                <input id="user-input" type="radio" name="gender" value="Female"
+                                                    required checked>
+                                                <img src="../assets/images/female.png" height="40rem" width="40rem"
+                                                    alt="Female" class="icon"> Female
+                                            </label>
+
+                                            <% } %>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="user-details-label">Date Of Birth:</h3>
+                                <input id="user-input" type="Date" name="DOB" class="user-input"
+                                    value=<%=`${userData.DOB.getFullYear()}-${(userData.DOB.getMonth()
+                                    +1).toString().padStart(2,'0')}-${userData.DOB.getDate().toString().padStart(2,'0')}`%>
+                                required>
+                            </div>
+
+                            <button id="user-form-button" class="hide buttonuser dashboard-button" role="button">Update
+                                Changes!</button>
+
+                    </div>
+                    <div class="profile-picture">
+                        <h3 class="profile-picture-label">Profile Picture</h3>
+                        <div class="profile-image">
+                            <label>
+                                <img src="<%= userData.profilepicture.imagelink %>" alt="profile-image">
+                                <label class="file-input-label">Upload
+                                    <input type="file" id="user-input" name="myFile" placeholder="upload">
+                                </label>
+                            </label>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="activity" id="activity">
+            <div class="title">
+                <i class="uil uil-clock-three"></i>
+                <span class="text">User Activity</span>
+            </div>
+
+            <div class="activity-data">
+                <!-- bookings -->
+                <div>
+                    <h1 class="activity-heading">My Bookings</h1>
+                    <div class="user-activity">
+                        <% let bookingIndex=1 %>
+                            <% userData.bookings.forEach((booking)=> { %>
+                                <div class="activity-box booking-box">
+                                    <form method="post" action="/dashboard/booking/<%=booking._id%>/?_method=PATCH">
+                                        <h2 class="activity-number">Booking <%= bookingIndex %>
+                                        </h2>
+                                        <div class="activity-detail-field">
+                                            <h3 class="activity-detail-label">Name:</h3>
+                                            <input type="text" class="user-input" name="name"
+                                                value="<%= booking.name %>" required>
+                                        </div>
+                                        <div class="activity-detail-field">
+                                            <h3 class="activity-detail-label">Phone Number:</h3>
+                                            <input type="text" class="user-input" name="phone"
+                                                value="<%= booking.phone %>" required>
+                                        </div>
+                                        <div class="activity-detail-field">
+                                            <h3 class="activity-detail-label">Number of Persons:</h3>
+                                            <input type="number" min="1" max="10000" class="user-input" name="person"
+                                                value="<%= booking.person %>" required>
+                                        </div>
+                                        <div class="activity-detail-field">
+                                            <h3 class="activity-detail-label">Date:</h3>
+                                            <input type="date" class="user-input" name="reservationdate" required
+                                                value="<%= `${booking.time.getFullYear()}-${(booking.time.getMonth() + 1).toString().padStart(2, '0')}-${booking.time.getDate().toString().padStart(2, '0')}` %>">
+                                        </div>
+                                        <div class="activity-detail-field">
+                                            <h3 class="activity-detail-label">Time:</h3>
+                                            <input type="time" class="user-input" name="time" required
+                                                value="<%= `${booking.time.getHours().toString().padStart(2, '0')}:${booking.time.getMinutes().toString().padStart(2, '0')}` %>">
+                                        </div>
+                                        <div class="activity-detail-field">
+                                            <h3 class="activity-detail-label">Message:</h3>
+                                            <textarea class="user-input textarea" name="message"
+                                                required><%= booking.message %></textarea>
+                                        </div>
+                                        <div class="update-button">
+                                            <button class="buttonuser" role="button">Update Changes!</button>
+                                        </div>
+                                    </form>
+                                    <form method="post" action="/dashboard/booking/<%=booking._id%>/?_method=DELETE">
+                                        <button class="buttonuser" role="button">DELETE</button>
+                                    </form>
+                                </div>
+                                <% bookingIndex++ %>
+                                    <% }) %>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- workshops -->
+                <div>
+                    <h1 class="activity-heading">Workshop Registrations</h1>
+                    <div class="user-activity">
+                        <% let workshopIndex=1 %>
+                            <% userData.workshopsRegistered.forEach((registration)=> { %>
+                                <div class="activity-box workshop-box">
+                                    <div class="workshop-post">
+                                        <h2 class="activity-number">Booking <%= workshopIndex %>
+                                        </h2>
+                                        <div class="activity-detail-field">
+                                            <h3 class="activity-detail-label">Title:</h3>
+                                            <p class="workshop-detail">
+                                                <%= registration.workshop.title %>
+                                            </p>
+                                        </div>
+                                        <div class="activity-detail-field">
+                                            <h3 class="activity-detail-label">Workshop Description:</h3>
+                                            <p class="workshop-detail">
+                                                <%= registration.workshop.text %>
+                                            </p>
+                                        </div>
+                                        <div class="activity-detail-field">
+                                            <h3 class="activity-detail-label">Date:</h3>
+                                            <p class="workshop-detail">
+                                                <%= `${registration.workshop.time.getDate().toString().padStart(2, '0'
+                                                    )}-${(registration.workshop.time.getMonth() +
+                                                    1).toString().padStart(2, '0'
+                                                    )}-${registration.workshop.time.getFullYear()}` %>
+                                            </p>
+                                        </div>
+                                        <div class="activity-detail-field">
+                                            <h3 class="activity-detail-label">Time:</h3>
+                                            <p class="workshop-detail">
+                                                <%= `${registration.workshop.time.getHours().toString().padStart(2, '0'
+                                                    )}:${registration.workshop.time.getMinutes().toString().padStart(2, '0'
+                                                    )}` %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="user-details-workshop">
+                                        <form method="post"
+                                            action="/dashboard/registration/<%= registration._id %>/?_method=PATCH">
+                                            <h2 class="workshop-detail-heading">Your Response</h2>
+                                            <div class="activity-detail-field">
+                                                <h3 class="activity-detail-label">PhoneNumber:</h3>
+                                                <input type="text" class="user-input" name="userPhone"
+                                                    value="<%= registration.phoneNumber %>" required>
+                                            </div>
+                                            <div class="activity-detail-field">
+                                                <h3 class="activity-detail-label">Message:</h3>
+                                                <textarea class="user-input textarea"
+                                                    name="userMessage"><%= registration.message %></textarea>
+                                            </div>
+                                            <div class="update-button">
+                                                <button id="#workshop-button" class="buttonuser" role="button">Update
+                                                    Changes!</button>
+                                            </div>
+                                        </form>
+                                        <form method="post"
+                                            action="/dashboard/registration/<%= registration._id %>/?_method=DELETE">
+                                            <button class="buttonuser" role="button">DELETE</button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                                <% workshopIndex++ %>
+                                    <% }) %>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- testimonial -->
+                <div>
+                    <h1 class="activity-heading">Testimonial</h1>
+                    <% if (userData.testimonial) { %>
+                        <div class="user-activity" id="testimonial">
+                            <div class="activity-box testimonial-box">
+                                <form method="post"
+                                    action="/dashboard/testimonial/<%= userData.testimonial._id %>/?_method=PATCH">
+                                    <div class="activity-detail-field">
+                                        <h3 class="activity-detail-label">Review:</h3>
+                                        <textarea id="testimonial-input"
+                                            name="review" required><%= userData.testimonial.review %> </textarea>
+                                    </div>
+                                    <div class="activity-detail-field">
+                                        <h3 class="activity-detail-label">Suggestion:</h3>
+                                        <textarea id="testimonial-input"
+                                            name="suggestion"><%= userData.testimonial.suggestion %></textarea>
+                                    </div>
+                                    <div class="update-button">
+                                        <button class="buttonuser" role="button">Update Changes!</button>
+                                    </div>
+                                </form>
+                                <form method="post"
+                                    action="/dashboard/testimonial/<%= userData.testimonial._id %>/?_method=DELETE">
+                                    <button class="buttonuser" role="button">DELETE</button>
+                                </form>
+
+                            </div>
+                        </div>
+                        <% } %>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        <!-- notifications -->
+        <div>
+            <div class="messagebroadcastdiv" id="notifications">
+                <div class="title">
+                    <i class="fa-regular fa-message"></i>
+                    <span class="text">User Notifications</span>
+                </div>
+
+                <div class="activity-data">
+                    <div>
+                        <h1 class="activity-heading">My Notifications</h1>
+                        <div class="user-activity">
+                            <p>No Notifications!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+    <!--yaha se kaam-->
+
+
+
+    <script src="../../public/userdashboardscript.js"></script>
+</body>
+
+</html>
