@@ -1,4 +1,16 @@
-const {registrationSchema,bookingsSchema} = require("../models/schema.js");
+const {registrationSchema,bookingsSchema,updateUserSchema} = require("../models/schema.js");
+
+module.exports.validateUserUpdate = (req, res, next) => {
+    let { error} = updateUserSchema.validate(req.body);
+    if (error) {
+        console.log(error);
+        res.status(400).send(error.details[0].message);
+        // throw new Error("Please enter valid details");
+    } else {
+        next();
+    }
+}
+
 
 module.exports.validateRegistration = (req, res, next) => {
     let { error} = registrationSchema.validate(req.body);
@@ -13,17 +25,18 @@ module.exports.validateRegistration = (req, res, next) => {
 
 
 module.exports.validateBookings = async (req,res,next) => {
-    let {error} = await bookingsSchema.validate(req.body);
+    let {error} = bookingsSchema.validate(req.body);
     if(error){
         console.log(error);
         res.status(400).send(error.details[0].message);
     } else{
-        let person = req.body.person;
-        console.log();
-        if (person[0] <= 0 || person[0] > 8 || person.slice(2) != "person"){
-            throw new Error("Wrong Data");
-            res.status(400).send("Wrong Data of person!");
-        }
         next();
     }
+}
+
+module.exports.isTestimonialAdded = (req,res,next) => {
+    if(req.user.testimonial){
+        return res.redirect("/dashboard?section=activity#testimonial");
+    }
+    next();
 }

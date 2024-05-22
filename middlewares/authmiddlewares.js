@@ -27,4 +27,17 @@ const saveRedirectUrl = (req,res,next) => {
     next();
 }
 
-module.exports = { isAlreadyLogin, isLogedIn,saveRedirectUrl };
+const {signUpSchema} = require("../models/schema.js");
+
+const validateUser = (req,res,next) =>{
+    const {error} = signUpSchema.validate(req.body);
+
+    if(error){
+        console.log(req.body);
+        res.status(400).send(error.details[0].message);
+    }else{
+        next();
+    }
+}
+
+module.exports = { isAlreadyLogin, isLogedIn,saveRedirectUrl,validateUser };
