@@ -29,13 +29,14 @@ const workshopSchema = new mongoose.Schema({
 workshopSchema.post("findOneAndDelete", async (workshopData) => {
     if (workshopData) {
         console.log(workshopData);
+        let registrationIds = workshopData.registrations;
         const workshopRegistrations = await workshopData.populate("registrations");
         console.log("haa bhai mai hi hu", workshopRegistrations);
         await Registration.deleteMany({ _id: { $in: workshopData.registrations } });
         console.log(workshopRegistrations.registrations);
         let UserIds = workshopRegistrations.registrations.map((registration) => registration.user); //array bana liya id ka
         console.log("user id", UserIds);
-        let delUsers = await User.updateMany({ _id: { $in: UserIds } }, { $pull: { workshops: workshopData._id } });
+        let delUsers = await User.updateMany({ _id: { $in: UserIds } }, { $pull: { workshopsRegistered: {$in: registrationIds}}});
     }
 })
 

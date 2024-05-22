@@ -244,7 +244,7 @@
                                     <%=workshop.label%>
                                 </td>
                                 <td>
-                                    <%=workshop._id%>
+                                    <%=workshop.title%>
                                 </td>
                                 <td>
                                     <%=workshop.text%>
@@ -328,9 +328,9 @@
 
             <form id="addfield" class="addfield" method="post" action="/admin/workshopsection">
                 <label for="name" class="formlabel">New workshop</label>
-                <input type="text" id="name" name="label" placeholder="label" value="<%=currWorkshops[0].label%>">
-                <input type="text" name="title" placeholder="title" value="<%=currWorkshops[0].title %> ">
-                <input type="text" name="text" placeholder="text below title" value="<%=currWorkshops[0].text%>">
+                <input type="text" id="name" name="label" placeholder="label" value="">
+                <input type="text" name="title" placeholder="title" value=" ">
+                <input type="text" name="text" placeholder="text below title" value="">
                 <p style="margin-block-start: 1rem;margin-block-end: 1rem;color:hsl(38, 61%, 73%);">Enter the Date of
                     the workshop</p>
                 <input type="date" id="myFile" name="date" />
