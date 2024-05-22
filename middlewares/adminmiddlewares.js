@@ -1,4 +1,4 @@
-const { newSectionSchema, eventSchema, testimonialSchema, workshopSchema, editSchema } = require("../models/schema.js");
+const { newSectionSchema, eventSchema,editEventSchema, testimonialSchema, workshopSchema, editSchema } = require("../models/schema.js");
 
 module.exports.validateNewSection = (req, res, next) => {
     const { error } = newSectionSchema.validate(req.body);
@@ -20,6 +20,16 @@ module.exports.validateEventSection = (req, res, next) => {
     }
 }
 
+module.exports.validateEventEdit = (req,res,next) =>{
+    const {error} = editEventSchema.validate(req.body);
+
+    if (error) {
+        console.log(req.body);
+        res.status(400).send(error.details[0].message);
+    } else {
+        next();
+    }
+}
 
 module.exports.validateTestimonial = (req, res, next) => {
     const { error } = testimonialSchema.validate(req.body);
