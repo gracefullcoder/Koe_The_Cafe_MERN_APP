@@ -14,6 +14,5 @@ const wrapAsync = (fnx) => {
     }
 }
 
-module.exports = wrapAsync
 
 module.exports = {ExpressError,wrapAsync};

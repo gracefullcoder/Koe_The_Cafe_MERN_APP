@@ -35,7 +35,7 @@ registrationSchema.post("findOneAndDelete", async (registrationData) => {
     let data = await User.findOneAndUpdate(
       { _id: registrationData.user },
       {
-        $pull: { workshops: registrationData.workshop }
+        $pull: { workshopsRegistered: registrationData._id }
       },
       {
         new: true

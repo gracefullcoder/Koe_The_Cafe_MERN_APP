@@ -37,7 +37,7 @@ router.delete("/:id" ,wrapAsync(async (req,res) => {
     res.redirect("/admin/workshopsection");
 }))
 
-router.post("/",wrapAsync(async(req,res) => {
+router.post("/",validateWorkShopEdit,wrapAsync(async(req,res) => {
     let { label, title, text, date, time } = req.body;
     // console.log(req.body);
     label = label.toString();
