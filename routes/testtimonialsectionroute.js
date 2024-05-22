@@ -19,7 +19,7 @@ router.route("/edit/:id")
     .get( wrapAsync(renderEditForm))
 
     //patch request on edittestimonials redirect to testimoniasl
-    .patch(wrapAsync(updateTestimonial));
+    .patch(validateTestimonial,wrapAsync(updateTestimonial));
 
 //delete request on testimonials page and again redirect to same page
 router.delete("/:id", wrapAsync(destroyTestimonial))

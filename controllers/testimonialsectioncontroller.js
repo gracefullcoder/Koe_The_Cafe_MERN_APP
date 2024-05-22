@@ -58,11 +58,11 @@ const destroyTestimonial = async (req, res) => {
     let delTestimonial = await Testimonial.findByIdAndDelete(id);
     await User.findByIdAndUpdate(delTestimonial.user, { testimonial: null });
 
-    if(req.user.role.isAdmin){
-        return res.redirect("/admin/testimonialsection");
-    }else{
+    // if(req.user.role.isAdmin){
+    //     return res.redirect("/admin/testimonialsection");
+    // }else{
         return res.redirect("/");
-    }
+    // }
 }
 
 const renderEditForm = async (req, res) => {
@@ -81,11 +81,11 @@ const updateTestimonial = async (req, res, next) => {
 
     let document = await Testimonial.findOneAndUpdate({ _id: id }, {suggestion:suggestion, review: review });
 
-    if(req.user.role.admin){
-        return res.redirect("/admin/testimonialsection");
-    }else{
+    // if(req.user.role.admin){
+    //     return res.redirect("/admin/testimonialsection");
+    // }else{
         return res.redirect("/");
-    }
+    // }
 }
 
 module.exports = { showTestimonials, createTestimonial, destroyTestimonial, renderEditForm, updateTestimonial };
