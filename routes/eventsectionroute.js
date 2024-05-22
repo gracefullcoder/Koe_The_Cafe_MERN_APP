@@ -4,7 +4,7 @@ const multer = require('multer');
 const { storage } = require("../config/imagekitconfig.js");
 const { showEvents, createEvent, destroyEvent, renderEditForm, updateEvent } = require("../controllers/eventsectioncontroller.js")
 const upload = multer({ storage: storage });
-const {validateEventSection} = require("../middlewares/adminmiddlewares.js");
+const {validateEventSection,validateEventEdit} = require("../middlewares/adminmiddlewares.js");
 const {wrapAsync} = require("../utils/wrapAsyncAndExpressError");
 
 
@@ -22,7 +22,7 @@ router.route("/edit/:id")
     .get(wrapAsync(renderEditForm))
 
     //patch request on editevents redirect to events route
-    .patch(upload.single('myFile'), wrapAsync(updateEvent))
+    .patch(upload.single('myFile'),validateEventEdit, wrapAsync(updateEvent))
 
 
 //delete request on eventroute and again redirect to same page
