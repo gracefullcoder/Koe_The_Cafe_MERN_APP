@@ -1,38 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const Booking = require("../models/booking.js");
-const {wrapAsync} = require("../utils/wrapAsyncAndExpressError");
-const User = require("../models/user.js");
+const { wrapAsync } = require("../utils/wrapAsyncAndExpressError");
+const { showAllBookings, destroyBooking, renderEditForm, updateBooking } = require("../controllers/bookingcontroller.js");
+const {validateBookings} = require("../middlewares/homepagemiddleware.js");
 
-router.get("/", wrapAsync(async (req, res) => {
-    let bookings = await Booking.find();
-    // console.log(bookings);
-    let currTime = new Date();
-    let aheadBookings = [];
-    let todayBookings = [];
-    let pastBookings = [];
+router.get("/", wrapAsync(showAllBookings))
 
-    bookings.forEach((booking)=>{
-        let bookingTime = booking.time;
-        if(currTime > bookingTime && currTime.getDate() != bookingTime.getDate()){
-            pastBookings.push(booking);
-        }else if(currTime.getDate() == bookingTime.getDate()){
-            todayBookings.push(booking);
-        }else{
-            aheadBookings.push(booking);
-        }
-    })
+router.delete("/:id", wrapAsync(destroyBooking))
 
-    res.render("bookings/bookatable.ejs", { aheadBookings,todayBookings,pastBookings });
-}))
+router.route("/edit/:id")
 
-router.delete("/:id", wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    id = id.toString();
-    let booking = await Booking.findByIdAndDelete(id);
-    let data = await User.findByIdAndUpdate(booking.user,{$pull:{bookings:booking._id}},{new:true});
-    console.log(data);
-    res.redirect("/admin/bookings");
-}))
+    .get(wrapAsync(renderEditForm))
+
+    .patch(validateBookings,wrapAsync(updateBooking))
+
 
 module.exports = router;
