@@ -603,7 +603,7 @@ body.nav-active {
 
 .icon-wrapper ion-icon {
   position: absolute;
-  top: 50%;
+  top: 45%;
   transform: translateY(-50%);
   font-size: 1.4rem;
   --ionicon-stroke-width: 50px;

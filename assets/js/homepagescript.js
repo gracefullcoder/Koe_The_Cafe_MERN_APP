@@ -14,7 +14,7 @@ window.addEventListener("load", function () {
 
 //account options;
 function accountClickToggler(accountClickCount, accountDiv) {
-  console.log("i am called");
+  // console.log("i am called");
   if (accountClickCount % 2 == 0) accountDiv.style.display = "none";
   else accountDiv.style.display = "block";
 }
@@ -27,11 +27,20 @@ if (accountDiv) {
   accountClickToggler(accountClickCount, accountDiv);
 }
 if (accountDiv) {
-  profilepicture.addEventListener("click", () => {
+  profilepicture.addEventListener("click", (event) => {
+    event.stopPropagation();
     accountClickCount++;
     accountClickToggler(accountClickCount, accountDiv)
   });
 }
+const body = document.querySelector("body");
+
+body.addEventListener("click", () => {
+  if (accountClickCount % 2 == 1) {
+    accountClickCount++;
+    accountClickToggler(accountClickCount, accountDiv)
+  }
+})
 
 
 
@@ -435,7 +444,7 @@ signupForm.addEventListener('submit', function (event) {
   let userPhone = document.querySelector("#phonenumber");
   // console.log(userMessage.value);
   // console.log(userPhone.value);
-  userPhone =userPhone.value.trim();
+  userPhone = userPhone.value.trim();
 
   if (userPhone.length == 10 && parseInt(userPhone).toString().length == 10) {
 

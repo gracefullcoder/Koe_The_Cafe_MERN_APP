@@ -174,36 +174,37 @@
             <div id="account-options" class="account-options">
               <div class="account-field-name">Hi <%=allSection.user.fullname%>!</div>
               <div class="account-field">
-                <a href="" class="account-field-link">
+                <a href="/dashboard?section=dashboard" class="account-field-link">
                   <div class="separator"></div>
                   <span class="span">Account Details</span>
                 </a>
               </div>
               <div class="account-field">
-                <a href="" class="account-field-link">
+                <a href="/dashboard?section=notifications" class="account-field-link">
                   <div class="separator"></div>
                   <span class="span">Notifications</span>
                 </a>
               </div>
               <div class="account-field">
-                <a href="" class="account-field-link">
+                <a href="/dashboard?section=activity" class="account-field-link">
                   <div class="separator"></div>
                   <span class="span">Activity</span>
                 </a>
               </div>
-              <% if(allSection.user.role.admin) %>
-              <div class="account-field">
-                <a href="/admin" class="account-field-link">
-                  <div class="separator"></div>
-                  <span>Admin Features 💼</span>
-                </a>
-              </div>
-              <div class="account-field">
-                <a href="/auth/logout" class="account-field-link">
-                  <div class="separator"></div>
-                  <span>Logout</span>
-                </a>
-              </div>
+              <% if(allSection.user.role.admin){ %>
+                <div class="account-field">
+                  <a href="/admin" class="account-field-link">
+                    <div class="separator"></div>
+                    <span>Admin Features 💼</span>
+                  </a>
+                </div>
+                <% } %>
+                  <div class="account-field">
+                    <a href="/auth/logout" class="account-field-link">
+                      <div class="separator"></div>
+                      <span>Logout</span>
+                    </a>
+                  </div>
             </div>
             <%}%>
 
@@ -878,19 +879,10 @@
 
                 <div class="icon-wrapper">
                   <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
-
-                  <select name="person" class="input-field" required>
-                    <option value="1-person">1 Person</option>
-                    <option value="2-person">2 Person</option>
-                    <option value="3-person">3 Person</option>
-                    <option value="4-person">4 Person</option>
-                    <option value="5-person">5 Person</option>
-                    <option value="6-person">6 Person</option>
-                    <option value="7-person">7 Person</option>
-                    <option value="7-person">8 Person</option>
-                  </select>
-
-                  <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
+                    <input type="number" name="person" id="person" placeholder="" min="1" max="10000" class="input-field" style="background-color: rgb(27, 28, 29);" required>
+                    <label for="person">
+                      <p style="position: absolute;right: 10%;top: 22%;user-select: none;color: #f0f0f0;cursor: pointer;">Persons</p>
+                    </label>
                 </div>
 
                 <div class="icon-wrapper">
@@ -1042,40 +1034,41 @@
       <section class="hero text-center" aria-label="home" id="home">
 
         <ul class="testi-slider" data-testi-slider>
-          <%for(testimonial of allSection.testimonials) {%>
-            <li class="slider-item active" data-testi-slider-item>
+          <% if(allSection.testimonials.length) {%>
+            <%allSection.testimonials.forEach((testimonial)=> {%>
+              <li class="slider-item active" data-testi-slider-item>
 
-              <div class="slider-bg">
-                <img src="../../assets/images/testimonial-bg.jpg" width="1880" height="950" alt="" class="img-cover">
-              </div>
+                <div class="slider-bg">
+                  <img src="../../assets/images/testimonial-bg.jpg" width="1880" height="950" alt="" class="img-cover">
+                </div>
 
-              <p class="label-2 section-subtitle slider-reveal">
-                <%=testimonial.user.fullname%>
-              </p>
+                <p class="label-2 section-subtitle slider-reveal">
+                  <%=testimonial.user.fullname%>
+                </p>
 
-              <img src="<%=testimonial.user.profilepicture.imagelink%>" width="100" height="100" loading="lazy"
-                alt="<%=testimonial.name%>" class="img">
-              <p class="headline-2 testi-text">
-                <%=testimonial.review%>
-              </p>
-              <%if(allSection.user) {%>
-                <% if(!allSection.user.testimonial) {%>
-                  <a href="/testimonial" class="btn btn-secondary">
-                    <span class="text text-1">Add Testimonial!</span>
+                <img src="<%=testimonial.user.profilepicture.imagelink%>" width="100" height="100" loading="lazy"
+                  alt="<%=testimonial.name%>" class="img">
+                <p class="headline-2 testi-text">
+                  <%=testimonial.review%>
+                </p>
+                <%if(allSection.user) {%>
+                  <% if(!allSection.user.testimonial) {%>
+                    <a href="/testimonial" class="btn btn-secondary">
+                      <span class="text text-1">Add Testimonial!</span>
 
-                    <span class="text text-2" aria-hidden="true">Add Testimonial!</span>
-                  </a>
-                  <% } %>
-                    <%}else{%>
-                      <a href="/auth/login" class="btn btn-secondary">
-                        <span class="text text-1">Add Testimonial!</span>
+                      <span class="text text-2" aria-hidden="true">Add Testimonial!</span>
+                    </a>
+                    <% } %>
+                      <%}else{%>
+                        <a href="/auth/login" class="btn btn-secondary">
+                          <span class="text text-1">Add Testimonial!</span>
 
-                        <span class="text text-2" aria-hidden="true">Sign Up First!</span>
-                      </a>
-                      <% } %>
-            </li>
-            <%}%>
-
+                          <span class="text text-2" aria-hidden="true">Sign Up First!</span>
+                        </a>
+                        <% } %>
+              </li>
+              <%})%>
+                <% } %>
         </ul>
 
         <button class="slider-btn prev" aria-label="slide to previous" testi-data-prev-btn style="left: 5% ;">

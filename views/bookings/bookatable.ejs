@@ -93,6 +93,8 @@
 
       <p class="headline-1 section-title" style="text-align: center;">WELCOME</p>
 
+      <hr style="margin-block: 3rem 2rem;">
+
       <h2 class="headline-1 section-title">HAVE A LOOK ON Today Bookings</h2>
       <div style="overflow-x: auto;">
         <table class="table table-striped table-bordered border-white"
@@ -105,6 +107,7 @@
               <th scope="col">Phone No.</th>
               <th scope="col">No. of people</th>
               <th scope="col">Message</th>
+              <th scope="col">Update</th>
               <th scope="col">Delete</th>
             </tr>
           </thead>
@@ -140,6 +143,15 @@
                   <%=booking.message%>
                 </td>
                 <td>
+                  <form id="signupForm" class="signup-form" method="get"
+                    action="/admin/bookings/edit/<%= booking._id%>">
+                    <button type="submit" class="btn btn-primary">
+                      <span class="text text-1">Edit!</span>
+                      <span class="text text-2" aria-hidden="true">Edit!</span>
+                    </button>
+                  </form>
+                </td>
+                <td>
                   <form id="signupForm" class="signup-form" method="post"
                     action="/admin/bookings/<%= booking._id%>?_method=DELETE">
                     <button type="submit" class="btn btn-primary">
@@ -153,6 +165,9 @@
           </tbody>
         </table>
 
+        <hr style="margin-block: 5rem 5rem;">
+
+
         <h2 class="headline-1 section-title">HAVE A LOOK ON Ahead Bookings</h2>
         <table class="table table-striped table-bordered border-white"
           style="color:antiquewhite; border: 10px; border-color: brown;">
@@ -164,6 +179,7 @@
               <th scope="col">Phone No.</th>
               <th scope="col">No. of people</th>
               <th scope="col">Message</th>
+              <th scope="col">Update</th>
               <th scope="col">Delete</th>
             </tr>
           </thead>
@@ -199,6 +215,15 @@
                   <%=booking.message%>
                 </td>
                 <td>
+                  <form id="signupForm" class="signup-form" method="get"
+                    action="/admin/bookings/edit/<%= booking._id%>">
+                    <button type="submit" class="btn btn-primary">
+                      <span class="text text-1">Edit!</span>
+                      <span class="text text-2" aria-hidden="true">Edit!</span>
+                    </button>
+                  </form>
+                </td>
+                <td>
                   <form id="signupForm" class="signup-form" method="post"
                     action="/admin/bookings/<%= booking._id%>?_method=DELETE">
                     <button type="submit" class="btn btn-primary">
@@ -212,6 +237,7 @@
           </tbody>
         </table>
 
+        <hr style="margin-block: 5rem 5rem;">
         <h2 class="headline-1 section-title">HAVE A LOOK ON Past Bookings</h2>
         <table class="table table-striped table-bordered border-white"
           style="color:antiquewhite; border: 10px; border-color: brown;">
@@ -223,6 +249,7 @@
               <th scope="col">Phone No.</th>
               <th scope="col">No. of people</th>
               <th scope="col">Message</th>
+              <th scope="col">Update</th>
               <th scope="col">Delete</th>
             </tr>
           </thead>
@@ -256,6 +283,15 @@
                 </td>
                 <td>
                   <%=booking.message%>
+                </td>
+                <td>
+                  <form id="signupForm" class="signup-form" method="get"
+                    action="/admin/bookings/edit/<%= booking._id%>">
+                    <button type="submit" class="btn btn-primary">
+                      <span class="text text-1">Edit!</span>
+                      <span class="text text-2" aria-hidden="true">Edit!</span>
+                    </button>
+                  </form>
                 </td>
                 <td>
                   <form id="signupForm" class="signup-form" method="post"
