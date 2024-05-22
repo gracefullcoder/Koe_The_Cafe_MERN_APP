@@ -249,12 +249,22 @@ nav.close ~ .dashboard .top {
 .dashboard .dash-content {
   padding-top: 50px;
 }
-.dash-content .title {
+
+
+.title{
   display: flex;
   align-items: center;
   margin: 1rem 0 1rem 0;
 }
-.dash-content .title i {
+
+.title .text{
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-left: 10px;
+}
+
+.title i {
   position: relative;
   height: 35px;
   width: 35px;
@@ -266,12 +276,7 @@ nav.close ~ .dashboard .top {
   justify-content: center;
   font-size: 24px;
 }
-.dash-content .title .text {
-  font-size: 24px;
-  font-weight: 500;
-  color: var(--text-color);
-  margin-left: 10px;
-}
+
 
 
 .top-nav{
@@ -593,33 +598,6 @@ input[type='file'] {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.title{
-  display: flex;
-  align-items: center;
-  margin: 1rem 0 1rem 0;
-}
-
-.title .text{
-  font-size: 24px;
-  font-weight: 500;
-  color: var(--text-color);
-  margin-left: 10px;
-}
-
-.title i {
-  position: relative;
-  height: 35px;
-  width: 35px;
-  background-color: var(--primary-color);
-  border-radius: 6px;
-  color: var(--title-icon-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-}
-
-
 
 
 
@@ -842,11 +820,31 @@ button[type="submit"]:hover {
     width: 100%;
   }
 
-  .dashboard .dash-content {
-    padding-top: 75px;
-}
+  .title{
+    margin: 1rem 0 1rem 1rem;
+  }
+
+  .dash-content .user-content {
+    padding: 2rem 0rem 3rem 0rem;
+  }
+
+  .overview{
+    padding: 1.25rem 0rem;
+  }
+
+  .activity{
+    padding: 1.25rem 0rem;
+  }
+
+  .messagebroadcastdiv{
+    padding: 1.25rem 0rem;
+  }
 
   .top-clock{
+    display: none;
+  }
+
+  nav{
     display: none;
   }
 
@@ -882,6 +880,7 @@ button[type="submit"]:hover {
   .top-nav-logout a{
     color: var(--primary-color);
   }
+
 }
 
 .hide {
