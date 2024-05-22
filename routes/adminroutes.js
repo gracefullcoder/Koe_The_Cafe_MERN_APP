@@ -6,6 +6,8 @@ const multer = require('multer');
 const { storage } = require("../config/imagekitconfig.js");
 const upload = multer({ storage: storage });
 const {selectSection,showUsers,destroyUser,assignAdmin,unAssignAdmin,renderEditForm,updateUser} = require("../controllers/adminusercontroller.js");
+const {validateUserUpdate} = require("../middlewares/homepagemiddleware.js");
+
 
 router.route("/")
   .get((req, res) => {
@@ -28,6 +30,6 @@ router.patch("/removeadmin/:id", wrapAsync(unAssignAdmin))
 router.route("/addadmin/edit/:id")
   .get(wrapAsync(renderEditForm))
 
-  .patch(upload.single('myFile'), wrapAsync(updateUser))
+  .patch(upload.single('myFile'),validateUserUpdate, wrapAsync(updateUser))
 
 module.exports = router;
