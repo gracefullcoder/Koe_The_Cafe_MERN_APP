@@ -124,6 +124,7 @@ module.exports.updateUser = async (req, res,next) => {
             imagekit.upload({
                 file: data,   //required
                 fileName: myFile,   //required
+                folder: "/Koe_Cafe/profilephoto"
             },
                 async function (error, result) {
                     if (error) {

@@ -46,11 +46,20 @@ const updateBooking = async (req, res) => {
     let { id } = req.params;
     const { name, phone, person, time, reservationdate, message } = req.body;
     console.log(req.body);
-    // Combine date and time into ISO 8601 format
-    const combinedTime = `${reservationdate}T${time}`;
-    const newBookingDetails = { name, phone, person, time: combinedTime, message };
-    await Booking.findByIdAndUpdate(id, newBookingDetails);
-    res.redirect("/");
+
+    const combinedTime = new Date(`${reservationdate}T${time}`);
+    let acceptedTime = new Date(Date.now() + 4 * 60 * 60 * 1000);
+    if (combinedTime < acceptedTime) {
+        return res.send(`Booking should be after 4 hours of current Date : 
+        ${(acceptedTime.getDate()).toString().padStart(2, '0')}-${(acceptedTime.getMonth() + 1).toString().padStart(2, '0')}-${(acceptedTime.getFullYear())} and 
+        current Time ${(acceptedTime.getHours() - 4).toString().padStart(2, '0')}:${(acceptedTime.getMinutes()).toString().padStart(2, '0')}.\n\n
+        Next Booking accepted After : ${acceptedTime.getHours().toString().padStart(2, '0')}:${acceptedTime.getMinutes().toString().padStart(2, '0')}.For any Issue You can contact on +91 96246 96846`);
+    } else {
+        const combinedTime = `${reservationdate}T${time}`;
+        const newBookingDetails = { name, phone, person, time: combinedTime, message };
+        await Booking.findByIdAndUpdate(id, newBookingDetails);
+        res.redirect("/");
+    }
 }
 
 module.exports = { showAllBookings, destroyBooking, renderEditForm, updateBooking };

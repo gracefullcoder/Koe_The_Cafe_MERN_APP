@@ -30,6 +30,7 @@ const createHeroSlider = async (req, res,next) => {
         imagekit.upload({
             file: data, //fs read kiya and valid path tho data is file
             fileName: myFile, //req.file se mil gaya
+            folder: "/Koe_Cafe/herosection"
         }, async function (error, result) {
             if (error) {
                 console.log(error);
@@ -97,6 +98,7 @@ const updateHeroSlider = async (req, res, next) => {
             imagekit.upload({
                 file: data,   //required
                 fileName: myFile,   //required
+                folder: "/Koe_Cafe/herosection"
             },
                 async function (error, result) {
                     if (error) {

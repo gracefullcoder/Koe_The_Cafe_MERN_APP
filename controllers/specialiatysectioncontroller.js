@@ -28,6 +28,7 @@ const createSpecialitySlider = async (req, res, next) => {
         imagekit.upload({
             file: data,
             fileName: myFile,
+            folder: "/Koe_Cafe/specialities"
         }, async function (error, result) {
             if (error) throw next(new ExpressError(406, "Error in Uploading Image!"));
             else {
@@ -95,6 +96,7 @@ const updateSpecialitySlider = async (req, res, next) => {
             imagekit.upload({
                 file: data,   //required
                 fileName: myFile,   //required
+                folder: "/Koe_Cafe/specialities"
             },
                 async function (error, result) {
                     if (error) {
