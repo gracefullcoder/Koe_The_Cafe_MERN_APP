@@ -742,7 +742,7 @@ body.nav-active {
   gap: 8px;
 }
 
-.header .logo-img{
+.header .logo-img {
   width: 14rem;
   height: auto;
   border-radius: 1rem;
@@ -962,7 +962,7 @@ body.nav-active {
   transition: 0.5s ease;
 }
 
-.account-field-link:hover{
+.account-field-link:hover {
   /* text-decoration: underline var(--gold-crayola); */
   color: var(--gold-crayola);
   transform: scale(1.1);
@@ -1250,7 +1250,7 @@ body.popup .menu-container {
 /*item-1*/
 
 .item1 .menu-img-1 {
-  /* height: 80rem; */
+  height: 80rem;
 }
 
 .item1 .menu-img-2 {
@@ -1621,23 +1621,23 @@ body.popup .menu-container {
   overflow-x: hidden;
 }
 
-.selector-container img{
-  border-radius: 10px; 
+.selector-container img {
+  border-radius: 10px;
   margin: auto;
 }
 
-.selector-container select{
+.selector-container select {
   width: 80%;
   text-align: center;
   background-color: var(--gold-crayola);
   margin-inline: auto;
 }
 
-.selector-container label{
+.selector-container label {
   color: white;
 }
 
-select option:hover{
+select option:hover {
   background-color: #1a1a1a !important;
 }
 
@@ -2248,7 +2248,7 @@ textarea.input-field {
 
 @media (max-width: 575px) {
   /* navbar */
-  .header .logo-img{
+  .header .logo-img {
     width: 10rem;
   }
 
@@ -2467,7 +2467,7 @@ textarea.input-field {
     margin-inline-start: auto;
   }
 
-  .header .signin-text{
+  .header .signin-text {
     display: none;
   }
 
@@ -3288,7 +3288,7 @@ textarea.input-field {
    */
 
   .about {
-    padding-block: 80px 100px;
+    padding: 80px 100px 0px 100px;
   }
 
   /**
@@ -3328,10 +3328,9 @@ textarea.input-field {
    * TESTIMONIALS
    */
 
-  .form-left{
+  .form-left {
     padding: 75px 0px 75px 30px;
   }
-  
 
   .form-right {
     padding: 75px 60px;
@@ -3476,7 +3475,7 @@ textarea.input-field {
   color: #888;
 }
 
-#signupForm label{
+#signupForm label {
   color: var(--gold-crayola);
 }
 
@@ -3576,6 +3575,10 @@ select {
 
 /* ---------------------------Bread and Cheese--------------------------- */
 
+.bread-and-cheese-variety {
+  background-color: var(--smoky-black-2);
+}
+
 .bread-and-cheese {
   margin-bottom: 5%;
 }
@@ -3593,12 +3596,25 @@ select {
   flex-wrap: wrap;
 }
 
+.bread,
+.cheese {
+  transition: 0.3s ease 0.1s;
+}
+
+.bread img{
+  border-radius: 10px;
+}
+
+.cheese img {
+  border-radius: 10px;
+}
+
 .bread:is(:hover, :focus-within) {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .cheese:is(:hover, :focus-within) {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .bread-heading {
@@ -3607,4 +3623,10 @@ select {
 
 .cheese-heading {
   font-size: 3rem;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

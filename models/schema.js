@@ -41,7 +41,8 @@ const eventSchema = Joi.object({
     date: Joi.date().required(),
     subtitle : Joi.string().required(),
     title : Joi.string().required(),
-    myFile : Joi.string().required()
+    myFile : Joi.string()
+    .allow("",null)
 })
 
 const editEventSchema = Joi.object({

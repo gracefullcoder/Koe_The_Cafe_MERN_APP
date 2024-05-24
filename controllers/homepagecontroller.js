@@ -16,7 +16,7 @@ const loadMainPage = async (req, res) => {
     let workshop = await Workshop.find();
     let currTime = new Date();
     let isWorkshop = false;
-    if (workshop.length >0 && workshop[workshop.length - 1].time > currTime) isWorkshop = true;
+    if (workshop.length > 0 && workshop[workshop.length - 1].time > currTime) isWorkshop = true;
     let specialSection = await Specialslider.find();
     let testimonials = await Testimonial.find().populate("user");
     // console.log(testimonials);
@@ -31,14 +31,23 @@ const tabelBooking = async (req, res) => {
     const { name, phone, person, time, reservationdate, message } = req.body;
 
     // Combine date and time into ISO 8601 format
-    const combinedTime = `${reservationdate}T${time}`;
-    const newbooking = new Booking({ name, phone, person, time: combinedTime, message });
-    newbooking.user = req.user._id;
-    await newbooking.save();
-    let currBookings = req.user.bookings;
-    currBookings.push(newbooking);
-    await User.findByIdAndUpdate(req.user._id, { bookings: currBookings });
-    res.redirect("/");
+    const combinedTime = new Date(`${reservationdate}T${time}`);
+    let acceptedTime = new Date(Date.now() + 4 * 60 * 60 * 1000);
+    if (combinedTime < acceptedTime) {
+        return res.send(`Booking should be after 4 hours of current Date : 
+        ${(acceptedTime.getDate()).toString().padStart(2,'0')}-${(acceptedTime.getMonth() + 1).toString().padStart(2,'0')}-${(acceptedTime.getFullYear())} and 
+        current Time ${(acceptedTime.getHours() - 4).toString().padStart(2,'0')}:${(acceptedTime.getMinutes()).toString().padStart(2,'0')}.\n\n
+        Next Booking accepted After : ${acceptedTime.getHours().toString().padStart(2,'0')}:${acceptedTime.getMinutes().toString().padStart(2,'0')}
+        For any Issue You can contact on +91 96246 96846`);
+    } else {
+        const newbooking = new Booking({ name, phone, person, time: combinedTime, message });
+        newbooking.user = req.user._id;
+        await newbooking.save();
+        let currBookings = req.user.bookings;
+        currBookings.push(newbooking);
+        await User.findByIdAndUpdate(req.user._id, { bookings: currBookings });
+        res.redirect("/");
+    }
 }
 
 const workshopRegistration = async (req, res) => {
@@ -79,20 +88,20 @@ const renderTestimonialForm = (req, res) => {
 }
 
 const renderUserDashboard = async (req, res) => {
-    let userData = await req.user.populate([{path:"workshopsRegistered",populate:{path:"workshop"}}, "bookings", "testimonial"]);
-    console.log("yes",userData);
-    res.render("homepage/userdashboard.ejs",{userData});
+    let userData = await req.user.populate([{ path: "workshopsRegistered", populate: { path: "workshop" } }, "bookings", "testimonial"]);
+    console.log("yes", userData);
+    res.render("homepage/userdashboard.ejs", { userData });
 }
 
 const updateUser = async (req, res) => {
     let { id } = req.params;
-    let { fullname, gender,DOB} = req.body;
+    let { fullname, gender, DOB } = req.body;
 
     console.log(req.file);
 
     if (!req.file) {
         console.log("idhar brother");
-        let document = await User.findByIdAndUpdate(id, { fullname: fullname, gender: gender ,DOB:DOB});
+        let document = await User.findByIdAndUpdate(id, { fullname: fullname, gender: gender, DOB: DOB });
         return res.redirect("/dashboard"); //yaha pe else hai nahi tho return lagana must
     }
     else {
@@ -105,6 +114,7 @@ const updateUser = async (req, res) => {
             imagekit.upload({
                 file: data,   //required
                 fileName: myFile,   //required
+                folder: "/Koe_Cafe/profilephoto"
             },
                 async function (error, result) {
                     if (error) {
@@ -119,7 +129,7 @@ const updateUser = async (req, res) => {
                             imageid: imageid,
                             imagelink: image,
                         }
-                        let oldData = await User.findOneAndUpdate({ _id: id }, { fullname: fullname, gender: gender,DOB:DOB, profilepicture: profilepicture });
+                        let oldData = await User.findOneAndUpdate({ _id: id }, { fullname: fullname, gender: gender, DOB: DOB, profilepicture: profilepicture });
                         console.log(oldData);
                         if (oldData.profilepicture.isUpdated) {
                             imagekit.deleteFile(oldData.profilepicture.imageid)
@@ -140,4 +150,4 @@ const updateUser = async (req, res) => {
     }
 }
 
-module.exports = {loadMainPage,tabelBooking,workshopRegistration,renderTestimonialForm,renderUserDashboard,updateUser};
+module.exports = { loadMainPage, tabelBooking, workshopRegistration, renderTestimonialForm, renderUserDashboard, updateUser };

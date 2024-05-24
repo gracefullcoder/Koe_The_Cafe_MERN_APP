@@ -75,10 +75,12 @@
             </div>
 
             <ul class="logout-mode top-nav-logout">
-                <li><a href="/auth/logout">
+                <li>
+                    <a href="/auth/logout">
                         <i class="uil uil-signout"></i>
-                        <!-- <span class="link-name">Logout</span> -->
-                    </a></li>
+                    </a>
+                    <span class="link-name">Logout</span>
+                </li>
 
                 </li>
             </ul>
@@ -211,52 +213,61 @@
                 <div>
                     <h1 class="activity-heading">My Bookings</h1>
                     <div class="user-activity">
-                        <% let bookingIndex=1 %>
-                            <% userData.bookings.forEach((booking)=> { %>
-                                <div class="activity-box booking-box">
-                                    <form method="post" action="/dashboard/booking/<%=booking._id%>/?_method=PATCH">
-                                        <h2 class="activity-number">Booking <%= bookingIndex %>
-                                        </h2>
-                                        <div class="activity-detail-field">
-                                            <h3 class="activity-detail-label">Name:</h3>
-                                            <input type="text" class="user-input" name="name"
-                                                value="<%= booking.name %>" required>
+                        <% if(userData.bookings.length==0) {%>
+                            <div class="no-activity">
+                                <p>No Reservation Done!</p>
+                                <a href="/#reservation">Book a table Now!</a>
+                            </div>
+                            <% } %>
+                                <% let bookingIndex=1 %>
+                                    <% userData.bookings.forEach((booking)=> { %>
+                                        <div class="activity-box booking-box">
+                                            <form method="post"
+                                                action="/dashboard/booking/<%=booking._id%>/?_method=PATCH">
+                                                <h2 class="activity-number">Booking <%= bookingIndex %>
+                                                </h2>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Name:</h3>
+                                                    <input type="text" class="user-input" name="name"
+                                                        value="<%= booking.name %>" required>
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Phone Number:</h3>
+                                                    <input type="text" class="user-input" name="phone"
+                                                        value="<%= booking.phone %>" required>
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Number of Persons:</h3>
+                                                    <input type="number" min="1" max="10000" class="user-input"
+                                                        name="person" value="<%= booking.person %>" required>
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Date:</h3>
+                                                    <input type="date" class="user-input" name="reservationdate"
+                                                        required
+                                                        value="<%= `${booking.time.getFullYear()}-${(booking.time.getMonth() + 1).toString().padStart(2, '0')}-${booking.time.getDate().toString().padStart(2, '0')}` %>">
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Time:</h3>
+                                                    <input type="time" class="user-input" name="time" required
+                                                        value="<%= `${booking.time.getHours().toString().padStart(2, '0')}:${booking.time.getMinutes().toString().padStart(2, '0')}` %>">
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Message:</h3>
+                                                    <textarea class="user-input textarea" name="message"
+                                                        required><%= booking.message %></textarea>
+                                                </div>
+                                                <div class="update-button">
+                                                    <button class="buttonuser" role="button">Update Changes!</button>
+                                                </div>
+                                            </form>
+                                            <form method="post"
+                                                action="/dashboard/booking/<%=booking._id%>/?_method=DELETE">
+                                                <button class="buttonuser" role="button">DELETE</button>
+                                            </form>
                                         </div>
-                                        <div class="activity-detail-field">
-                                            <h3 class="activity-detail-label">Phone Number:</h3>
-                                            <input type="text" class="user-input" name="phone"
-                                                value="<%= booking.phone %>" required>
-                                        </div>
-                                        <div class="activity-detail-field">
-                                            <h3 class="activity-detail-label">Number of Persons:</h3>
-                                            <input type="number" min="1" max="10000" class="user-input" name="person"
-                                                value="<%= booking.person %>" required>
-                                        </div>
-                                        <div class="activity-detail-field">
-                                            <h3 class="activity-detail-label">Date:</h3>
-                                            <input type="date" class="user-input" name="reservationdate" required
-                                                value="<%= `${booking.time.getFullYear()}-${(booking.time.getMonth() + 1).toString().padStart(2, '0')}-${booking.time.getDate().toString().padStart(2, '0')}` %>">
-                                        </div>
-                                        <div class="activity-detail-field">
-                                            <h3 class="activity-detail-label">Time:</h3>
-                                            <input type="time" class="user-input" name="time" required
-                                                value="<%= `${booking.time.getHours().toString().padStart(2, '0')}:${booking.time.getMinutes().toString().padStart(2, '0')}` %>">
-                                        </div>
-                                        <div class="activity-detail-field">
-                                            <h3 class="activity-detail-label">Message:</h3>
-                                            <textarea class="user-input textarea" name="message"
-                                                required><%= booking.message %></textarea>
-                                        </div>
-                                        <div class="update-button">
-                                            <button class="buttonuser" role="button">Update Changes!</button>
-                                        </div>
-                                    </form>
-                                    <form method="post" action="/dashboard/booking/<%=booking._id%>/?_method=DELETE">
-                                        <button class="buttonuser" role="button">DELETE</button>
-                                    </form>
-                                </div>
-                                <% bookingIndex++ %>
-                                    <% }) %>
+                                        <% bookingIndex++ %>
+                                            <% }) %>
                     </div>
                 </div>
 
@@ -266,70 +277,78 @@
                 <div>
                     <h1 class="activity-heading">Workshop Registrations</h1>
                     <div class="user-activity">
-                        <% let workshopIndex=1 %>
-                            <% userData.workshopsRegistered.forEach((registration)=> { %>
-                                <div class="activity-box workshop-box">
-                                    <div class="workshop-post">
-                                        <h2 class="activity-number">Booking <%= workshopIndex %>
-                                        </h2>
-                                        <div class="activity-detail-field">
-                                            <h3 class="activity-detail-label">Title:</h3>
-                                            <p class="workshop-detail">
-                                                <%= registration.workshop.title %>
-                                            </p>
-                                        </div>
-                                        <div class="activity-detail-field">
-                                            <h3 class="activity-detail-label">Workshop Description:</h3>
-                                            <p class="workshop-detail">
-                                                <%= registration.workshop.text %>
-                                            </p>
-                                        </div>
-                                        <div class="activity-detail-field">
-                                            <h3 class="activity-detail-label">Date:</h3>
-                                            <p class="workshop-detail">
-                                                <%= `${registration.workshop.time.getDate().toString().padStart(2, '0'
-                                                    )}-${(registration.workshop.time.getMonth() +
-                                                    1).toString().padStart(2, '0'
-                                                    )}-${registration.workshop.time.getFullYear()}` %>
-                                            </p>
-                                        </div>
-                                        <div class="activity-detail-field">
-                                            <h3 class="activity-detail-label">Time:</h3>
-                                            <p class="workshop-detail">
-                                                <%= `${registration.workshop.time.getHours().toString().padStart(2, '0'
-                                                    )}:${registration.workshop.time.getMinutes().toString().padStart(2, '0'
-                                                    )}` %>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="user-details-workshop">
-                                        <form method="post"
-                                            action="/dashboard/registration/<%= registration._id %>/?_method=PATCH">
-                                            <h2 class="workshop-detail-heading">Your Response</h2>
-                                            <div class="activity-detail-field">
-                                                <h3 class="activity-detail-label">PhoneNumber:</h3>
-                                                <input type="text" class="user-input" name="userPhone"
-                                                    value="<%= registration.phoneNumber %>" required>
-                                            </div>
-                                            <div class="activity-detail-field">
-                                                <h3 class="activity-detail-label">Message:</h3>
-                                                <textarea class="user-input textarea"
-                                                    name="userMessage"><%= registration.message %></textarea>
-                                            </div>
-                                            <div class="update-button">
-                                                <button id="#workshop-button" class="buttonuser" role="button">Update
-                                                    Changes!</button>
-                                            </div>
-                                        </form>
-                                        <form method="post"
-                                            action="/dashboard/registration/<%= registration._id %>/?_method=DELETE">
-                                            <button class="buttonuser" role="button">DELETE</button>
-                                        </form>
-                                    </div>
+                        <% if(userData.workshopsRegistered.length==0) {%>
+                            <div class="no-activity">
+                                <p>Till yet not registerd in any Workshop!</p>
+                                <a href="/#workshop">Register Now!</a>
+                            </div>
+                            <% } %>
 
-                                </div>
-                                <% workshopIndex++ %>
-                                    <% }) %>
+                                <% let workshopIndex=1 %>
+                                    <% userData.workshopsRegistered.forEach((registration)=> { %>
+                                        <div class="activity-box workshop-box">
+                                            <div class="workshop-post">
+                                                <h2 class="activity-number">Booking <%= workshopIndex %>
+                                                </h2>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Title:</h3>
+                                                    <p class="workshop-detail">
+                                                        <%= registration.workshop.title %>
+                                                    </p>
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Workshop Description:</h3>
+                                                    <p class="workshop-detail">
+                                                        <%= registration.workshop.text %>
+                                                    </p>
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Date:</h3>
+                                                    <p class="workshop-detail">
+                                                        <%= `${registration.workshop.time.getDate().toString().padStart(2, '0'
+                                                            )}-${(registration.workshop.time.getMonth() +
+                                                            1).toString().padStart(2, '0'
+                                                            )}-${registration.workshop.time.getFullYear()}` %>
+                                                    </p>
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Time:</h3>
+                                                    <p class="workshop-detail">
+                                                        <%= `${registration.workshop.time.getHours().toString().padStart(2, '0'
+                                                            )}:${registration.workshop.time.getMinutes().toString().padStart(2, '0'
+                                                            )}` %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="user-details-workshop">
+                                                <form method="post"
+                                                    action="/dashboard/registration/<%= registration._id %>/?_method=PATCH">
+                                                    <h2 class="workshop-detail-heading">Your Response</h2>
+                                                    <div class="activity-detail-field">
+                                                        <h3 class="activity-detail-label">PhoneNumber:</h3>
+                                                        <input type="text" class="user-input" name="userPhone"
+                                                            value="<%= registration.phoneNumber %>" required>
+                                                    </div>
+                                                    <div class="activity-detail-field">
+                                                        <h3 class="activity-detail-label">Message:</h3>
+                                                        <textarea class="user-input textarea"
+                                                            name="userMessage"><%= registration.message %></textarea>
+                                                    </div>
+                                                    <div class="update-button">
+                                                        <button id="#workshop-button" class="buttonuser"
+                                                            role="button">Update
+                                                            Changes!</button>
+                                                    </div>
+                                                </form>
+                                                <form method="post"
+                                                    action="/dashboard/registration/<%= registration._id %>/?_method=DELETE">
+                                                    <button class="buttonuser" role="button">DELETE</button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                        <% workshopIndex++ %>
+                                            <% }) %>
                     </div>
                 </div>
 
@@ -345,8 +364,8 @@
                                     action="/dashboard/testimonial/<%= userData.testimonial._id %>/?_method=PATCH">
                                     <div class="activity-detail-field">
                                         <h3 class="activity-detail-label">Review:</h3>
-                                        <textarea id="testimonial-input"
-                                            name="review" required><%= userData.testimonial.review %> </textarea>
+                                        <textarea id="testimonial-input" name="review"
+                                            required><%= userData.testimonial.review %> </textarea>
                                     </div>
                                     <div class="activity-detail-field">
                                         <h3 class="activity-detail-label">Suggestion:</h3>
@@ -364,7 +383,11 @@
 
                             </div>
                         </div>
-                        <% } %>
+                        <% }else{ %>
+                            <div class="no-activity" style="margin-block: 1.5rem 1rem;">
+                                <a href="/testimonial">ADD Testimonial!</a>
+                            </div>
+                            <% } %>
                 </div>
 
             </div>

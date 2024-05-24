@@ -11,7 +11,6 @@ const {wrapAsync} = require("../utils/wrapAsyncAndExpressError");
 router.route("/")
     //get request for events route
     .get(wrapAsync(showEvents))
-
     //post request on eventsroute
     .post(upload.single('myFile'),validateEventSection,wrapAsync(createEvent))
 

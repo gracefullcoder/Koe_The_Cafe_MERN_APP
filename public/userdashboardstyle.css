@@ -80,7 +80,9 @@ nav.close {
 }
 nav .logo-name {
   display: flex;
-  /* align-items: center; */
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 1rem;
 }
 nav .logo-image {
   display: flex;
@@ -88,7 +90,7 @@ nav .logo-image {
   min-width: 45px;
 }
 nav .logo-image img {
-  width: 3.5rem;
+  width: 4.5rem;
   object-fit: cover;
   border-radius: 0.3rem;
 }
@@ -287,6 +289,27 @@ nav.close ~ .dashboard .top {
 }
 
 /*apne user ka data*/
+
+.no-activity{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  font-size: 1.2rem;
+
+}
+
+.no-activity a{
+  text-decoration: none;
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 1.4rem;
+  transition: 0.2s ease 0.1s;
+}
+
+.no-activity a:hover{
+  transform: scale(1.2);
+}
 
 .dash-content .user-content{
   display: flex;
@@ -599,13 +622,6 @@ input[type='file'] {
 }
 
 
-
-
-/* .activity .activity-data{
-    display: flex;
-}
-
-
 .activity-data .data{
     display: flex;
     flex-direction: column;
@@ -752,6 +768,15 @@ button[type="submit"]:hover {
   .user-activity .workshop-box{
     grid-template-columns: 1fr;
   }
+
+  nav .logo-name{
+    margin: 0rem;
+  }
+
+  nav .logo-image img {
+    width: 4rem;
+  }
+  
 }
 
 @media (max-width: 780px) {
@@ -877,7 +902,21 @@ button[type="submit"]:hover {
     list-style: none;
     color:var(--black-light-color)
   }
+
+  .top-nav-logout li{
+    display: flex;
+    flex-direction: column;
+  }
+  .top-nav-logout span{
+    font-size: 0.9rem;
+  }
+  
+
   .top-nav-logout a{
+    color:var(--black-light-color)
+  }
+
+  .top-nav-elements:hover{
     color: var(--primary-color);
   }
 
