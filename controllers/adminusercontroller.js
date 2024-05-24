@@ -1,4 +1,3 @@
-const express = require('express');
 const { ExpressError} = require("../utils/wrapAsyncAndExpressError");
 const User = require("../models/user.js");
 const path = require("path");
@@ -8,6 +7,7 @@ const Registration = require('../models/registration.js');
 const Booking = require("../models/booking.js");
 const Testimonial = require("../models/testimonials.js");
 const Workshop = require("../models/workshop.js");
+const Notification = require("../models/notifications.js");
 
 module.exports.selectSection = async (req, res) => {
     let { section } = req.body;
@@ -92,6 +92,16 @@ module.exports.unAssignAdmin = async (req, res) => {
     let data = await User.findByIdAndUpdate(id, { $unset: { role: true } }, { new: true }); //unset option use hota hai to remove key from object mongoose(unset role true)
     res.redirect("/admin/addadmin");
 }
+
+module.exports.notification = async (req,res) => {
+    let {title,message} = req.body;
+    let createdAt = new Date();
+    let newNotification = new Notification({title,message,createdAt});
+    await newNotification.save();
+    await User.updateMany({},{$inc:{notificationRemaining : 1}});
+    res.send("Notification Added Successfully !");
+  }
+
 
 module.exports.renderEditForm = async (req, res) => {
     let { id } = req.params;

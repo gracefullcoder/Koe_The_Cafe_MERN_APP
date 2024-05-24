@@ -170,7 +170,13 @@
           </a>
           <a href="/auth/login" class="signin-text">Sign in</a>
           <%} else{%>
-            <img id="profilepicture" src="<%=allSection.user.profilepicture.imagelink%>" alt="DP">
+            <div class="notification-badge-div">
+              <% if(allSection.user.notificationRemaining){ %>
+                <div class="notification-badge"></div>
+                <% } %>
+                  <img id="profilepicture" src="<%=allSection.user.profilepicture.imagelink%>" alt="DP">
+            </div>
+
             <div id="account-options" class="account-options">
               <div class="account-field-name">Hi <%=allSection.user.fullname%>!</div>
               <div class="account-field">
@@ -182,7 +188,18 @@
               <div class="account-field">
                 <a href="/dashboard?section=notifications" class="account-field-link">
                   <div class="separator"></div>
-                  <span class="span">Notifications</span>
+                  <div style="display: flex;">
+                    <span class="span">
+                      Notifications
+                    </span>
+                    <% if(allSection.user.notificationRemaining){ %>
+                      <p style="color: red;">
+                        + <%= allSection.user.notificationRemaining %>
+                      </p>
+                      <% } %>
+                  </div>
+
+
                 </a>
               </div>
               <div class="account-field">
@@ -716,9 +733,9 @@
             <a href="tel:+91 96246 96846" class="body-1 contact-number hover-underline">+91 96246 96846</a>
           </div>
         </div>
-        </section>
+      </section>
 
-        <section class="section bread-and-cheese-variety text-center">
+      <section class="section bread-and-cheese-variety text-center">
         <div class="bread-and-cheese">
           <div class="headline-2">
             Do check out our collection of breads and cheeses
@@ -882,10 +899,12 @@
 
                 <div class="icon-wrapper">
                   <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
-                    <input type="number" name="person" id="person" placeholder="" min="1" max="10000" class="input-field" style="background-color: rgb(27, 28, 29);" required>
-                    <label for="person">
-                      <p style="position: absolute;right: 10%;top: 22%;user-select: none;color: #f0f0f0;cursor: pointer;">Persons</p>
-                    </label>
+                  <input type="number" name="person" id="person" placeholder="" min="1" max="10000" class="input-field"
+                    style="background-color: rgb(27, 28, 29);" required>
+                  <label for="person">
+                    <p style="position: absolute;right: 10%;top: 22%;user-select: none;color: #f0f0f0;cursor: pointer;">
+                      Persons</p>
+                  </label>
                 </div>
 
                 <div class="icon-wrapper">

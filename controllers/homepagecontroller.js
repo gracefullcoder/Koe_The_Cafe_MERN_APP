@@ -9,7 +9,7 @@ const Event = require("../models/events.js");
 const path = require("path");
 const fs = require('fs');
 const { imagekit } = require("../config/imagekitconfig.js");
-
+const Notification = require("../models/notifications.js");
 
 const loadMainPage = async (req, res) => {
     let heroSliders = await Heroslider.find();
@@ -88,9 +88,18 @@ const renderTestimonialForm = (req, res) => {
 }
 
 const renderUserDashboard = async (req, res) => {
+    let {section} = req.query;
     let userData = await req.user.populate([{ path: "workshopsRegistered", populate: { path: "workshop" } }, "bookings", "testimonial"]);
     console.log("yes", userData);
-    res.render("homepage/userdashboard.ejs", { userData });
+    let notifications = false;
+    if(section == "notifications"){
+        let allNotifications = await Notification.find({});
+        let oldData = await User.findByIdAndUpdate(userData._id,{notificationRemaining:0});
+        notifications = {allNotifications, numOfUnread : oldData.notificationRemaining};
+    }
+    console.log(notifications," [[[[]]]]" ,section);
+
+    res.render("homepage/userdashboard.ejs", { userData,notifications});
 }
 
 const updateUser = async (req, res) => {

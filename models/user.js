@@ -1,4 +1,4 @@
-const { required } = require("joi");
+const { required, number } = require("joi");
 const mongoose = require("mongoose");
 const { type } = require("os");
 const passportLocalMongoose = require('passport-local-mongoose');
@@ -18,9 +18,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    DOB:{
-        type:Date,
-        required:true
+    DOB: {
+        type: Date,
+        required: true
     },
     role: //parent mai poora data one to few
     {
@@ -35,16 +35,21 @@ const userSchema = new mongoose.Schema({
             ref: "Registration"
         }
     ],
-    bookings : [
+    bookings: [
         {
-            type:Schema.ObjectId,
-            ref:"Booking"
+            type: Schema.ObjectId,
+            ref: "Booking"
         }
     ],
     testimonial:
     {
         type: Schema.ObjectId,
         ref: "Testimonial"
+    },
+    notificationRemaining: {
+        type: Number,
+        default: 0,
+        min:0
     }
 })
 

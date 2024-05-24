@@ -38,7 +38,7 @@
 
         <div class="menu-items">
             <ul class="nav-links">
-                <li id="dashboard"><a href="">
+                <li id="dashboard"><a href="#dashboard">
                         <i class="uil uil-estate"></i>
                         <span class="link-name">Dashboard</span>
                     </a></li>
@@ -47,10 +47,12 @@
                         <i class="uil uil-chart"></i>
                         <span class="link-name">Activity</span>
                     </a></li>
-                <li id="messagebroadcast"><a href="#notifications">
+                <li id="messagebroadcast">
+                    <a href="<%= notifications == false ? `?section=notifications` : `#notifications` %>">
                         <i class="fa-regular fa-message"></i>
                         <span class="link-name">Notifications</span>
-                    </a></li>
+                    </a>
+                </li>
 
             </ul>
 
@@ -393,9 +395,6 @@
             </div>
         </div>
 
-
-
-
         <!-- notifications -->
         <div>
             <div class="messagebroadcastdiv" id="notifications">
@@ -403,18 +402,55 @@
                     <i class="fa-regular fa-message"></i>
                     <span class="text">User Notifications</span>
                 </div>
+                <div class="notification-data">
+                    <h1 class="activity-heading">My Notifications</h1>
 
-                <div class="activity-data">
-                    <div>
-                        <h1 class="activity-heading">My Notifications</h1>
-                        <div class="user-activity">
-                            <p>No Notifications!</p>
-                        </div>
+                    <div class="notification new-notification">
+                        <p class="heading">New Notifications</p>
+                        <% if(notifications && notifications.numOfUnread){ %>
+                            <%for(let i=0 ; i < notifications.numOfUnread ; i++) { %>
+                                <%let length=notifications.allNotifications.length%>
+                                    <div class="notification-content">
+                                        <span><%= notifications.allNotifications[i].createdAt.toString().slice(0,15) %></span>
+                                        <p class="notification-title">
+                                            <%=notifications.allNotifications[length - 1 - i].title%>
+                                        </p>
+                                        <p>
+                                            <%=notifications.allNotifications[length - 1 - i].message%>
+                                        </p>
+
+                                    </div>
+                                    <%}%>
+                                        <% } else{ %>
+                                            <p>No New Notification!</p>
+                                            <% } %>
                     </div>
+
+                    <div class="notification old-notification">
+
+                        <p class="heading">Past Notifications : </p>
+                        <% if(notifications){ %>
+                            <%let length=notifications.allNotifications.length%>
+
+                                <%for(let i=0 ; i < length - notifications.numOfUnread ; i++) { %>
+                                    <div class="notification-content">
+                                        <span><%= notifications.allNotifications[i].createdAt.toString().slice(0,15) %></span>
+                                        <p class="notification-title">
+                                            <%=notifications.allNotifications[i].title%>
+                                        </p>
+                                        <p class="notification-description">
+                                            <%=notifications.allNotifications[i].message%>
+                                        </p>
+                                    </div>
+                                    <%}%>
+                                        <% } %>
+
+                    </div>
+
+
                 </div>
             </div>
         </div>
-
 
     </section>
 

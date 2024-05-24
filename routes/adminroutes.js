@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const {wrapAsync } = require("../utils/wrapAsyncAndExpressError");
-const fs = require('fs');
 const multer = require('multer');
 const { storage } = require("../config/imagekitconfig.js");
 const upload = multer({ storage: storage });
-const {selectSection,showUsers,destroyUser,assignAdmin,unAssignAdmin,renderEditForm,updateUser} = require("../controllers/adminusercontroller.js");
+const {selectSection,showUsers,destroyUser,assignAdmin,unAssignAdmin,notification,renderEditForm,updateUser} = require("../controllers/adminusercontroller.js");
 const {validateUserUpdate} = require("../middlewares/homepagemiddleware.js");
-
 
 router.route("/")
   .get((req, res) => {
@@ -31,5 +29,12 @@ router.route("/addadmin/edit/:id")
   .get(wrapAsync(renderEditForm))
 
   .patch(upload.single('myFile'),validateUserUpdate, wrapAsync(updateUser))
+
+router.route("/notification")
+  .get(async (req,res) => {
+    res.render("admindashboard/notification.ejs");
+  })
+
+  .post(wrapAsync(notification))
 
 module.exports = router;

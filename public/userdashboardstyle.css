@@ -567,6 +567,55 @@ input[type='file'] {
   padding: 1rem 1rem 1rem 0.5rem;
 }
 
+.notification{
+  padding: 1rem 1rem;
+}
+
+.notification .heading{
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-block-end: 1rem;
+}
+
+.new-notification{
+  margin-block-end: 2rem;
+}
+
+.notification .notification-content{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  /* align-items: center; */
+  border: 2px solid black;
+  padding: 2.3rem 2rem;
+  border-radius: 10px;
+  gap: 1.3rem;
+  background-color: aliceblue;
+  margin-block-end: 1rem;
+}
+
+.notification-content .notification-title{
+  align-self: center;
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+}
+
+.notification-content .notification-description{
+  text-align: justify;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+
+.notification-content span{
+  position: absolute;
+  top: 0.5rem;
+  right:0.5rem;
+  font-size: 1rem;
+}
 
 .dash-content .boxes {
   display: flex;
@@ -574,6 +623,8 @@ input[type='file'] {
   justify-content: space-between;
   flex-wrap: wrap;
 }
+
+
 .dash-content .boxes .box {
   display: flex;
   flex-direction: column;
