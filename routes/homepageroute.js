@@ -4,7 +4,7 @@ const { createTestimonial, destroyTestimonial, updateTestimonial } = require("..
 const multer = require('multer');
 const { storage } = require("../config/imagekitconfig.js");
 const upload = multer({ storage: storage });
-const { validateRegistration, validateBookings,validateUserUpdate ,isTestimonialAdded} = require("../middlewares/homepagemiddleware.js");
+const { validateRegistration, validateBookings,validateUserUpdate ,isTestimonialAdded,redirectAsRole} = require("../middlewares/homepagemiddleware.js");
 const { wrapAsync } = require("../utils/wrapAsyncAndExpressError.js")
 const { isLogedIn } = require("../middlewares/authmiddlewares.js");
 const { loadMainPage, tabelBooking, workshopRegistration, renderTestimonialForm, renderUserDashboard, updateUser } = require("../controllers/homepagecontroller.js");
@@ -34,23 +34,23 @@ router.patch("/dashboard/edit/:id",isLogedIn,upload.single('myFile'),validateUse
 
 router.route("/dashboard/booking/:id")
 
-    .delete(isLogedIn,wrapAsync(destroyBooking))
+    .delete(isLogedIn,redirectAsRole,wrapAsync(destroyBooking))
 
-    .patch(isLogedIn,validateBookings,wrapAsync(updateBooking))
+    .patch(isLogedIn,validateBookings,redirectAsRole,wrapAsync(updateBooking))
 
 
 router.route("/dashboard/registration/:id")
 
-    .delete(isLogedIn,wrapAsync(destroyRegistration))
+    .delete(isLogedIn,redirectAsRole,wrapAsync(destroyRegistration))
 
-    .patch(isLogedIn,validateRegistration,wrapAsync(updateRegistration))
+    .patch(isLogedIn,validateRegistration,redirectAsRole,wrapAsync(updateRegistration))
 
 
 router.route("/dashboard/testimonial/:id")
 
-    .delete(isLogedIn,wrapAsync(destroyTestimonial))
+    .delete(isLogedIn,redirectAsRole,wrapAsync(destroyTestimonial))
 
-    .patch(isLogedIn,validateTestimonial,wrapAsync(updateTestimonial))
+    .patch(isLogedIn,validateTestimonial,redirectAsRole,wrapAsync(updateTestimonial))
 
 
 module.exports = router;

@@ -1,7 +1,7 @@
-const {registrationSchema,bookingsSchema,updateUserSchema} = require("../models/schema.js");
+const { registrationSchema, bookingsSchema, updateUserSchema } = require("../models/schema.js");
 
 module.exports.validateUserUpdate = (req, res, next) => {
-    let { error} = updateUserSchema.validate(req.body);
+    let { error } = updateUserSchema.validate(req.body);
     if (error) {
         console.log(error);
         res.status(400).send(error.details[0].message);
@@ -13,7 +13,7 @@ module.exports.validateUserUpdate = (req, res, next) => {
 
 
 module.exports.validateRegistration = (req, res, next) => {
-    let { error} = registrationSchema.validate(req.body);
+    let { error } = registrationSchema.validate(req.body);
     if (error) {
         console.log(error);
         res.status(400).send(error.details[0].message);
@@ -24,18 +24,36 @@ module.exports.validateRegistration = (req, res, next) => {
 }
 
 
-module.exports.validateBookings = async (req,res,next) => {
-    let {error} = bookingsSchema.validate(req.body);
-    if(error){
+module.exports.validateBookings = async (req, res, next) => {
+    let { error } = bookingsSchema.validate(req.body);
+    if (error) {
         console.log(error);
         res.status(400).send(error.details[0].message);
-    } else{
+    } else {
         next();
     }
 }
 
-module.exports.isTestimonialAdded = (req,res,next) => {
-    if(req.user.testimonial){
+module.exports.redirectAsRole = (req, res, next) => {
+    let destinationUrl = req.originalUrl.toLowerCase();
+
+    console.log(destinationUrl);
+    if (destinationUrl.slice(1, 6) == "admin") {
+        if (destinationUrl[7] == 'b') {
+            req.session.redirectUrl = "/admin/bookings";
+        } else if (destinationUrl[7] == 'w') {
+            req.session.redirectUrl = "/admin/workshopsection"
+        } else {
+            req.session.redirectUrl = "/admin/testimonialsection";
+        }
+    } else {
+        req.session.redirectUrl = "/dashboard?section=activity"
+    }
+    next();
+}
+
+module.exports.isTestimonialAdded = (req, res, next) => {
+    if (req.user.testimonial) {
         return res.redirect("/dashboard?section=activity#testimonial");
     }
     next();

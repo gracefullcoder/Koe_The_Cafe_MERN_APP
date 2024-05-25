@@ -26,7 +26,8 @@ const destroyRegistration = async (req, res) => {
     // console.log("after update workshop", workshopdata);
     // console.log("deleted regitration ka data", registrationData);
     // res.redirect(`/admin/workshopregistration/${workshopdata._id}`);
-    res.redirect("/");
+    const redirectUrl = req.session.redirectUrl || "/";
+    res.redirect(redirectUrl);
 }
 
 const updateRegistration = async (req, res) => {
@@ -35,7 +36,8 @@ const updateRegistration = async (req, res) => {
     console.log(req.body);
     console.log(id);
     await Registration.findByIdAndUpdate(id, { phoneNumber: userPhone, message: userMessage },{new:true});
-    res.redirect("/");
+    const redirectUrl = req.session.redirectUrl || "/";
+    res.redirect(redirectUrl);
 }
 
 module.exports = { showAllRegistration, workshopRegistration, destroyRegistration, updateRegistration };

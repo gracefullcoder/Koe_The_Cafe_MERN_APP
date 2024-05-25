@@ -19,7 +19,7 @@ const createTestimonial = async (req, res, next) => {
         testimonialData.user = req.user._id;
         await testimonialData.save();
         await User.findByIdAndUpdate(req.user._id, { testimonial: testimonialData._id })
-        return res.redirect("/admin/testimonialsection");
+        return res.redirect("/dashboard?section=activity#testimonial");
     }
 
     let myFile = req.file.originalname;
@@ -46,7 +46,7 @@ const createTestimonial = async (req, res, next) => {
                 }
                 await User.findByIdAndUpdate(req.user._id, { testimonial: testimonialData._id, profilepicture: profilePicture })
                 fs.unlinkSync(fileLocation);
-                res.redirect("/admin/testimonialsection");
+                res.redirect("/dashboard?section=activity#testimonial");
             }
         });
     });
@@ -62,7 +62,8 @@ const destroyTestimonial = async (req, res) => {
     // if(req.user.role.isAdmin){
     //     return res.redirect("/admin/testimonialsection");
     // }else{
-        return res.redirect("/");
+        const redirectUrl = req.session.redirectUrl || "/";
+        return res.redirect(redirectUrl);
     // }
 }
 
@@ -85,7 +86,8 @@ const updateTestimonial = async (req, res, next) => {
     // if(req.user.role.admin){
     //     return res.redirect("/admin/testimonialsection");
     // }else{
-        return res.redirect("/");
+        const redirectUrl = req.session.redirectUrl || "/"
+        res.redirect(redirectUrl);
     // }
 }
 

@@ -31,7 +31,8 @@ const destroyBooking = async (req, res) => {
     let booking = await Booking.findByIdAndDelete(id);
     let data = await User.findByIdAndUpdate(booking.user, { $pull: { bookings: booking._id } }, { new: true });
     console.log(data);
-    res.redirect("/");
+    const redirectUrl = req.session.redirectUrl || "/";
+    return res.redirect(redirectUrl);
 }
 
 const renderEditForm = async (req, res) => {
@@ -58,7 +59,8 @@ const updateBooking = async (req, res) => {
         const combinedTime = `${reservationdate}T${time}`;
         const newBookingDetails = { name, phone, person, time: combinedTime, message };
         await Booking.findByIdAndUpdate(id, newBookingDetails);
-        res.redirect("/");
+        const redirectUrl = req.session.redirectUrl || "/";
+        return res.redirect(redirectUrl);
     }
 }
 
