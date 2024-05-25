@@ -3,7 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require("path");
 const methodOverride = require("method-override");
-const session = require('express-session')
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
@@ -29,6 +30,7 @@ const registrationRouter = require("./routes/registrationroute.js");
 const authRouter = require("./routes/userauthenticationroute.js");
 
 const { ExpressError } = require('./utils/wrapAsyncAndExpressError.js');
+const { error } = require('console');
 
 //config database
 connectDB;
@@ -43,12 +45,31 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
 //authentication
-app.use(session({
-  secret: 'vaibhavsecret',
+const sessionStorage = MongoStore.create({
+  mongoUrl: process.env.MONGO_ATLAS_URL,
+  crypto: {
+    secret: process.env.SESSION_SECRETKEY
+  },
+  touchAfter: 24 * 3600 //if no interaction with server then touch after 1 day
+});
+
+sessionStorage.on("error",() => {
+  console.log("ERROR Due to mongo session store",err);
+});
+
+const session_options = {
+  store: sessionStorage,
+  secret: process.env.SESSION_SECRETKEY,
   resave: false,
   saveUninitialized: true,
-  // cookie: { secure: true }
-}))
+  cookie: { // using cookie option bcoz expiry default value is for session,so to keep user logged in
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true
+  }
+};
+
+app.use(session(session_options));
 
 app.use(passport.initialize());
 app.use(passport.session());
