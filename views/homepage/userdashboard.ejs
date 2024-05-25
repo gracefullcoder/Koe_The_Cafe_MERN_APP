@@ -6,22 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    nt
+    <title>Dashboard</title>
     <!----======== CSS ======== -->
-    <link rel="stylesheet" href="../../public/userdashboardstyle.css">
+    <link rel="stylesheet" href="./css/userdashboardstyle.css">
 
     <!----===== Iconscout CSS ===== -->
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <!--font awesome link-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-
-    <title>Admin Dashboard Panel</title>
-
-    <!----===== Iconscout CSS ===== -->
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-
-    <title>Admin Dashboard Panel</title>
 </head>
 
 <body>
@@ -30,7 +22,7 @@
     <nav>
         <div class="logo-name">
             <div class="logo-image">
-                <a href="/"><img src="../../assets/images/koe-logo.png" alt=""></a>
+                <a href="/"><img src="/assets/images/koe-logo.png" alt=""></a>
             </div>
 
             <a href="/" style="text-decoration: none;"><span class="logo_name">Profile</span></a>
@@ -411,7 +403,9 @@
                             <%for(let i=0 ; i < notifications.numOfUnread ; i++) { %>
                                 <%let length=notifications.allNotifications.length%>
                                     <div class="notification-content">
-                                        <span><%= notifications.allNotifications[i].createdAt.toString().slice(0,15) %></span>
+                                        <span>
+                                            <%= notifications.allNotifications[i].createdAt.toString().slice(0,15) %>
+                                        </span>
                                         <p class="notification-title">
                                             <%=notifications.allNotifications[length - 1 - i].title%>
                                         </p>
@@ -434,7 +428,9 @@
 
                                 <%for(let i=0 ; i < length - notifications.numOfUnread ; i++) { %>
                                     <div class="notification-content">
-                                        <span><%= notifications.allNotifications[i].createdAt.toString().slice(0,15) %></span>
+                                        <span>
+                                            <%= notifications.allNotifications[i].createdAt.toString().slice(0,15) %>
+                                        </span>
                                         <p class="notification-title">
                                             <%=notifications.allNotifications[i].title%>
                                         </p>
@@ -458,7 +454,7 @@
 
 
 
-    <script src="../../public/userdashboardscript.js"></script>
+    <script src="/js/userdashboardscript.js"></script>
 </body>
 
 </html>

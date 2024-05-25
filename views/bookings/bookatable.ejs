@@ -1,92 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Koe - The Kafe </title>
-  <meta name="title" content="Koe - The Kafe ">
-  <meta name="description" content="This is a cafe html template">
-
-  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap" rel="stylesheet">
-
-  <!-- 
-    - custom css link
-  -->
-  <link rel="stylesheet" href="../../assets/css/style.css">
-
-  <!-- 
-    - preload images
-  -->
-  <link rel="preload" as="image" href="./assets/images/hero-slider-1.jpg">
-  <link rel="preload" as="image" href="./assets/images/hero-slider-2.jpg">
-  <link rel="preload" as="image" href="./assets/images/hero-slider-3.jpg">
-  <script src="app.js" defer></script>
+<%- include("../includes/header.ejs") %>
+<title>Booking Details</title>
 </head>
 
+<style>
+  form {
+    margin-top: 20px;
+  }
+
+  #signupForm .btn {
+    background-color: transparent;
+  }
+
+  #signupForm .btn:hover {
+    background-color: #eee;
+    color: #000;
+  }
+</style>
+
+
+
 <body id="top">
-
-  <!-- Add this style block inside the <head> tag of your loged2.ejs file -->
-  <style>
-    body {
-      font-family: 'DM Sans', sans-serif;
-      line-height: 1.6;
-      color: #333;
-      background-color: hsla(30, 8%, 5%, 1);
-      margin: 0;
-      height: auto;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th,
-    td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-
-    h1 {
-      color: #333;
-    }
-
-    form {
-      margin-top: 20px;
-    }
-
-    #signupForm .btn {
-      background-color: transparent;
-      /* Set background color to transparent */
-    }
-
-    #signupForm .btn:hover {
-      background-color: #eee;
-      /* Change background color on hover (optional) */
-      color: #000;
-      /* Change text color on hover (optional) */
-    }
-  </style>
-
-
-
 
   <section class="section countdown bg-black-10 text-center" aria-label="countdown" id="workshop">
     <div class="container">
@@ -117,18 +50,16 @@
 
               <tr>
                 <th scope="row">
-                  <%= 
-                  `${booking.time.getDate().toString().padStart(2, '0' )} - 
-                   ${(booking.time.getMonth() + 1).toString().padStart(2, '0' )} - 
-                   ${booking.time.getFullYear()}` 
-                  %>
+                  <%= `${booking.time.getDate().toString().padStart(2, '0' )} - ${(booking.time.getMonth() +
+                    1).toString().padStart(2, '0' )} - ${booking.time.getFullYear()}` %>
                 </th>
                 <td>
-                  <% const hours=booking.time.getHours(); 
-                    const minutes=booking.time.getMinutes().toString().padStart(2, '0' ); const period=hours>= 12 ? 'PM' : 'AM';
+                  <% const hours=booking.time.getHours(); const
+                    minutes=booking.time.getMinutes().toString().padStart(2, '0' ); const period=hours>= 12 ? 'PM' :
+                    'AM';
                     const hours12 = hours % 12 || 12;
-                  %>
-                  <%= `${hours12}:${minutes} ${period}` %>
+                    %>
+                    <%= `${hours12}:${minutes} ${period}` %>
                 </td>
                 <td>
                   <%=booking.name%>
@@ -147,7 +78,6 @@
                     action="/admin/bookings/edit/<%= booking._id%>">
                     <button type="submit" class="btn btn-primary">
                       <span class="text text-1">Edit!</span>
-                      <span class="text text-2" aria-hidden="true">Edit!</span>
                     </button>
                   </form>
                 </td>
@@ -156,7 +86,6 @@
                     action="/admin/bookings/<%= booking._id%>?_method=DELETE">
                     <button type="submit" class="btn btn-primary">
                       <span class="text text-1">DELETE</span>
-                      <span class="text text-2" aria-hidden="true">DELETE</span>
                     </button>
                   </form>
                 </td>
@@ -189,18 +118,16 @@
 
               <tr>
                 <th scope="row">
-                  <%= 
-                  `${booking.time.getDate().toString().padStart(2, '0' )} - 
-                   ${(booking.time.getMonth() + 1).toString().padStart(2, '0' )} - 
-                   ${booking.time.getFullYear()}` 
-                  %>
+                  <%= `${booking.time.getDate().toString().padStart(2, '0' )} - ${(booking.time.getMonth() +
+                    1).toString().padStart(2, '0' )} - ${booking.time.getFullYear()}` %>
                 </th>
                 <td>
-                  <% const hours=booking.time.getHours(); 
-                    const minutes=booking.time.getMinutes().toString().padStart(2, '0' ); const period=hours>= 12 ? 'PM' : 'AM';
+                  <% const hours=booking.time.getHours(); const
+                    minutes=booking.time.getMinutes().toString().padStart(2, '0' ); const period=hours>= 12 ? 'PM' :
+                    'AM';
                     const hours12 = hours % 12 || 12;
-                  %>
-                  <%= `${hours12}:${minutes} ${period}` %>
+                    %>
+                    <%= `${hours12}:${minutes} ${period}` %>
                 </td>
                 <td>
                   <%=booking.name%>
@@ -219,7 +146,6 @@
                     action="/admin/bookings/edit/<%= booking._id%>">
                     <button type="submit" class="btn btn-primary">
                       <span class="text text-1">Edit!</span>
-                      <span class="text text-2" aria-hidden="true">Edit!</span>
                     </button>
                   </form>
                 </td>
@@ -228,7 +154,6 @@
                     action="/admin/bookings/<%= booking._id%>?_method=DELETE">
                     <button type="submit" class="btn btn-primary">
                       <span class="text text-1">DELETE</span>
-                      <span class="text text-2" aria-hidden="true">DELETE</span>
                     </button>
                   </form>
                 </td>
@@ -259,18 +184,16 @@
 
               <tr>
                 <th scope="row">
-                  <%= 
-                  `${booking.time.getDate().toString().padStart(2, '0' )} - 
-                   ${(booking.time.getMonth() + 1).toString().padStart(2, '0' )} - 
-                   ${booking.time.getFullYear()}` 
-                  %>
+                  <%= `${booking.time.getDate().toString().padStart(2, '0' )} - ${(booking.time.getMonth() +
+                    1).toString().padStart(2, '0' )} - ${booking.time.getFullYear()}` %>
                 </th>
                 <td>
-                  <% const hours=booking.time.getHours(); 
-                    const minutes=booking.time.getMinutes().toString().padStart(2, '0' ); const period=hours>= 12 ? 'PM' : 'AM';
+                  <% const hours=booking.time.getHours(); const
+                    minutes=booking.time.getMinutes().toString().padStart(2, '0' ); const period=hours>= 12 ? 'PM' :
+                    'AM';
                     const hours12 = hours % 12 || 12;
-                  %>
-                  <%= `${hours12}:${minutes} ${period}` %>
+                    %>
+                    <%= `${hours12}:${minutes} ${period}` %>
                 </td>
                 <td>
                   <%=booking.name%>
@@ -289,7 +212,6 @@
                     action="/admin/bookings/edit/<%= booking._id%>">
                     <button type="submit" class="btn btn-primary">
                       <span class="text text-1">Edit!</span>
-                      <span class="text text-2" aria-hidden="true">Edit!</span>
                     </button>
                   </form>
                 </td>
@@ -298,7 +220,6 @@
                     action="/admin/bookings/<%= booking._id%>?_method=DELETE">
                     <button type="submit" class="btn btn-primary">
                       <span class="text text-1">DELETE</span>
-                      <span class="text text-2" aria-hidden="true">DELETE</span>
                     </button>
                   </form>
                 </td>
@@ -309,19 +230,6 @@
       </div>
     </div>
   </section>
-
-
-
-
-
-
-
-
-
-  <!-- 
-    - custom js link
-  -->
-  <script src="./assets/js/script.js"></script>
 
 </body>
 

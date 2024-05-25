@@ -1,42 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("../includes/header.ejs") %>
+<title>All Registrations</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Koe - The Kafe </title>
-    <meta name="title" content="Koe - The Kafe ">
-    <meta name="description" content="This is a cafe html template">
-
-    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Forum&display=swap"
-        rel="stylesheet">
-
-    <!-- 
-  - custom css link
--->
-    <link rel="stylesheet" href="../../assets/css/style.css">
-
-    <!-- 
-  - preload images
--->
-    <link rel="preload" as="image" href="./assets/images/hero-slider-1.jpg">
-    <link rel="preload" as="image" href="./assets/images/hero-slider-2.jpg">
-    <link rel="preload" as="image" href="./assets/images/hero-slider-3.jpg">
-    <script src="app.js" defer></script>
 </head>
 
 <body id="top" style="height: auto;background-color:hsla(30, 8%, 5%, 1);">
 
-    <!-- Countdown Timer Section -->
     <section class="section countdown bg-black-10 text-center" aria-label="countdown" id="workshop">
         <div class="container">
 
@@ -56,12 +24,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% let index = 0;
-                             for(registration of registrations){ %>
+                        <% let index=0; for(registration of registrations){ %>
                             <tr>
                                 <td>
                                     <%= index + 1 %>
-                                    <% index = index + 1%>
+                                        <% index=index + 1%>
                                 </td>
                                 <td>
                                     <%= registration.user.fullname %>
@@ -76,10 +43,10 @@
                                     <%= registration.message %>
                                 </td>
                                 <td>
-                                    <form id="signupForm" class="signup-form"  method="post" action="/admin/Workshopregistration/<%=registration._id%>?_method=DELETE">
+                                    <form id="signupForm" class="signup-form" method="post"
+                                        action="/admin/Workshopregistration/<%=registration._id%>?_method=DELETE">
                                         <button type="submit" class="btn btn-primary">
                                             <span class="text text-1">DELETE</span>
-                                            <span class="text text-2" aria-hidden="true">DELETE</span>
                                         </button>
                                     </form>
                                 </td>
@@ -91,15 +58,6 @@
 
         </div>
     </section>
-
-
-
-
-
-
-
-    <!---custom js link-->
-    <script src="./assets/js/script.js"></script>
 
 </body>
 
