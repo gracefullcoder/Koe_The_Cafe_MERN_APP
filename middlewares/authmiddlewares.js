@@ -40,4 +40,19 @@ const validateUser = (req,res,next) =>{
     }
 }
 
-module.exports = { isAlreadyLogin, isLogedIn,saveRedirectUrl,validateUser };
+const isNewUser = (req,res,next) =>{
+    if(req.session.isFormFilled){
+        res.locals.isNew = true;
+    }
+    next();
+}
+
+// const isFormFilled = (req,res,next) => {
+//     if(!req.session.detailsObtained){
+//         return res.redirect("/auth/signup/google");
+//     }
+//     next();
+// }
+
+
+module.exports = { isAlreadyLogin, isLogedIn,saveRedirectUrl,validateUser ,isNewUser};

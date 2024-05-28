@@ -12,6 +12,10 @@ const { imagekit } = require("../config/imagekitconfig.js");
 const Notification = require("../models/notifications.js");
 
 const loadMainPage = async (req, res) => {
+    // if(req.user){
+    //     if(!req.user.gender) return res.redirect("/auth/signup/google");
+    // }
+    
     let heroSliders = await Heroslider.find();
     let workshop = await Workshop.find();
     let currTime = new Date();

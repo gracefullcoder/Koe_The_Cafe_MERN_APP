@@ -1,11 +1,14 @@
 const { required, number } = require("joi");
 const mongoose = require("mongoose");
-const { type } = require("os");
 const passportLocalMongoose = require('passport-local-mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new mongoose.Schema({
-    fullname: {
+    federatedCredentials: {
+        provider: String,
+        subject: String
+    }
+    , fullname: {
         type: String,
         required: true
     },
@@ -49,7 +52,7 @@ const userSchema = new mongoose.Schema({
     notificationRemaining: {
         type: Number,
         default: 0,
-        min:0
+        min: 0
     }
 })
 

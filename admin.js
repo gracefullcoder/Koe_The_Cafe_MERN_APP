@@ -4,9 +4,10 @@ const bodyParser = require('body-parser');
 const path = require("path");
 const methodOverride = require("method-override");
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+let GoogleStrategy = require('passport-google-oidc');
+const MongoStore = require('connect-mongo');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -29,8 +30,6 @@ const bookingsRouter = require("./routes/bookingsroute.js");
 const registrationRouter = require("./routes/registrationroute.js");
 const authRouter = require("./routes/userauthenticationroute.js");
 
-const { ExpressError } = require('./utils/wrapAsyncAndExpressError.js');
-const { error } = require('console');
 
 //config database
 connectDB;
@@ -44,7 +43,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-//authentication
+//session for authentication
 const sessionStorage = MongoStore.create({
   mongoUrl: process.env.MONGO_ATLAS_URL,
   crypto: {
@@ -53,8 +52,8 @@ const sessionStorage = MongoStore.create({
   touchAfter: 24 * 3600 //if no interaction with server then touch after 1 day
 });
 
-sessionStorage.on("error",() => {
-  console.log("ERROR Due to mongo session store",err);
+sessionStorage.on("error", () => {
+  console.log("ERROR Due to mongo session store", err);
 });
 
 const session_options = {
@@ -65,7 +64,8 @@ const session_options = {
   cookie: { // using cookie option bcoz expiry default value is for session,so to keep user logged in
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true
+    httpOnly: true,
+    secure: false
   }
 };
 
@@ -73,7 +73,6 @@ app.use(session(session_options));
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
@@ -83,6 +82,67 @@ passport.deserializeUser(async (id, done) => {
   let user = await User.findById(id); //need to change it because mongoose abb findById mai callback nahi leta
   done(null, user);
 });
+
+
+//local strategy
+passport.use(new LocalStrategy(User.authenticate()));
+
+//google strategy
+passport.use(new GoogleStrategy({
+  clientID: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  callbackURL: 'http://localhost:8080/auth/oauth2/redirect',
+  passReqToCallback: true,
+},
+  async function verify(req,issuer, profile, cb) {
+    try {
+      console.log(profile);
+      let existingUser = await User.findOne({ username: profile.emails[0].value })
+      console.log(existingUser);
+      console.log(req.session);
+      if (!existingUser) {
+
+        if (!req.session.isFormFilled) {
+          // req.session.federatedCredentials = {
+          //   provider: issuer,
+          //   subject: profile.id
+          // };
+          // req.session.fullname = profile.displayName,
+          // req.session.username = profile.emails[0].value;
+ 
+          return cb(null, false, { message: 'form_incomplete' });
+        }
+
+        let newCred = new User({
+          federatedCredentials: {
+            provider: issuer,
+            subject: profile.id
+          },
+          fullname: profile.displayName,
+          username: profile.emails[0].value,
+          gender: req.session.gender,
+          DOB: req.session.DOB,
+          profilepicture: req.session.profilepicture
+        });
+
+        await newCred.save();
+        req.session.isNew = true;
+        // req.session.newUser = true;
+        return cb(null, newCred);
+      }
+
+      else {
+        // The account at Google has previously logged in to the app.  Get the
+        // user record associated with the Google account and log the user in.
+        return cb(null, existingUser);
+      }
+    } catch (err) {
+      console.log("error aaaya");
+      return cb(err);
+    }
+  }
+));
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
@@ -108,6 +168,8 @@ app.use("/admin/testimonialsection", isAdmin, testimonialsectionRouter);
 app.use("/admin/bookings", isAdmin, bookingsRouter);
 
 app.use("/admin/workshopregistration", isAdmin, registrationRouter);
+
+
 
 //error Handling if page not found
 // app.all("*", (req, res, next) => {
