@@ -154,12 +154,12 @@
 
       <div style="display: flex;align-items: center;">
         <%if(!allSection.user){%>
-          <a href="/auth/login" class="btn btn-secondary">
+          <a href="/auth/signup" class="btn btn-secondary">
             <span class="text text-1">Login</span>
 
             <span class="text text-2" aria-hidden="true">Sign Up!</span>
           </a>
-          <a href="/auth/login" class="signin-text">Sign in</a>
+          <a href="/auth/signup" class="signin-text">Sign in</a>
           <%} else{%>
             <div class="notification-badge-div">
               <% if(allSection.user.notificationRemaining){ %>
@@ -606,7 +606,7 @@
                   <span class="text text-2" aria-hidden="true">Register!</span>
                 </button>
                 <%}else{ %>
-                  <a href="/auth/login" class="btn btn-primary">
+                  <a href="/auth/signup" class="btn btn-primary">
                     <span class="text text-1">Sign in to Register!</span>
                     <span class="text text-2" aria-hidden="true">Sign in to Register!</span>
                   </a>
@@ -839,7 +839,7 @@
                   <span class="text text-2" aria-hidden="true">Book A Table</span>
                 </button>
                 <%}else{%>
-                  <a href="/auth/login" class="btn btn-secondary">
+                  <a href="/auth/signup" class="btn btn-secondary">
                     <span class="text text-1">Sign Up First!</span>
 
                     <span class="text text-2" aria-hidden="true">Sign Up to Book a Table!</span>
@@ -990,7 +990,7 @@
                     </a>
                     <% } %>
                       <%}else{%>
-                        <a href="/auth/login" class="btn btn-secondary">
+                        <a href="/auth/signup" class="btn btn-secondary">
                           <span class="text text-1">Add Testimonial!</span>
 
                           <span class="text text-2" aria-hidden="true">Sign Up First!</span>

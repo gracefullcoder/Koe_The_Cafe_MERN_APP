@@ -8,12 +8,13 @@ const Booking = require("../models/booking.js");
 const Testimonial = require("../models/testimonials.js");
 const Workshop = require("../models/workshop.js");
 const Notification = require("../models/notifications.js");
+const sendMail = require("../config/gmail.js");
 
 module.exports.selectSection = async (req, res) => {
     let { section } = req.body;
     section = "/admin/" + section.toString().toLowerCase();
     res.redirect(section);
-  }
+}
 
 
 module.exports.showUsers = async (req, res) => {
@@ -37,11 +38,11 @@ module.exports.showUsers = async (req, res) => {
 module.exports.destroyUser = async (req, res) => {
     let { id } = req.params;
     let userData = await User.findById(id);
-    console.log("this is",userData)
+    // console.log("this is", userData);
     const registrationsId = userData.workshopsRegistered;
 
-    await Registration.deleteMany({_id:{$in:registrationsId}});
-    await Booking.deleteMany({_id:{$in:userData.bookings}});
+    await Registration.deleteMany({ _id: { $in: registrationsId } });
+    await Booking.deleteMany({ _id: { $in: userData.bookings } });
     await Testimonial.findByIdAndDelete(userData.testimonial);
 
     await userData.populate("workshopsRegistered");
@@ -51,9 +52,9 @@ module.exports.destroyUser = async (req, res) => {
 
     // console.log(userData);
     // console.log(workshopIds);
-    let workshopdata = await Workshop.updateMany({_id:{$in:workshopIds}},
+    let workshopdata = await Workshop.updateMany({ _id: { $in: workshopIds } },
         {
-            $pull: { registrations: {$in:registrationsId} }
+            $pull: { registrations: { $in: registrationsId } }
         }, { new: true });
 
     // console.log(workshopdata);
@@ -93,14 +94,29 @@ module.exports.unAssignAdmin = async (req, res) => {
     res.redirect("/admin/addadmin");
 }
 
-module.exports.notification = async (req,res) => {
-    let {title,message} = req.body;
+module.exports.notification = async (req, res) => {
+    let { title, message, htmlContent } = req.body;
     let createdAt = new Date();
     let newNotification = new Notification({title,message,createdAt});
     await newNotification.save();
     await User.updateMany({},{$inc:{notificationRemaining : 1}});
+    if (htmlContent) {
+        let googleLoggedinUsers = await User.find({ 'federatedCredentials.subject': { $exists: true } }, { _id: 0, username: 1 });
+        googleLoggedinUsers = googleLoggedinUsers.map((user) => user.username);
+        // console.log(googleLoggedinUsers);
+        const mailData = {
+            from: 'Koe the Cafe🍵<codingvaibhav247@gmail.com>',
+            to: googleLoggedinUsers,
+            subject: title,
+            text: message,
+            html: htmlContent
+        }
+        sendMail(mailData).then(result => console.log(`mail sent successfully this is result : ${result}`))
+            .catch(err => console.log("error bheja ye", err))
+    }
+
     res.send("Notification Added Successfully !");
-  }
+}
 
 
 module.exports.renderEditForm = async (req, res) => {
@@ -110,15 +126,15 @@ module.exports.renderEditForm = async (req, res) => {
 }
 
 
-module.exports.updateUser = async (req, res,next) => {
+module.exports.updateUser = async (req, res, next) => {
     let { id } = req.params;
     console.log(req.body);
-    let { fullname, gender, DOB,imagecheckbox } = req.body;
+    let { fullname, gender, DOB, imagecheckbox } = req.body;
     fullname = fullname.toString();
     gender = gender.toString();
-    console.log("-------",req.file)
+    // console.log("-------", req.file)
     if (!imagecheckbox) {
-        let document = await User.findOneAndUpdate({ _id: id }, { fullname: fullname, gender: gender ,DOB:DOB});
+        let document = await User.findOneAndUpdate({ _id: id }, { fullname: fullname, gender: gender, DOB: DOB });
         return res.redirect("/admin/addadmin"); //yaha pe else hai nahi tho return lagana must
     }
     else {
@@ -149,7 +165,7 @@ module.exports.updateUser = async (req, res,next) => {
                             imageid: imageid,
                             imagelink: image,
                         }
-                        let oldData = await User.findOneAndUpdate({ _id: id }, { fullname: fullname, gender: gender,DOB:DOB, profilepicture: profilepicture });
+                        let oldData = await User.findOneAndUpdate({ _id: id }, { fullname: fullname, gender: gender, DOB: DOB, profilepicture: profilepicture });
                         console.log(oldData);
                         if (oldData.profilepicture.isUpdated) {
                             imagekit.deleteFile(oldData.profilepicture.imageid)
