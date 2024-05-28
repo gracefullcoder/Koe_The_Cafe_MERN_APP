@@ -13,7 +13,7 @@ router.route("/")
   })
 
   //select page se ispe post and it will redirect ot other pages
-  .post(wrapAsync(selectSection));
+  // .post(wrapAsync(selectSection));
 
 router.route("/addadmin")
   .get(wrapAsync(showUsers));

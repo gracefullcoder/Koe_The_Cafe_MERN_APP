@@ -10,11 +10,11 @@ const Workshop = require("../models/workshop.js");
 const Notification = require("../models/notifications.js");
 const sendMail = require("../config/gmail.js");
 
-module.exports.selectSection = async (req, res) => {
-    let { section } = req.body;
-    section = "/admin/" + section.toString().toLowerCase();
-    res.redirect(section);
-}
+// module.exports.selectSection = async (req, res) => {
+//     let { section } = req.body;
+//     section = "/admin/" + section.toString().toLowerCase();
+//     res.redirect(section);
+// }
 
 
 module.exports.showUsers = async (req, res) => {
@@ -69,6 +69,7 @@ module.exports.destroyUser = async (req, res) => {
             });
     }
     // console.log(user);
+    await User.findByIdAndDelete(id);
     res.redirect("/admin/addadmin");
 }
 
