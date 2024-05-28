@@ -5,7 +5,7 @@ require('dotenv').config();
 const oAuth2Client = new google.auth.OAuth2(
     process.env.CLIENT_ID,
     process.env.CLIENT_SECRET,
-    'https://developers.google.com/oauthplayground'
+    process.env.GMAIL_REDIRECTURI
   );
 
 oAuth2Client.setCredentials({refresh_token:process.env.GMAIL_REFRESHTOKEN});

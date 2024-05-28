@@ -91,7 +91,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: 'http://localhost:8080/auth/oauth2/redirect',
+  callbackURL: process.env.AUTH_REDIRECT_URI,
   passReqToCallback: true,
 },
   async function verify(req,issuer, profile, cb) {
