@@ -913,7 +913,7 @@ button[type="submit"]:hover {
   }
 
   .overview{
-    padding: 0rem 0rem 1.25rem 0rem;
+    padding: 0rem 0.5rem 1.25rem 0.5rem;
   }
 
   .activity{
