@@ -5,7 +5,7 @@
 <body>
     <h1 class="headline-1 section-title" style="text-align: center;">Edit User</h1>
 
-    <form class="edit-form" method="post" enctype="multipart/form-data" action="/admin/addadmin/edit/<%=user._id%>/?_method=PATCH">
+    <form class="edit-form" method="post" enctype="multipart/form-data" action="/admin/users/edit/<%=user._id%>/?_method=PATCH">
         <p>Full Name</p><input type="text" name="fullname" value="<%= user.fullname %>">
         <p>Gender</p>
         <select name="gender" style="width: 100%;padding:10px">

@@ -31,7 +31,7 @@ module.exports.showUsers = async (req, res) => {
         }
     }
     // console.log(normalUsers, adminUsers);
-    res.render("admindashboard/addadmin.ejs", { adminUsers, normalUsers });
+    res.render("admindashboard/manageusers.ejs", { adminUsers, normalUsers });
 }
 
 
@@ -70,7 +70,7 @@ module.exports.destroyUser = async (req, res) => {
     }
     // console.log(user);
     await User.findByIdAndDelete(id);
-    res.redirect("/admin/addadmin");
+    res.redirect("/admin/users");
 }
 
 
@@ -84,7 +84,7 @@ module.exports.assignAdmin = async (req, res) => {
     }
 
     await User.findByIdAndUpdate(id, user);
-    res.redirect("/admin/addadmin");
+    res.redirect("/admin/users");
 }
 
 
@@ -92,7 +92,7 @@ module.exports.unAssignAdmin = async (req, res) => {
     let { id } = req.params;
     let user = await User.findById(id);
     let data = await User.findByIdAndUpdate(id, { $unset: { role: true } }, { new: true }); //unset option use hota hai to remove key from object mongoose(unset role true)
-    res.redirect("/admin/addadmin");
+    res.redirect("/admin/users");
 }
 
 module.exports.notification = async (req, res) => {
@@ -136,7 +136,7 @@ module.exports.updateUser = async (req, res, next) => {
     // console.log("-------", req.file)
     if (!imagecheckbox) {
         let document = await User.findOneAndUpdate({ _id: id }, { fullname: fullname, gender: gender, DOB: DOB });
-        return res.redirect("/admin/addadmin"); //yaha pe else hai nahi tho return lagana must
+        return res.redirect("/admin/users"); //yaha pe else hai nahi tho return lagana must
     }
     else {
         if (!req.file) {
@@ -179,7 +179,7 @@ module.exports.updateUser = async (req, res, next) => {
                                 });
                         }
                         fs.unlinkSync(fileLocation);
-                        res.redirect("/admin/addadmin");
+                        res.redirect("/admin/users");
                     }
                 });
         });

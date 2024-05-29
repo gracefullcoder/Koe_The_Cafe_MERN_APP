@@ -99,7 +99,7 @@ router.get('/oauth2/redirect',
         // console.log(res.locals, "*****" , req.user);
         if (res.locals.isNew) {
             const mailData = {
-                from: 'codingvaibhav247@gmail.com',
+                from: 'Koe the Cafe🍵<codingvaibhav247@gmail.com>',
                 to: req.user.username,
                 subject: 'Welcome to Koe the Cafe',
                 text: 'Welcome Message, Have A NICE DAY!',

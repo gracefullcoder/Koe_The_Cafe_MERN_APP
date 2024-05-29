@@ -17,10 +17,11 @@ const User = require("./models/user.js");
 const { isAdmin } = require("./middlewares/adminmiddlewares.js");
 const PORT = process.env.PORT || 8080;
 const connectDB = require('./config/dbconfig.js');
+const {ExpressError} = require("./utils/wrapAsyncAndExpressError.js")
 
 //routes
 const homeRouter = require("./routes/homepageroute.js");
-const adminRouter = require("./routes/adminroutes.js");
+const adminRouter = require("./routes/userroutes.js");
 const herosectionRouter = require("./routes/herosectionroutes.js");
 const specialitysectionRouter = require("./routes/specialitysectionroutes.js");
 const workshopRouter = require('./routes/workshoproutes.js');
@@ -147,7 +148,6 @@ passport.use(new GoogleStrategy({
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-
 
 app.use("/", homeRouter);
 
