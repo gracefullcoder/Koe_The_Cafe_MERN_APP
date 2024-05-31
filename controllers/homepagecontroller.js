@@ -94,16 +94,41 @@ const renderTestimonialForm = (req, res) => {
 const renderUserDashboard = async (req, res) => {
     let {section} = req.query;
     let userData = await req.user.populate([{ path: "workshopsRegistered", populate: { path: "workshop" } }, "bookings", "testimonial"]);
-    console.log("yes", userData);
+    let currTime = new Date();
+    let pastBookings = [];
+    let currBookings = [];
+    userData.bookings.forEach((booking) => {
+        if(booking.time > currTime){
+            currBookings.push(booking);
+        }else{
+            pastBookings.push(booking);
+        }
+    });
+    console.log(pastBookings,currBookings);
+    // userData.bookings = {pastBookings: pastBookings,currBookings: currBookings };
+
+    let pastWorkshops = [];
+    let currWorkshops = [];
+    userData.workshopsRegistered.forEach((registration) => {
+        if(registration.workshop.time > currTime){
+            currWorkshops.push(registration);
+        }else{
+            pastWorkshops.push(registration);
+        }
+    });
+    
+    // userData.workshopsRegistered = {pastWorkshops,currWorkshops};
+    
+    console.log("user Data", userData);
     let notifications = false;
     if(section == "notifications"){
         let allNotifications = await Notification.find({});
         let oldData = await User.findByIdAndUpdate(userData._id,{notificationRemaining:0});
         notifications = {allNotifications, numOfUnread : oldData.notificationRemaining};
     }
-    console.log(notifications," [[[[]]]]" ,section);
+    console.log("notifications " ,notifications,"section" ,section);
 
-    res.render("homepage/userdashboard.ejs", { userData,notifications});
+    res.render("homepage/userdashboard.ejs", { userData,notifications,currBookings,pastBookings,currWorkshops,pastWorkshops});
 }
 
 const updateUser = async (req, res) => {

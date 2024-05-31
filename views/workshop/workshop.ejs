@@ -84,6 +84,8 @@
                             <th scope="col">TEXT BELOW TITLE</th>
                             <th scope="col">TIME</th>
                             <th scope="col">Get Details</th>
+                            <th scope="col">Edit Countdown</th>
+                            <th scope="col">Delete Slider</th>
                         </tr>
                     </thead>
 
@@ -104,9 +106,24 @@
                                     <%=workshop.time%>
                                 </td>
                                 <td>
-                                    <form method="get" action="/">
+                                    <form method="get" action="/admin/workshopregistration/<%=workshop._id%>">
                                         <button submit="none">
                                             Get Details!
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="get" action="/admin/workshopsection/edit/<%=workshop._id%>">
+                                        <button>
+                                            EDIT!
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form method="post"
+                                        action="/admin/workshopsection/<%=workshop._id%>?_method=DELETE">
+                                        <button>
+                                            Delete!
                                         </button>
                                     </form>
                                 </td>
@@ -119,8 +136,8 @@
             <form id="addfield" class="addfield" method="post" action="/admin/workshopsection">
                 <label for="name" class="formlabel">New workshop</label>
                 <input type="text" id="name" name="label" placeholder="label" value="">
-                <input type="text" name="title" placeholder="title" value=" ">
-                <input type="text" name="text" placeholder="text below title" value="">
+                <input type="text" name="title" placeholder="title" value="">
+                <input type="text" name="text" placeholder="Description of the workshop" value="">
                 <p style="margin-block-start: 1rem;margin-block-end: 1rem;color:hsl(38, 61%, 73%);">Enter the Date of
                     the workshop</p>
                 <input type="date" id="myFile" name="date" />

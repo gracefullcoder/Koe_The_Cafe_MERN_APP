@@ -206,15 +206,17 @@
                 <!-- bookings -->
                 <div>
                     <h1 class="activity-heading">My Bookings</h1>
+                    <h2 class="activity-detail-label activity-sub-heading" style="margin-left: 1rem;">Current Bookings
+                    </h2>
                     <div class="user-activity">
-                        <% if(userData.bookings.length==0) {%>
+                        <% if(currBookings.length==0) {%>
                             <div class="no-activity">
                                 <p>No Reservation Done!</p>
                                 <a href="/#reservation">Book a table Now!</a>
                             </div>
-                            <% } %>
+                            <% }%>
                                 <% let bookingIndex=1 %>
-                                    <% userData.bookings.forEach((booking)=> { %>
+                                    <%currBookings.forEach((booking)=> { %>
                                         <div class="activity-box booking-box">
                                             <form method="post"
                                                 action="/dashboard/booking/<%=booking._id%>/?_method=PATCH">
@@ -263,6 +265,50 @@
                                         <% bookingIndex++ %>
                                             <% }) %>
                     </div>
+                    <% if(pastBookings.length> 0){ %>
+                        <h2 class="activity-detail-label activity-sub-heading" style="margin-left: 1rem;">Past bookings
+                        </h2>
+                        <div class="user-activity">
+
+                            <%pastBookings.forEach((booking)=> { %>
+                                <div class="activity-box booking-box">
+                                    <h2 class="activity-number">Booking <%= bookingIndex %>
+                                    </h2>
+                                    <div class="activity-detail-field">
+                                        <h3 class="activity-detail-label">Name:</h3>
+                                        <input type="text" class="user-input" name="name" value="<%= booking.name %>"
+                                            disabled="disabled">
+                                    </div>
+                                    <div class="activity-detail-field">
+                                        <h3 class="activity-detail-label">Phone Number:</h3>
+                                        <input type="text" class="user-input" name="phone" value="<%= booking.phone %>"
+                                            disabled="disabled">
+                                    </div>
+                                    <div class="activity-detail-field">
+                                        <h3 class="activity-detail-label">Number of Persons:</h3>
+                                        <input type="number" min="1" max="10000" class="user-input" name="person"
+                                            value="<%= booking.person %>" disabled="disabled">
+                                    </div>
+                                    <div class="activity-detail-field">
+                                        <h3 class="activity-detail-label">Date:</h3>
+                                        <input type="date" class="user-input" name="reservationdate" disabled="disabled"
+                                            value="<%= `${booking.time.getFullYear()}-${(booking.time.getMonth() + 1).toString().padStart(2, '0')}-${booking.time.getDate().toString().padStart(2, '0')}` %>">
+                                    </div>
+                                    <div class="activity-detail-field">
+                                        <h3 class="activity-detail-label">Time:</h3>
+                                        <input type="time" class="user-input" name="time" disabled="disabled"
+                                            value="<%= `${booking.time.getHours().toString().padStart(2, '0')}:${booking.time.getMinutes().toString().padStart(2, '0')}` %>">
+                                    </div>
+                                    <div class="activity-detail-field">
+                                        <h3 class="activity-detail-label">Message:</h3>
+                                        <textarea class="user-input textarea" name="message"
+                                            disabled="disabled"><%= booking.message %></textarea>
+                                    </div>
+                                </div>
+                                <% bookingIndex++ %>
+                                    <% }) %>
+                        </div>
+                        <% } %>
                 </div>
 
                 <hr>
@@ -270,16 +316,18 @@
                 <!-- workshops -->
                 <div>
                     <h1 class="activity-heading">Workshop Registrations</h1>
+                    <h2 class="activity-detail-label activity-sub-heading" style="margin-left: 1rem;">
+                        Current Workshops Registerd</h2>
                     <div class="user-activity">
-                        <% if(userData.workshopsRegistered.length==0) {%>
+                        <% if(currWorkshops.length==0) {%>
                             <div class="no-activity">
-                                <p>Till yet not registerd in any Workshop!</p>
+                                <p>Register For Next Workshop!</p>
                                 <a href="/#workshop">Register Now!</a>
                             </div>
                             <% } %>
 
                                 <% let workshopIndex=1 %>
-                                    <% userData.workshopsRegistered.forEach((registration)=> { %>
+                                    <% currWorkshops.forEach((registration)=> { %>
                                         <div class="activity-box workshop-box">
                                             <div class="workshop-post">
                                                 <h2 class="activity-number">Booking <%= workshopIndex %>
@@ -291,7 +339,8 @@
                                                     </p>
                                                 </div>
                                                 <div class="activity-detail-field">
-                                                    <h3 class="activity-detail-label">Workshop Description:</h3>
+                                                    <h3 class="activity-detail-label">Workshop Description:
+                                                    </h3>
                                                     <p class="workshop-detail">
                                                         <%= registration.workshop.text %>
                                                     </p>
@@ -344,6 +393,72 @@
                                         <% workshopIndex++ %>
                                             <% }) %>
                     </div>
+
+                    <% if(pastWorkshops.length> 0){ %>
+                        <h2 class="activity-detail-label activity-sub-heading" style="margin-left: 1rem;">
+                            Past Workshops Registerd</h2>
+                        <div class="user-activity">
+                            <% if(pastWorkshops.length==0) {%>
+                                <div class="no-activity">
+                                    <p>Till yet not registerd in any Workshop!</p>
+                                    <a href="/#workshop">Register Now!</a>
+                                </div>
+                                <% } %>
+                                    <% pastWorkshops.forEach((registration)=> { %>
+                                        <div class="activity-box workshop-box">
+                                            <div class="workshop-post">
+                                                <h2 class="activity-number">Booking <%= workshopIndex %>
+                                                </h2>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Title:</h3>
+                                                    <p class="workshop-detail">
+                                                        <%= registration.workshop.title %>
+                                                    </p>
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Workshop Description:
+                                                    </h3>
+                                                    <p class="workshop-detail">
+                                                        <%= registration.workshop.text %>
+                                                    </p>
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Date:</h3>
+                                                    <p class="workshop-detail">
+                                                        <%= `${registration.workshop.time.getDate().toString().padStart(2, '0'
+                                                            )}-${(registration.workshop.time.getMonth() +
+                                                            1).toString().padStart(2, '0'
+                                                            )}-${registration.workshop.time.getFullYear()}` %>
+                                                    </p>
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Time:</h3>
+                                                    <p class="workshop-detail">
+                                                        <%= `${registration.workshop.time.getHours().toString().padStart(2, '0'
+                                                            )}:${registration.workshop.time.getMinutes().toString().padStart(2, '0'
+                                                            )}` %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="user-details-workshop">
+                                                <h2 class="workshop-detail-heading">Your Response</h2>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">PhoneNumber:</h3>
+                                                    <input type="text" class="user-input" name="userPhone"
+                                                        value="<%= registration.phoneNumber %>" disabled="disabled">
+                                                </div>
+                                                <div class="activity-detail-field">
+                                                    <h3 class="activity-detail-label">Message:</h3>
+                                                    <textarea class="user-input textarea" name="userMessage"
+                                                        disabled="disabled"><%= registration.message %></textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <% workshopIndex++ %>
+                                            <% }) %>
+                        </div>
+                        <% } %>
                 </div>
 
                 <hr>

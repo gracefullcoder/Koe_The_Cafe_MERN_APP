@@ -455,6 +455,10 @@ input[type='file'] {
   justify-content: center;
 }
 
+.activity-sub-heading{
+  margin-block: 2rem 1rem;
+}
+
 .user-activity .activity-number{
   margin-block-end: 1rem;
   color: var(--primary-color);
