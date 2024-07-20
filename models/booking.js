@@ -12,19 +12,30 @@ const bookingSchema = new mongoose.Schema({
   person: {
     type: Number,
     required: true,
-    min:1
+    min: 1
   },
-  time:{
-    type:Date,
-    required:true
+  date: {
+    type: Date,
+    required: true
+  },
+  startTime: {
+    type: String,
+    required: true
+  },
+  endTime: {
+    type: String,
+    required: true
   },
   message: {
     type: String,
-    required: true
   },
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User"
+  },
+  seats: {
+    type: Array,
+    required: true
   }
 });
 
