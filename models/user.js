@@ -1,4 +1,3 @@
-const { required, number } = require("joi");
 const mongoose = require("mongoose");
 const passportLocalMongoose = require('passport-local-mongoose');
 const { Schema } = mongoose;
@@ -49,12 +48,34 @@ const userSchema = new mongoose.Schema({
         type: Schema.ObjectId,
         ref: "Testimonial"
     },
-    notificationRemaining: {
-        type: Number,
-        default: 0,
-        min: 0
-    }
-})
+    notification: {
+        notificationsRemaining: {
+            type: Number,
+            default: 0,
+            min: 0
+        },
+        pushMessage: {
+            type: String,
+            default: "NA"
+        }
+    },
+    cart: [{
+        dish: {
+            type: Schema.ObjectId,
+            ref: "Dish"
+        },
+        quantity: {
+            type: Number,
+            default: 0
+        }
+    }],
+    orders: [
+        {
+            type: Schema.ObjectId,
+            ref: "Order"
+        }
+    ]
+}, { timestamps: true })
 
 userSchema.plugin(passportLocalMongoose);
 
