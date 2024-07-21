@@ -24,8 +24,7 @@ const userSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    role: //parent mai poora data one to few
-    {
+    role: {
         _id: false,
         admin: Boolean,
         creatorname: String,
@@ -82,6 +81,3 @@ userSchema.plugin(passportLocalMongoose);
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
-
-
-
