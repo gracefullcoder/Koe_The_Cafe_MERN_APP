@@ -25,10 +25,22 @@ module.exports.validateRegistration = (req, res, next) => {
 
 
 module.exports.validateBookings = async (req, res, next) => {
+    console.log(req.body);
     let { error } = bookingsSchema.validate(req.body);
     if (error) {
         console.log(error);
-        res.status(400).send(error.details[0].message);
+        next(new ExpressError(400, error.details[0].message));
+    } else {
+        next();
+    }
+}
+
+module.exports.validateBookingUpdate = async (req, res, next) => {
+    console.log(req.body);
+    let { error } = editBookingSchema.validate(req.body);
+    if (error) {
+        console.log(error);
+        next(new ExpressError(400, error.details[0].message));
     } else {
         next();
     }
