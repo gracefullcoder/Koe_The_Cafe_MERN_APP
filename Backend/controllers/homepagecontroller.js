@@ -31,27 +31,18 @@ const loadMainPage = async (req, res) => {
 }
 
 
-const tabelBooking = async (req, res) => {
-    const { name, phone, person, time, reservationdate, message } = req.body;
+const tableBooking = async (req, res) => {
+    const { name, phone, person, startTime, date, message, seats } = req.body;
+    console.log(req.body);
+    let endTime = req.body.endTime;
 
-    // Combine date and time into ISO 8601 format
-    const combinedTime = new Date(`${reservationdate}T${time}`);
-    let acceptedTime = new Date(Date.now() + 4 * 60 * 60 * 1000);
-    if (combinedTime < acceptedTime) {
-        return res.send(`Booking should be after 4 hours of current Date : 
-        ${(acceptedTime.getDate()).toString().padStart(2,'0')}-${(acceptedTime.getMonth() + 1).toString().padStart(2,'0')}-${(acceptedTime.getFullYear())} and 
-        current Time ${(acceptedTime.getHours() - 4).toString().padStart(2,'0')}:${(acceptedTime.getMinutes()).toString().padStart(2,'0')}.\n\n
-        Next Booking accepted After : ${acceptedTime.getHours().toString().padStart(2,'0')}:${acceptedTime.getMinutes().toString().padStart(2,'0')}
-        For any Issue You can contact on +91 96246 96846`);
-    } else {
-        const newbooking = new Booking({ name, phone, person, time: combinedTime, message });
-        newbooking.user = req.user._id;
-        await newbooking.save();
-        let currBookings = req.user.bookings;
-        currBookings.push(newbooking);
-        await User.findByIdAndUpdate(req.user._id, { bookings: currBookings });
-        res.redirect("/");
-    }
+    if (endTime == '00:00') endTime = '23:59';
+
+    const newbooking = new Booking({ name, phone, person, date, startTime, endTime, message, seats });
+    newbooking.user = req.user._id;
+    await newbooking.save();
+    await User.findByIdAndUpdate(req.user._id, { $push: { bookings: newbooking._id } });
+    res.status(200).json({ success: "true", message: "Registration Succesfull🎉, Will reach you soon!" })
 }
 
 const workshopRegistration = async (req, res) => {

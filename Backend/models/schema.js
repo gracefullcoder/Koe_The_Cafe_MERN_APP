@@ -30,27 +30,22 @@ const updateUserSchema = Joi.object({
 });
 
 const bookingsSchema = Joi.object({
-  name: Joi.string().required(),
-  phone: Joi.string()
-    .regex(/^[0-9]{10}$/)
-    .messages({ "string.pattern.base": `Please Enter a valid phone number` })
-    .required(),
+  name: Joi.string().required().min(3),
+  phone: Joi.string().regex(/^[0-9]{10}$/).messages({ 'string.pattern.base': `Please Enter a valid phone number` }).required(),
   person: Joi.number().required().min(1).max(200),
   startTime: Joi.string().required(),
   endTime: Joi.string().required(),
   date: Joi.date().required(),
   message: Joi.string().allow("", null),
-  seats: Joi.array().required(),
-});
+  seats: Joi.array().required()
+})
+
 
 const editBookingSchema = Joi.object({
   name: Joi.string().required(),
-  phone: Joi.string()
-    .regex(/^[0-9]{10}$/)
-    .messages({ "string.pattern.base": `Please Enter a valid phone number` })
-    .required(),
+  phone: Joi.string().regex(/^[0-9]{10}$/).messages({ 'string.pattern.base': `Please Enter a valid phone number` }).required(),
   message: Joi.string().allow("", null),
-});
+})
 
 const newSectionSchema = Joi.object({
   label: Joi.string().required(),
