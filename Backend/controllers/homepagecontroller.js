@@ -21,7 +21,7 @@ const loadMainPage = async (req, res) => {
     let isWorkshop = false;
     if (workshop != {} && workshop.time > currTime) isWorkshop = true;
     let specialSection = await Specialslider.find();
-    let testimonials = await Testimonial.find().populate({ path: "user", select: 'fullname profilepicture' }); //after populating selecting only required data
+    let testimonials = await Testimonial.find().populate({ path: "user", select: 'fullname profilepicture' });
     let events = await Event.find();
     const menus = await Menu.find().populate("dishes");
     let allSection = { heroSliders, menus, workshop, specialSection, testimonials, events, user: req.user, isWorkshop: isWorkshop };
@@ -40,6 +40,7 @@ const userAction = async (req, res) => {
 }
 
 
+
 const tableBooking = async (req, res) => {
     const { name, phone, person, startTime, date, message, seats } = req.body;
     console.log(req.body);
@@ -54,57 +55,56 @@ const tableBooking = async (req, res) => {
     res.status(200).json({ success: "true", message: "Registration Succesfull🎉, Will reach you soon!" })
 }
 
+
 const workshopRegistration = async (req, res) => {
     let { id } = req.params;
-    let flag = true;
     console.log("register");
-
+    console.log(req.body);
     let userRegistrations = await req.user.populate("workshopsRegistered");
     console.log(userRegistrations);
     userRegistrations.workshopsRegistered.forEach((registration) => {
         if (registration.workshop == id) {
-            flag = false;
-            return res.send({ name: req.user.fullname, status: "Already Registered!" });
+            return res.status(200).json({ message: `You have Already Registered for workshop !`, status: "success" });
         }
     })
-    if (flag) {
-        const { userMessage, userPhone } = req.body;
 
-        const user = await User.findById(req.user._id);
-        const workshop = await Workshop.findById(id);
+    const { userMessage, userPhone } = req.body;
 
-        const newRegistration = new Registration({ phoneNumber: userPhone, message: userMessage });
-        newRegistration.user = user._id;
-        newRegistration.workshop = workshop._id;
-        await newRegistration.save();
+    const user = await User.findById(req.user._id);
+    const workshop = await Workshop.findById(id);
 
-        user.workshopsRegistered.push(newRegistration);
-        await User.findByIdAndUpdate(req.user._id, user);
-        workshop.registrations.push(newRegistration);
-        await Workshop.findByIdAndUpdate(id, workshop, { new: true });
-        res.send({ name: req.user.fullname, status: "Your Registration is Successful!" });
-    }
+    const newRegistration = new Registration({ phoneNumber: userPhone, message: userMessage });
+    newRegistration.user = user._id;
+    newRegistration.workshop = workshop._id;
+    await newRegistration.save();
+
+    user.workshopsRegistered.push(newRegistration);
+    await User.findByIdAndUpdate(req.user._id, user);
+    workshop.registrations.push(newRegistration);
+    await Workshop.findByIdAndUpdate(id, workshop, { new: true });
+    res.status(200).json({ message: `${req.user.fullname}, Your Registration is Succesfull🎉!`, status: "success" });
 }
 
 
 const renderUserDashboard = async (req, res) => {
-    let { section } = req.query;
     let userData = await req.user.populate([{ path: "workshopsRegistered", populate: { path: "workshop" } }, "bookings", "testimonial"]);
     let currTime = new Date();
     let pastBookings = [];
     let currBookings = [];
     userData.bookings.forEach((booking) => {
-        if (booking.time > currTime) {
+        let hours = booking.startTime.slice(0, 2);
+        let miniutes = booking.startTime.slice(3, 5);
+        const bookingTime = booking.date.setHours(hours, miniutes, 0);
+        if (bookingTime > currTime) {
             currBookings.push(booking);
         } else {
             pastBookings.push(booking);
         }
     });
-    console.log(pastBookings, currBookings);
-    // userData.bookings = {pastBookings: pastBookings,currBookings: currBookings };
 
     let pastWorkshops = [];
     let currWorkshops = [];
+
     userData.workshopsRegistered.forEach((registration) => {
         if (registration.workshop.time > currTime) {
             currWorkshops.push(registration);
@@ -113,18 +113,8 @@ const renderUserDashboard = async (req, res) => {
         }
     });
 
-    // userData.workshopsRegistered = {pastWorkshops,currWorkshops};
-
-    console.log("user Data", userData);
-    let notifications = false;
-    if (section == "notifications") {
-        let allNotifications = await Notification.find({});
-        let oldData = await User.findByIdAndUpdate(userData._id, { notificationRemaining: 0 });
-        notifications = { allNotifications, numOfUnread: oldData.notificationRemaining };
-    }
-    console.log("notifications ", notifications, "section", section);
-
-    res.render("homepage/userdashboard.ejs", { userData, notifications, currBookings, pastBookings, currWorkshops, pastWorkshops });
+    console.log(" requested for dashboard");
+    res.status(200).json({ currBookings, pastBookings, currWorkshops, pastWorkshops, testimonial: userData.testimonial });
 }
 
 const updateUser = async (req, res) => {
@@ -135,10 +125,9 @@ const updateUser = async (req, res) => {
 
     if (!req.file) {
         console.log("idhar brother");
-        let document = await User.findByIdAndUpdate(id, { fullname: fullname, gender: gender, DOB: DOB });
-        return res.redirect("/dashboard"); //yaha pe else hai nahi tho return lagana must
-    }
-    else {
+        let userData = await User.findByIdAndUpdate(id, { fullname: fullname, gender: gender, DOB: DOB }, { new: true });
+        return res.status(200).json({ success: true, message: "Profile Updated Successfully!", user: userData });
+    } else {
         console.log("i m in");
         let myFile = req.file.originalname;
         let fileLocation = path.join("./uploads", myFile);
@@ -146,8 +135,8 @@ const updateUser = async (req, res) => {
             if (err) throw next(new ExpressError(400, "Please Enter Valid file Name!"));
 
             imagekit.upload({
-                file: data,   //required
-                fileName: myFile,   //required
+                file: data,
+                fileName: myFile, 
                 folder: "/Koe_Cafe/profilephoto"
             },
                 async function (error, result) {
@@ -172,11 +161,12 @@ const updateUser = async (req, res) => {
                                 })
                                 .catch(error => {
                                     console.log(error);
-                                    throw error; //promise chaining catch and This error will propagate to the next catch block(wrapAsync) 
+                                    throw error;
                                 });
                         }
                         fs.unlinkSync(fileLocation);
-                        res.redirect("/dashboard");
+                        const userData = await User.findById(id);
+                        res.status(200).json({ success: true, message: "Profile Updated Successfully!", user: userData });
                     }
                 });
         });
@@ -184,4 +174,16 @@ const updateUser = async (req, res) => {
     }
 }
 
-module.exports = { loadMainPage, userAction, tableBooking, workshopRegistration, renderUserDashboard, updateUser };
+const showNotifications = async (req, res) => {
+    const { id } = req.params;
+    const Notifications = await Notification.find({});
+    let user = await User.findByIdAndUpdate(id,
+        { $set: { 'notification.notificationsRemaining': 0 } },
+        { new: true }
+    );
+    console.log("called to show all notifications and i made all notifications as read!");
+    res.status(200).json({ success: true, message: "Check out our Notifications", Notifications });
+}
+
+
+module.exports = { loadMainPage, tableBooking, workshopRegistration, renderUserDashboard, updateUser, showNotifications, userAction };

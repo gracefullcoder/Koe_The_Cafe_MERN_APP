@@ -1,6 +1,4 @@
-const { MongoAPIError } = require("mongodb");
 const mongoose = require("mongoose");
-const { type } = require("os");
 
 let testimonialSchema = {
     suggestion:{
