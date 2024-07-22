@@ -6,10 +6,11 @@ const { ExpressError } = require("../utils/wrapAsyncAndExpressError.js");
 
 const showHeroSliders = async (req, res) => {
     let heroSliders = await Heroslider.find();
-    res.render("herosection/herosection.ejs", { heroSliders });
+    console.log("sent heroSliders");
+    res.status(200).json(heroSliders);
 }
 
-const createHeroSlider = async (req, res,next) => {
+const createHeroSlider = async (req, res, next) => {
     let { label, title, text } = req.body;
     label = label.toString();
     title = title.toString();
@@ -43,15 +44,15 @@ const createHeroSlider = async (req, res,next) => {
                 await data.save();
                 console.log(data);
                 fs.unlinkSync(fileLocation); // to delete file at that location
-                res.redirect("/admin/herosection");
+                res.json({ success: true, message: "Website Modified Succesfully🎉",newData : data })
             }
         });
     });
 }
 
 const destroyHeroSlider = async (req, res) => {
+    console.log("requested to delted hero");
     let { id } = req.params;
-    id = id.toString();
     let delData = await Heroslider.findByIdAndDelete(id);
 
     let imageid = delData.imageid; //old data
@@ -64,14 +65,7 @@ const destroyHeroSlider = async (req, res) => {
             console.log(error);
             throw error;
         });
-    res.redirect("/admin/herosection");
-}
-
-const renderEditForm = async (req, res) => {
-    let { id } = req.params;
-    id = id.toString();
-    let data = await Heroslider.find({ _id: id });
-    res.render("herosection/editherosection.ejs", { data });
+    res.json({ success: true, message: "Deleted Succesfully 🎉" });
 }
 
 const updateHeroSlider = async (req, res, next) => {
@@ -81,14 +75,14 @@ const updateHeroSlider = async (req, res, next) => {
     title = title.toString();
     text = text.toString();
 
-    if (!imagecheckbox) {
-        let document = await Heroslider.findOneAndUpdate({ _id: id }, { label: label, title: title, text: text });
-        return res.redirect("/admin/herosection"); //yaha pe else hai nahi tho return lagana must
+    if (!req.file) {
+        let updatedSlider = await Heroslider.findOneAndUpdate({ _id: id }, { label: label, title: title, text: text }, { new: true });
+        return res.status(200).json({ success: true, message: "Edited SuccesFully, Click Preview to see updated Slider",updatedData: updatedSlider }); //yaha pe else hai nahi tho return lagana must
     }
     else {
-        if (!req.file) {
-            throw next(new ExpressError(400, "Image not Added, Please select required image")); //throw / return and next as parameter
-        }
+        // if (!req.file) {
+        //     throw next(new ExpressError(400, "Image not Added, Please select required image")); //throw / return and next as parameter
+        // }
 
         let myFile = req.file.originalname;
         let fileLocation = path.join("./uploads", myFile);
@@ -122,7 +116,8 @@ const updateHeroSlider = async (req, res, next) => {
                             });
 
                         fs.unlinkSync(fileLocation);
-                        res.redirect("/admin/herosection");
+                        const updatedSlider = await Heroslider.findById(id);
+                        return res.status(200).json({ success: true, message: "Edited SuccesFully, Click Preview to see updated Slider",updatedData: updatedSlider });
                     }
                 });
         });
@@ -131,6 +126,4 @@ const updateHeroSlider = async (req, res, next) => {
 }
 
 
-module.exports = { showHeroSliders, createHeroSlider, destroyHeroSlider, renderEditForm, updateHeroSlider };
-
-
+module.exports = { showHeroSliders, createHeroSlider, destroyHeroSlider, updateHeroSlider };
