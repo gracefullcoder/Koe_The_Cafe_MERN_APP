@@ -1,0 +1,98 @@
+.order-summary{
+    background-color: $surface-200;
+    max-width: 500px;
+    border-radius: 1rem;
+    padding: 2rem;
+
+    .summary-title{
+        font-size: 3rem;
+        margin-block: 0.5rem;
+    }
+
+    .interval-filter{
+        display: flex;
+        margin-block-start:1rem;
+        background-color: $surface-300;
+        width: max-content;
+        border-radius: 1rem;
+        padding: 0.5rem;
+
+        .interval{
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            color: $primary-500;
+        }
+
+        .interval.active{
+            background-color: $surface-200;
+        }
+    }
+
+    .active-orders{
+        background-color: $primary-500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        margin-block-start: 2rem;
+        border-radius: 1rem;
+
+        .orders{
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size:2rem;
+
+            .count{
+                padding: 0.5rem 2rem;
+                border-radius: 1rem;
+                background-color: $surface-mixed-100;
+            }
+        }
+    }
+
+    .order-redirect{
+        display: flex;
+        // gap: 0.5rem;
+        align-items: center;
+
+        i{
+            font-size: 2.5rem;
+        }
+    }
+}
+
+
+.order-summary{
+    .status{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        gap: 2rem;
+
+        div{
+            border: 1px solid grey;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            width: 100%;
+        }
+
+        .count{
+            font-size: 3rem;
+            font-weight: 500;
+            color: $primary-500;
+            margin-bottom: 0.5rem;
+        }
+
+
+    }
+
+
+    .chart-container{
+        margin-top: 2rem;
+        display: grid;
+        place-items: center;
+    }
+}
+
+

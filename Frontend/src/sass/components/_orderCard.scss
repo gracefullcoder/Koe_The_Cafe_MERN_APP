@@ -1,0 +1,136 @@
+.order-card {
+    min-width: 37rem;
+    max-width: 100rem;
+    background-color: $surface-300;
+    border-radius: 1rem;
+    margin-inline: auto;
+    margin-block-start: 5rem;
+
+    .order-basics {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .card-top {
+        background-color: $surface-200;
+        padding: 2rem 3rem;
+        border-radius: 1rem 1rem 0rem 0rem;
+    }
+
+    .card-bottom {
+        padding: 2rem 3rem;
+        border-radius: 0rem 0rem 1rem 1rem;
+    }
+
+    .order-id {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+
+        .logo {
+            height: 4.5rem;
+            width: 5rem;
+            border-radius: 0.5rem;
+        }
+    }
+
+    .order-status {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: $primary-500;
+    }
+
+
+    .order-btns {
+        border-top: 4px dashed silver;
+    }
+
+    .ordercard-btn {
+        width: 50%;
+        color: $primary-500;
+        padding-block-start: 1rem;
+    }
+}
+
+.detailed-order.menu-container {
+    .dish-box {
+        justify-content: space-between;
+    }
+}
+
+
+.timeline-status {
+    display: flex;
+    gap: 2rem;
+
+    .status-time{
+        display: none;
+    }
+}
+
+.status-dot {
+    height: 1rem;
+    width: 1rem;
+    background-color: white;
+    border-radius: 50%;
+    margin-top: 0.8rem;
+}
+
+.status-line {
+    height: 3rem;
+    width: 2px;
+    background-color: white;
+    margin-inline: auto;
+    margin-block: 0.5rem;
+}
+
+
+.timeline-status.deactivate {
+    color: grey;
+
+    img{
+        filter: brightness(0.3);
+    }
+
+    .status-dot,
+    .status-line {
+        background-color: grey;
+    }
+}
+
+.timeline-status.active {
+    color: $primary-500;
+
+    .status-dot {
+        background-color: $primary-500;
+    }
+
+    .status-time{
+        display: block;
+    }
+}
+
+.detailed-order {
+    .accounting {
+        margin-block:2rem;
+        color: $primary-500;
+        display: flex;
+        justify-content: space-around;
+
+        button{
+            color: $primary-500;
+        }
+    }
+}
+
+// .status-dot.deactivate,
+// .status-line.deactivate {
+//     background-color: grey;
+// }
+
+// .status-dot.active,
+// .status-line.active {
+//     background-color: $primary-500;
+// }
