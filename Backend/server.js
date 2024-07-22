@@ -79,7 +79,7 @@ const sessionStorage = MongoStore.create({
   touchAfter: 24 * 3600
 });
 
-sessionStorage.on("error", () => {
+sessionStorage.on("error", (err) => {
   console.log("ERROR Due to mongo session store", err);
 });
 
@@ -92,7 +92,7 @@ const session_options = {
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: 'auto'
+    secure: process.env.NODE_ENV === 'production'
   }
 };
 
