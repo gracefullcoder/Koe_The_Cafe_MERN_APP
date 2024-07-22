@@ -10,24 +10,33 @@ const path = require("path");
 const fs = require('fs');
 const { imagekit } = require("../config/imagekitconfig.js");
 const Notification = require("../models/notifications.js");
+const Menu = require("../models/menu.js");
+const TrafficAnalysis = require("../models/analytics.js");
 
 const loadMainPage = async (req, res) => {
-    // if(req.user){
-    //     if(!req.user.gender) return res.redirect("/auth/signup/google");
-    // }
-    
+    console.log("requested to load main page");
     let heroSliders = await Heroslider.find();
-    let workshop = await Workshop.find();
+    let workshop = await Workshop.findOne().sort({ time: -1 });
     let currTime = new Date();
     let isWorkshop = false;
-    if (workshop.length > 0 && workshop[workshop.length - 1].time > currTime) isWorkshop = true;
+    if (workshop != {} && workshop.time > currTime) isWorkshop = true;
     let specialSection = await Specialslider.find();
-    let testimonials = await Testimonial.find().populate("user");
-    // console.log(testimonials);
+    let testimonials = await Testimonial.find().populate({ path: "user", select: 'fullname profilepicture' }); //after populating selecting only required data
     let events = await Event.find();
-    let allSection = { heroSliders, workshop, specialSection, testimonials, events, user: req.user, isWorkshop: isWorkshop };
-    console.log(req.user);
-    res.render("homepage/index.ejs", { allSection });
+    const menus = await Menu.find().populate("dishes");
+    let allSection = { heroSliders, menus, workshop, specialSection, testimonials, events, user: req.user, isWorkshop: isWorkshop };
+    // console.log(req.user);
+    res.status(200).json(allSection);
+}
+
+const userAction = async (req, res) => {
+    let activity = req.body;
+    console.log(activity);
+    let userName = req.user ? req.user.username : 'anonymous';
+    const newTraffic = new TrafficAnalysis({ ...activity, userName: userName || "Newly Visited" });
+    await newTraffic.save();
+
+    res.status(200).json({ success: true });
 }
 
 
@@ -78,48 +87,44 @@ const workshopRegistration = async (req, res) => {
 }
 
 
-const renderTestimonialForm = (req, res) => {
-    res.render("homepage/useraddtestimonial.ejs", { user: req.user });
-}
-
 const renderUserDashboard = async (req, res) => {
-    let {section} = req.query;
+    let { section } = req.query;
     let userData = await req.user.populate([{ path: "workshopsRegistered", populate: { path: "workshop" } }, "bookings", "testimonial"]);
     let currTime = new Date();
     let pastBookings = [];
     let currBookings = [];
     userData.bookings.forEach((booking) => {
-        if(booking.time > currTime){
+        if (booking.time > currTime) {
             currBookings.push(booking);
-        }else{
+        } else {
             pastBookings.push(booking);
         }
     });
-    console.log(pastBookings,currBookings);
+    console.log(pastBookings, currBookings);
     // userData.bookings = {pastBookings: pastBookings,currBookings: currBookings };
 
     let pastWorkshops = [];
     let currWorkshops = [];
     userData.workshopsRegistered.forEach((registration) => {
-        if(registration.workshop.time > currTime){
+        if (registration.workshop.time > currTime) {
             currWorkshops.push(registration);
-        }else{
+        } else {
             pastWorkshops.push(registration);
         }
     });
-    
+
     // userData.workshopsRegistered = {pastWorkshops,currWorkshops};
-    
+
     console.log("user Data", userData);
     let notifications = false;
-    if(section == "notifications"){
+    if (section == "notifications") {
         let allNotifications = await Notification.find({});
-        let oldData = await User.findByIdAndUpdate(userData._id,{notificationRemaining:0});
-        notifications = {allNotifications, numOfUnread : oldData.notificationRemaining};
+        let oldData = await User.findByIdAndUpdate(userData._id, { notificationRemaining: 0 });
+        notifications = { allNotifications, numOfUnread: oldData.notificationRemaining };
     }
-    console.log("notifications " ,notifications,"section" ,section);
+    console.log("notifications ", notifications, "section", section);
 
-    res.render("homepage/userdashboard.ejs", { userData,notifications,currBookings,pastBookings,currWorkshops,pastWorkshops});
+    res.render("homepage/userdashboard.ejs", { userData, notifications, currBookings, pastBookings, currWorkshops, pastWorkshops });
 }
 
 const updateUser = async (req, res) => {
@@ -179,4 +184,4 @@ const updateUser = async (req, res) => {
     }
 }
 
-module.exports = { loadMainPage, tabelBooking, workshopRegistration, renderTestimonialForm, renderUserDashboard, updateUser };
+module.exports = { loadMainPage, userAction, tableBooking, workshopRegistration, renderUserDashboard, updateUser };
