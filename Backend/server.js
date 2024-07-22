@@ -6,24 +6,28 @@ const methodOverride = require("method-override");
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-let GoogleStrategy = require('passport-google-oidc');
+const GoogleStrategy = require('passport-google-oidc');
 const MongoStore = require('connect-mongo');
 const { createServer } = require('node:http');
 const server = createServer(app);
 const { Server } = require('socket.io');
-const {ExpressError} = require("./utils/wrapAsyncAndExpressError.js")
+
+//models and middleware
+const User = require("./models/user.js");
+const { isAdmin } = require("./middlewares/adminmiddlewares.js");
+const { isLogedIn } = require("./middlewares/authmiddlewares.js");
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-const User = require("./models/user.js");
-const { isAdmin } = require("./middlewares/adminmiddlewares.js");
-const { isLogedIn } = require("./middlewares/authmiddlewares.js");
 const PORT = process.env.PORT || 8080;
 
+
 //utils and config
+const {ExpressError} = require("./utils/wrapAsyncAndExpressError.js")
 const connectDB = require('./config/dbconfig.js');
+
 
 //config database
 connectDB;
