@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    role:
+    role: //parent mai poora data one to few
     {
         _id: false,
         admin: Boolean,

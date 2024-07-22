@@ -2,58 +2,62 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const User = require("../models/user.js");
-const { saveRedirectUrl } = require("../middlewares/authmiddlewares.js");
 const { isAlreadyLogin, validateUser, isNewUser } = require("../middlewares/authmiddlewares.js");
 const sendMail = require("../config/gmail.js");
+const { ExpressError, wrapAsync } = require("../utils/wrapAsyncAndExpressError.js")
+
+router.get("/", (req, res) => {
+    if (req.user) {
+        console.log("requested to authenticate");
+        return res.status(200).json({ success: true, user: req.user });
+    } else {
+        res.status(200).json({ success: false, user: req.user });
+    }
+})
+
 
 router.route("/login")
-    .get(isAlreadyLogin, (req, res) => {
-        res.render("authentication/loginpage.ejs");
-    })
 
-    .post(isAlreadyLogin, saveRedirectUrl, passport.authenticate("local", { failureRedirect: '/auth/signup' }), (req, res) => {
-        let redirectUrl = res.locals.redirectUrl || "/";
-        res.redirect(redirectUrl);
+    .post(isAlreadyLogin, passport.authenticate("local", { failureRedirect: '/auth/login/failure' }), (req, res) => {
+        console.log("requested to login and it is succesfull");
+        res.status(200).json(req.user);
     })
 
 
-router.route("/signup")
-
-    .get(isAlreadyLogin, (req, res) => {
-        res.render("authentication/signup.ejs");
-    })
-
-
-    .post(isAlreadyLogin, validateUser, saveRedirectUrl, async (req, res) => {
-        const { fullname, useremail, gender, DOB, userpassword } = req.body;
-        let profilepicture = { isUpdated: false };
-
-        if (gender.toLowerCase() == "male") {
-            profilepicture.imagelink = process.env["MALE_PROFILE" + Math.floor(Math.random() * 6 + 1)];
-        } else {
-            profilepicture.imagelink = process.env["FEMALE_PROFILE" + Math.floor(Math.random() * 8 + 1)];
-        }
-        console.log("user kaa", req.body);
-
-        let user = new User({ username: useremail, fullname: fullname, gender: gender, DOB: DOB, profilepicture });
-        let registeredUser = await User.register(user, userpassword);//register will only register the user
-        console.log(user);
-
-        //ye req.login(user,cb) is a fnx provide by passport aab user ka log aa gaya
-        req.login(registeredUser, (err) => {
-            if (err) {
-                throw new ExpressError(500, "Not able to authenticate user");
-            }
-            else {
-                let redirectUrl = res.locals.redirectUrl || "/";
-                res.redirect(redirectUrl);
-            }
-        })
-    });
-
-router.get("/signup/google", (req, res) => {
-    res.render("authentication/signupdetails.ejs");
+router.get("/login/failure", async (req, res) => {
+    res.status(400).json({ success: false, message: "Failed to Authenticate" });
 })
+
+router.post("/signup", isAlreadyLogin, validateUser, wrapAsync(async (req, res) => {
+    const { fullname, useremail, gender, DOB, userpassword } = req.body;
+    let profilepicture = { isUpdated: false };
+
+    if (gender.toLowerCase() == "male") {
+        profilepicture.imagelink = process.env["MALE_PROFILE" + Math.floor(Math.random() * 6 + 1)];
+    } else {
+        profilepicture.imagelink = process.env["FEMALE_PROFILE" + Math.floor(Math.random() * 8 + 1)];
+    }
+    console.log("user kaa", req.body);
+
+    let user = new User({ username: useremail, fullname: fullname, gender: gender, DOB: DOB, profilepicture });
+    let registeredUser = await User.register(user, userpassword);//register will only register the user
+    console.log(user);
+
+    //ye req.login(user,cb) is a fnx provide by passport aab user ka log aa gaya
+    req.login(registeredUser, (err) => {
+        if (err) {
+            throw new ExpressError(500, "Not able to authenticate user");
+        }
+        else {
+            res.status(200).json(
+                {
+                    success: true,
+                    message: `${req.user.fullname}, Welcome To Koe The Kafe`
+                }
+            );
+        }
+    })
+}));
 
 router.post("/signup/google", async (req, res) => {
     let { gender, DOB } = req.body;
@@ -87,14 +91,13 @@ router.post("/signup/google", async (req, res) => {
     req.session.profilepicture = profilepicture;
     req.session.isFormFilled = true;
     console.log("session data after signup form:", req.session);
-    res.redirect("/auth/login/google");
-})
-
+    res.status(200).json({ success: true, message: "Data Validated! Redirecting to Login!" });
+});
 
 router.get('/login/google', passport.authenticate('google', { scope: ['openid', 'profile', 'email'] }));
 
-router.get('/oauth2/redirect',
-    isNewUser, passport.authenticate('google', { failureRedirect: '/auth/signup/google', failureMessage: true }),
+router.get('/oauth2/redirect', isNewUser,
+    passport.authenticate('google', { failureRedirect: '/auth/login/failure', failureMessage: true }),
     function (req, res) {
         // console.log(res.locals, "*****" , req.user);
         if (res.locals.isNew) {
@@ -103,8 +106,8 @@ router.get('/oauth2/redirect',
                 to: req.user.username,
                 subject: 'Welcome to Koe the Cafe',
                 text: 'Welcome Message, Have A NICE DAY!',
-                html: 
-                `<!DOCTYPE html>
+                html:
+                    `<!DOCTYPE html>
                 <html lang="en">
                 <head>
                     <meta charset="UTF-8">
@@ -185,19 +188,21 @@ router.get('/oauth2/redirect',
             sendMail(mailData).then(result => console.log(`mail sent successfully this is result : ${result}`))
                 .catch(err => console.log("error bheja ye", err))
         }
-        res.redirect("/");
+        res.redirect(process.env.FRONTEND_DOMAIN);
     });
 
 
-router.get("/logout", (req, res) => {
+
+router.post("/logout", (req, res, next) => {
     //similar to req.login ye bhi inbuilt function hai which takes callback and uses serializ and deserialize method to logout the user 
+
     req.logout((err) => {
         if (err) {
-            nextTick(err);
+            next(new ExpressError(400, "logout unsccesfull"));
         } else {
-            res.redirect("/");
+            res.status(200).json({ success: true, message: "Logout Succesfull!" });
         }
     })
-})
+});
 
 module.exports = router;
