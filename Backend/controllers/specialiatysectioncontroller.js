@@ -1,47 +1,28 @@
 const Specialslider = require("../models/specialsection.js");
-const path = require("path");
-const fs = require('fs');
-const { imagekit } = require("../config/imagekitconfig.js");
+const { uploadFile, deleteFile } = require("../config/imagekitconfig.js");
 const { ExpressError } = require("../utils/wrapAsyncAndExpressError.js");
 
 const showSpecialitySliders = async (req, res) => {
     let specialSliders = await Specialslider.find();
-    res.render("specialitysection/specialsection.ejs", { specialSliders });
+    res.json(specialSliders);
 }
 
 const createSpecialitySlider = async (req, res, next) => {
     let { label, title, text } = req.body;
-    label = label.toString();
-    title = title.toString();
-    text = text.toString();
 
     if (!req.file) {
         return next(new ExpressError(400, "You have not added image,Add required image and submit!"));
     }
 
     let myFile = req.file.originalname;
-    fileLocation = path.join("./uploads", myFile);
+    let { fileUrl, fileId } = await uploadFile(myFile, "specialities");
 
-    fs.readFile(fileLocation, async (err, data) => {
-        if (err) throw next(new ExpressError(400, "Please Enter Valid file image is required!"));
+    let specialitySlide = new Specialslider({ label: label, title: title, text: text, image: fileUrl, imageid: fileId })
+    await specialitySlide.save();
 
-        imagekit.upload({
-            file: data,
-            fileName: myFile,
-            folder: "/Koe_Cafe/specialities"
-        }, async function (error, result) {
-            if (error) throw next(new ExpressError(406, "Error in Uploading Image!"));
-            else {
-                let image = result.url;
-                let imageid = result.fileId;
-                let data = new Specialslider({ label: label, title: title, text: text, image: image, imageid: imageid })
-                await data.save();
-                console.log(data);
-                fs.unlinkSync(fileLocation);
-                res.redirect("/admin/specialitysection");
-            }
-        });
-    });
+    console.log(specialitySlide);
+
+    return res.status(200).json({ success: true, message: "Added Speciality Successfully🎉!" ,newData:specialitySlide});
 }
 
 const destroySpecialSlider = async (req, res) => {
@@ -50,81 +31,33 @@ const destroySpecialSlider = async (req, res) => {
     let delData = await Specialslider.findByIdAndDelete(id);
 
     let imageid = delData.imageid;
-
-    imagekit.deleteFile(imageid)
-        .then(response => {
-            console.log(response);
-        })
-        .catch(error => {
-            console.log(error);
-            throw error;
-        });
-        
-    res.redirect("/admin/specialitysection");
-}
-
-const renderEditForm = async (req, res) => {
-    let { id } = req.params;
-    id = id.toString();
-    let data = await Specialslider.find({ _id: id });
+    const data = await deleteFile(imageid);
     console.log(data);
-    res.render("specialitysection/editspecialsection.ejs", { data });
+    res.status(200).json({ success: true, message: "Delted Succesfully🎉" });
 }
 
 const updateSpecialitySlider = async (req, res, next) => {
     let { id } = req.params;
-    let { label, title, text, imagecheckbox } = req.body;
-    label = label.toString();
-    title = title.toString();
-    text = text.toString();
-    // console.log(req.body);
+    let { label, title, text } = req.body;
 
-    if (!imagecheckbox) {
-        let document = await Specialslider.findOneAndUpdate({ _id: id }, { label: label, title: title, text: text });
-        res.redirect("/admin/specialitysection");
+    if (!req.file) {
+        let updatedSlider = await Specialslider.findOneAndUpdate({ _id: id }, { label: label, title: title, text: text }, { new: true });
+        return res.status(200).json({ success: true, message: "Edited SuccesFully, Click Preview to see updated Slider", updatedData: updatedSlider });
+
     }
     else {
-        if (!req.file) {
-            throw next(new ExpressError(400, "Image not Added, Please select required image"));
-        }
-
         let myFile = req.file.originalname;
-        let fileLocation = path.join("./uploads", myFile);
-        fs.readFile(fileLocation, async (err, data) => {
-            if (err) throw next(new ExpressError(400, "Please Enter Valid file Name!"));
+        let { fileUrl, fileId } = await uploadFile(myFile, "specialities");
 
-            imagekit.upload({
-                file: data,   //required
-                fileName: myFile,   //required
-                folder: "/Koe_Cafe/specialities"
-            },
-                async function (error, result) {
-                    if (error) {
-                        console.log(error);
-                        throw next(new ExpressError(406, "Error in Uploading Image!"))
-                    }
-                    else {
-                        let image = result.url;
-                        let imageid = result.fileId;
-                        let document = await Specialslider.findOneAndReplace({ _id: id }, { label: label, title: title, text: text, image: image, imageid: imageid });
+        let specialitySlide = await Specialslider.findOneAndReplace({ _id: id }, { label: label, title: title, text: text, image: fileUrl, imageid: fileId });
 
-                        let oldimageid = document.imageid;
+        const oldimageid = specialitySlide.imageid;
 
-                        imagekit.deleteFile(oldimageid)
-                            .then(response => {
-                                console.log(response);
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            });
+        await deleteFile(oldimageid);
 
-                        fs.unlinkSync(fileLocation);
-                        res.redirect("/admin/specialitysection");
-                    }
-                });
-        });
+        const updatedSlider = await Specialslider.findById(id);
+        return res.status(200).json({ success: true, message: "Edited SuccesFully, Click Preview to see updated Slider", updatedData: updatedSlider });
     }
-
 }
 
-module.exports = { showSpecialitySliders, createSpecialitySlider, destroySpecialSlider, renderEditForm, updateSpecialitySlider };
+module.exports = { showSpecialitySliders, createSpecialitySlider, destroySpecialSlider, updateSpecialitySlider };
