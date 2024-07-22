@@ -1,0 +1,102 @@
+.menu {
+    .section-title {
+        margin-block-end: 5rem;
+    }
+}
+
+.menu-topbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5rem 20%;
+    color: var(--gold-crayola);
+    position: relative;
+}
+
+.menu-container {
+
+    .dish-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 3rem;
+        margin-block: 5rem;
+        flex-wrap: wrap;
+        padding-inline:10% ;
+    }
+
+    .dish {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+
+        .dish-logo {
+            height: 15rem;
+            width: 15rem;
+            object-fit: cover;
+        }
+    }
+
+    .dish-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1.5rem;
+        text-align: left;
+
+        .dish-title {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .dish-description {
+            color: silver;
+            line-height: var(--lineheigth-4);
+        }
+    }
+
+
+    .order-options{
+        .qty-icons{
+            display: flex;
+            align-items: center;
+            i{
+                padding: 1rem;
+                border-radius: 1rem;
+                border: 1px solid silver;
+            }
+
+            .qty{
+                margin-inline:1rem;
+            }
+        }
+    }
+
+}
+
+.dish-badge {
+    padding-inline: 1rem;
+    background-color: var(--gold-crayola);
+    color: black;
+    font-family: var(--fontFamily-forum);
+    letter-spacing: 1px;
+    font-weight: 300;
+}
+
+
+@media(max-width:575px) {
+    .menu-topbar{
+        padding-inline: 2rem;
+    }
+}
+
+@media(max-width:780px){
+    .menu-container{
+        .dish-box{
+            justify-content: center;
+            padding-inline: 0 ;
+        }
+    }
+}

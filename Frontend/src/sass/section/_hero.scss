@@ -1,0 +1,107 @@
+.hero {
+  position: relative;
+  padding-block: 120px;
+  min-height: 100vh;
+  overflow: hidden;
+  z-index: 1;
+  .btn {
+    margin-inline: auto;
+  }
+}
+
+.hero .section-subtitle::after {
+  margin-block: 14px 20px;
+}
+
+.slider-reveal {
+  transform: translateY(30px);
+  opacity: 0;
+  text-align: center;
+}
+
+@keyframes sliderReveal {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+//slider reveal common hai sabme i.e transition delay
+.hero .slider-item.active {
+  .slider-reveal {
+    animation: sliderReveal 1s ease forwards;
+  }
+
+  .section-subtitle {
+    animation-delay: 500ms;
+  }
+
+  .hero-title {
+    animation-delay: 1000ms;
+  }
+
+  .hero-text {
+    animation-delay: 1.5s;
+    margin-block: 10px 40px;
+  }
+
+  .btn {
+    animation-delay: 2s;
+  }
+}
+
+
+//book a table button
+.hero-btn {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  z-index: 2;
+  background-color: var(--gold-crayola);
+  width: 110px;
+  height: 110px;
+  padding: 12px;
+  transform: scale(0.6);
+
+  img {
+    margin-inline: auto;
+    margin-block-end: 6px;
+  }
+
+  .span {
+    color: var(--black);
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letterSpacing-1);
+    line-height: var(--lineHeight-3);
+  }
+
+  &::after {
+    inset: 0;
+    border: 1px solid var(--gold-crayola);
+    animation: rotate360 15s linear infinite;
+  }
+}
+
+@media (max-width: 575px) {
+  .hero-btn {
+    transform: scale(0.7);
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero {
+    height: 880px;
+  }
+
+  .hero-btn {
+    bottom: 5rem;
+    right: 5rem;
+    transform: scale(1);
+  }
+}
