@@ -1,134 +1,70 @@
 const Event = require("../models/events.js");
-const path = require("path");
-const fs = require('fs');
-const { imagekit } = require("../config/imagekitconfig.js");
 const { ExpressError } = require("../utils/wrapAsyncAndExpressError.js");
+const { uploadFile, deleteFile } = require("../config/imagekitconfig.js");
 
 const showEvents = async (req, res) => {
+  console.log("i send events");
   let events = await Event.find();
-  console.log(events);
-  res.render("eventsection/events.ejs", { events });
+  res.status(200).json(events);
 }
 
 
 const createEvent = async (req, res, next) => {
-  let { date, subtitle, title } = req.body;
-  date = date.toString();
-  subtitle = subtitle.toString();
-  title = title.toString();
+  let { subtitle, title, date, detailsLink } = req.body;
+
+  console.log("yes again", req.body);
   if (!req.file) {
     return next(new ExpressError(400, "You have not added image,Add required image and submit!"));
   }
 
   let myFile = req.file.originalname;
-  let fileLocation = path.join("./uploads", myFile);
-  fs.readFile(fileLocation, async (err, data) => {
-    if (err) throw next(new ExpressError(400, "Please Enter Valid file Name!"));
+  let { fileUrl, fileId } = await uploadFile(myFile, "events");
 
-    imagekit.upload({
-      file: data, //required
-      fileName: myFile, //required
-      folder: "/Koe_Cafe/events"
-    }, async function (error, result) {
-      if (error) throw next(new ExpressError(406, "Error in Uploading Image!"));
-      else {
-        let image = result.url;
-        let imageid = result.fileId;
-        let data = new Event({ date: date, image: image, subtitle: subtitle, title: title, imageid: imageid });
-        await data.save();
-        console.log(data);
-        fs.unlinkSync(fileLocation);
-        res.redirect("/admin/eventsection");
-      }
-    });
-  });
+  let newEvent = new Event({ title: title, subtitle: subtitle, date: date, detailsLink: detailsLink, image: fileUrl, imageid: fileId })
+  await newEvent.save();
+
+  return res.status(200).json({ success: true, message: "Event Added Successfully🎉!", newData: newEvent });
 }
 
 const destroyEvent = async (req, res) => {
+
   let { id } = req.params;
   id = id.toString();
   let delData = await Event.findByIdAndDelete(id);
 
   let imageid = delData.imageid;
 
-  imagekit.deleteFile(imageid)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.log(error);
-      throw error;
-    });
-  res.redirect("/admin/eventsection");
-}
+  const data = await deleteFile(imageid);
+  console.log(data);
 
-const renderEditForm = async (req, res) => {
-  let { id } = req.params;
-  id = id.toString();
-  let data = await Event.find({ _id: id });
-  // console.log(data);
-  res.render("eventsection/editevent.ejs", { data });
+  res.status(200).json({ success: true, message: "Event Deleted Successfully!" });
 }
 
 const updateEvent = async (req, res, next) => {
+  console.log("yes it's me event update");
   let { id } = req.params;
-  let { date, subtitle, title, imagecheckbox } = req.body;
-  date = date.toString();
-  subtitle = subtitle.toString();
-  title = title.toString();
+  let { date, subtitle, title, detailsLink } = req.body;
 
 
-  // console.log(req.body);
-
-  if (!imagecheckbox) {
-    let document = await Event.findOneAndUpdate({ _id: id }, { date: date, subtitle: subtitle, title: title });
-    res.redirect("/admin/eventsection");
+  if (!req.file) {
+    let updatedEvent = await Event.findOneAndUpdate({ _id: id }, { date: date, subtitle: subtitle, title: title, detailsLink }, { new: true });
+    console.log("i m in", updateEvent);
+    return res.status(200).json({ success: true, message: "Event Edited Successfully", updatedData: updatedEvent })
   }
   else {
-    if (!req.file) {
-      throw next(new ExpressError(400, "Image not Added, Please select required image"));
-    }
-
     let myFile = req.file.originalname;
-    let fileLocation = path.join("./uploads", myFile);
+    let { fileUrl, fileId } = await uploadFile(myFile, "events");
+    console.log(fileUrl, fileId);
+    let oldEvent = await Event.findOneAndReplace({ _id: id }, { date: date, subtitle: subtitle, title: title, detailsLink, image: fileUrl, imageid: fileId });
 
-    fs.readFile(fileLocation, async (err, data) => {
-      if (err) throw next(new ExpressError(400, "Please Enter Valid file Name!"));
+    let oldimageid = oldEvent.imageid;
+    await deleteFile(oldimageid);
 
-      imagekit.upload({
-        file: data,   //required
-        fileName: myFile,   //required
-        folder: "/Koe_Cafe/events"
-      },
-        async function (error, result) {
-          if (error) {
-            console.log(error);
-            throw next(new ExpressError(406, "Error in Uploading Image!"));
-          }
-          else {
-            // console.log(result);
-            let image = result.url;
-            let imageid = result.fileId;
-            let document = await Event.findOneAndReplace({ _id: id }, { date: date, subtitle: subtitle, title: title, image: image, imageid: imageid });
-
-            let oldimageid = document.imageid;
-
-            imagekit.deleteFile(oldimageid)
-              .then(response => {
-                console.log(response);
-              })
-              .catch(error => {
-                console.log(error);
-                throw error;
-              });
-
-            fs.unlinkSync(fileLocation);
-            res.redirect("/admin/eventsection");
-          }
-        });
-    });
+    let updatedEvent = await Event.findById(id, { date: date, subtitle: subtitle, title: title, detailsLink, image: fileUrl, imageid: fileId });
+    res.status(200).json({ success: true, message: "Event Edited Successfully", updatedData: updatedEvent })
   }
 
 }
 
-module.exports = { showEvents, createEvent, destroyEvent, renderEditForm, updateEvent };
+
+module.exports = { showEvents, createEvent, destroyEvent, updateEvent };

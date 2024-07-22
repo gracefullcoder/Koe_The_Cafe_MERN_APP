@@ -24,7 +24,8 @@ const userSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    role: {
+    role:
+    {
         _id: false,
         admin: Boolean,
         creatorname: String,
