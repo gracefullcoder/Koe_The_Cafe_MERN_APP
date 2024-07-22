@@ -1,0 +1,288 @@
+.seat-structure {
+    background-color: black;
+    padding: 4rem 4rem;
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    width: 100%;
+    visibility: hidden;
+
+    .seating-area {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+
+        .inside,
+        .outside {
+            background-color: var(--eerie-black-1);
+            position: relative;
+            padding: 1rem 1rem;
+
+            .area-heading {
+                color: var(--gold-crayola);
+                font-size: 2rem;
+                margin-block-end: 1rem;
+            }
+
+        }
+
+        .booking-status {
+            display: grid;
+            place-items: center;
+            margin-block-start: 2rem;
+        }
+    }
+}
+
+.seat-structure.selection {
+    z-index: 2;
+    position: relative;
+    visibility: visible;
+}
+
+.table {
+    background-color: $surface-mixed-200;
+    height: 20rem;
+    width: 100%;
+    position: relative;
+    display: grid;
+    place-items: center;
+}
+
+.dinning-table {
+    background-color: $surface-300;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.normal-seat,
+.sofa-seat {
+    background-color: var(--gold-crayola);
+    display: grid;
+    place-items: center;
+    padding: 1px;
+    color: black;
+    cursor: pointer;
+}
+
+.normal-seat.selected,
+.sofa-seat.selected {
+    background-color: $primary-500;
+}
+
+.normal-seat.booked,
+.sofa-seat.booked {
+    background-color: $surface-300;
+}
+
+.normal-seat.preselected,
+.sofa-seat.preselected {
+    background-color: $surface-mixed-600;
+}
+
+.table-rectangle {
+    position: absolute;
+    height: 13rem;
+    width: 40%;
+    top: 1rem;
+}
+
+.table-circle {
+    position: absolute;
+    height: 10rem;
+    width: 10rem;
+    border-radius: var(--radius-circle);
+    top: 5rem;
+}
+
+.sofa-seat {
+    position: absolute;
+    height: 13rem;
+    width: 20%;
+    border-radius: 5px 50% 50% 5px;
+    right: 1rem;
+    top: 1rem;
+}
+
+.normal-seat {
+    position: absolute;
+    height: 5rem;
+    width: 5rem;
+    border-radius: 50% 0% 0% 50%;
+}
+
+.table-square {
+    position: absolute;
+    height: 7rem;
+    width: 7rem;
+    top: 6.5rem;
+}
+
+.seat-matrix-inside {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 1rem 1rem;
+    place-items: center;
+
+    .table-2,
+    .table-4,
+    .table-6 {
+        @include seatMatrix-1;
+    }
+
+    .table-1,
+    .table-3,
+    .table-5 {
+        @include seatMatrix-2
+    }
+}
+
+.seat-matrix-outside {
+    display: grid;
+    grid-template-rows: 1fr 0.25fr;
+    gap: 1rem;
+
+    .above-stairs {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .below-stairs {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .table-1,
+    .table-2,
+    .table-3 {
+        .seat-1 {
+            top: 0.5rem;
+            transform: rotate(90deg);
+        }
+
+        .seat-2 {
+            bottom: 0.5rem;
+            transform: rotate(-90deg);
+        }
+    }
+
+    .table-circle {
+        left: 3.317rem;
+    }
+
+    .table-4,
+    .table-5,
+    .table-6,
+    .table-7,
+    .table-8 {
+        .seat-1 {
+            top: 1rem;
+            left: 1rem;
+            transform: rotate(50deg);
+        }
+
+        .seat-2 {
+            top: 1rem;
+            right: 1rem;
+            transform: rotate(130deg);
+        }
+
+        .seat-3 {
+            bottom: 1rem;
+            left: 1rem;
+            transform: rotate(-50deg);
+        }
+
+        .seat-4 {
+            bottom: 1rem;
+            right: 1rem;
+            transform: rotate(-130deg);
+        }
+    }
+
+    // .table-8{
+    //     margin-left: 17.333rem;
+    // }
+
+    .below-stairs {
+
+        .table-10,
+        .table-11 {
+            @include seatMatrix-1
+        }
+    }
+
+}
+
+.booking-status {
+
+    .selected-seats {
+        width: 100%;
+        min-height: 5rem;
+    }
+
+    .seats-data {
+        display: flex;
+        gap: 1rem;
+        justify-items: center;
+        align-items: flex-start
+    }
+
+    input {
+        background-color: rgb(27, 28, 29);
+    }
+
+    .cancel-btn{
+        color: var(--gold-crayola);
+        background-color: $surface-200
+    }
+}
+
+@media(max-width:1150px) {
+    .seat-structure {
+        .seating-area {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr;
+
+            .inside {
+                .table {
+                    width: 30rem;
+                }
+            }
+        }
+    }
+
+}
+
+@media(max-width:720px) {
+    .seat-structure {
+        padding-inline: 0rem;
+    }
+}
+
+@media(max-width:660px) {
+    .seat-matrix-inside {
+        grid-template-columns: 1fr;
+    }
+
+    .below-stairs {
+        flex-direction: column;
+        align-items: center;
+
+        .table {
+            width: 25rem;
+        }
+    }
+
+    .seat-matrix-outside {
+        .above-stairs {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+}
