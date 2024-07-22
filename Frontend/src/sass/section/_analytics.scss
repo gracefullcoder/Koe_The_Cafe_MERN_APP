@@ -56,4 +56,8 @@
     gap: 5rem;
     justify-content: space-around;
     flex-wrap: wrap;
+
+    .analytics-chart,.order-summary{
+        overflow-x: auto;
+    }
 }

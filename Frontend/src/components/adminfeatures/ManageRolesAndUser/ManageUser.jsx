@@ -79,6 +79,7 @@ function ManageUser() {
           if (role === "admin") {
             newNormalUsers = prevUsers.normalUsers.filter((user) => {
               if (user._id === userId) {
+                user.role = responseData.role;
                 newAdminUsers.push(user);
                 return false; // Remove user from normalUsers
               }
@@ -174,7 +175,7 @@ function ManageUser() {
                 onChange={handleInputChange}
               />
             </div>
-            <PrimaryButton text1={"Upadate User!"} text2={"Do It!"} />
+            <PrimaryButton text1={"Update User!"} text2={"Do It!"} />
           </form>
         </>
         :

@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useCartContext } from "../../context/CartContext";
 import { CartIcon, Cart } from "../cart/Cart";
 import { PrimaryButton } from "../reuseable/Button.jsx";
 import { addToCart, increaseQty, decreaseQty, removeFromCart } from "./cartFunctions.js";
 import { monitorActivity } from "../../helperfunction.js";
 import Dish from "./Dish.jsx";
+import { useAuthContext } from "../../context/AuthContext.jsx";
 
 
 function Menu() {
     const { state } = useLocation();
     const [cart, setCart] = useCartContext();
+    const { user } = useAuthContext();
+    const navigate = useNavigate();
 
     const [dishes, setDishes] = useState([]);
 
@@ -54,21 +57,31 @@ function Menu() {
                     <div className="menu-container">
                         {dishes.map((dish, index) => (
                             <div className="dish-box" key={dish._id}>
-                                <Dish dish={dish}/>
+                                <Dish dish={dish} />
                                 <div className="order-options">
-                                    {dish.quantity == 0 ? <PrimaryButton text1={<i className="fa-solid fa-plus"></i>} text2={"Add It"} fnx={() => { addToCart(dish, setCart) }} /> :
+                                    {dish.quantity == 0 ? <PrimaryButton text1={<i className="fa-solid fa-plus"></i>} text2={"Add It"}
+                                        fnx={() => {
+                                            if (!user) navigate("/auth/login");
+                                            else addToCart(dish, setCart);
+                                        }}
+                                    /> :
                                         <div className="qty-icons">
                                             <i
                                                 className="fa-solid fa-minus"
                                                 onClick={() => {
-                                                    dish.quantity != 0 && dish.quantity == 1 ? removeFromCart(dish._id, setCart) : decreaseQty(dish._id, setCart);
+                                                    if (!user) {
+                                                        navigate("/auth/login");
+                                                    } else {
+                                                        dish.quantity != 0 && dish.quantity == 1 ? removeFromCart(dish._id, setCart) : decreaseQty(dish._id, setCart);
+                                                    }
                                                 }}
                                             ></i>
                                             <span className="qty title-3">{dish.quantity}</span>
                                             <i
                                                 className="fa-solid fa-plus"
                                                 onClick={() => {
-                                                    increaseQty(dish._id, setCart);
+                                                    if(!user) navigate("/auth/login");
+                                                    else increaseQty(dish._id, setCart);
                                                 }}
                                             ></i>
                                         </div>

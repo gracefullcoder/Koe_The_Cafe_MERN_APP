@@ -5,7 +5,7 @@ import { axisConfig} from './AnalyticsFunctions.js';
 function BarGraph({title, xAxisValue, yAxisValue }) {
 
     return (
-        <div>
+        <div className='analytics-chart'>
             <p>{title}</p>
             <BarChart
             sx={axisConfig()}

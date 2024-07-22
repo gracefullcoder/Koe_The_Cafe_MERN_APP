@@ -5,7 +5,7 @@ import { axisConfig } from './AnalyticsFunctions.js';
 function LineGraph({ xAxisValue, yAxisValue, title }) {
 
     return (
-        <div>
+        <div className='analytics-chart'>
             <p>
                 {title}
             </p>
