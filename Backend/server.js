@@ -92,7 +92,8 @@ const session_options = {
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: "auto"
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'None' 
   }
 };
 
