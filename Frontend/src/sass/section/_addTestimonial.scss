@@ -1,0 +1,33 @@
+.form-section {
+
+  .testimonial-form {
+    margin: 8rem auto;
+    max-width: 400px;
+
+    input{
+      text-align: center;
+    }
+
+    button{
+      margin-inline:auto;
+    }
+  }
+
+  .must-field-container {
+    position: relative;
+  }
+
+  .must-field {
+    color: red;
+    font-size: 2rem;
+    position: absolute;
+    top: 0%;
+    right: 0%;
+  }
+
+  .field-label {
+    color: hsl(38, 61%, 73%);
+    font-size: 1.5em;
+    margin-block-end: 0.5rem;
+  }
+}
