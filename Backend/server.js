@@ -87,13 +87,13 @@ const session_options = {
   store: sessionStorage,
   secret: process.env.SESSION_SECRETKEY,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   cookie: {
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     secure: true,
-    sameSite: "none"
+    sameSite: "auto"
   }
 };
 
