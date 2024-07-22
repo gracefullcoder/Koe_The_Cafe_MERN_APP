@@ -63,7 +63,7 @@ const cors = require('cors')
 
 const corsOptions = {
   origin: process.env.FRONTEND_DOMAIN,
-  methods: ["GET,PATCH,PUT,DELETE,POST"],
+  methods: ["GET","PATCH","PUT","DELETE","POST"],
   optionsSuccessStatus: 200,
   credentials: true
 }
