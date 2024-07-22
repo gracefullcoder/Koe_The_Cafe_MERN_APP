@@ -5,15 +5,14 @@ const User = require("../models/user.js");
 
 const showAllRegistration = async (req, res) => {
     let registrations = await Registration.find().populate("user");
-    // console.log("All registrations details called!");
     res.render("workshop/workshopregistrations.ejs", { registrations });
 }
 
 const workshopRegistration = async (req, res) => { //workshop ki id hai
     let { id } = req.params;
-    console.log(req.params);// app.js wagera params mai aa rahae the network mai dekha 
-    let workshopDetails = await Workshop.findById(id).populate({ path: "registrations", populate: { path: "user" } });  //nested populate
-    res.render("workshop/workshopdetails.ejs", { workshopDetails });
+
+    let workshopDetails = await Workshop.findById(id, 'registrations').populate({ path: "registrations", select: 'phoneNumber message', populate: { path: "user", select: 'username fullname' } });  //nested populate
+    res.status(200).json(workshopDetails.registrations);
 }
 
 const destroyRegistration = async (req, res) => {
@@ -23,21 +22,17 @@ const destroyRegistration = async (req, res) => {
         {
             $pull: { registrations: registrationData._id }
         }, { new: true });
-    // console.log("after update workshop", workshopdata);
-    // console.log("deleted regitration ka data", registrationData);
-    // res.redirect(`/admin/workshopregistration/${workshopdata._id}`);
-    const redirectUrl = req.session.redirectUrl || "/";
-    res.redirect(redirectUrl);
+    
+    res.status(200).json({ success: true, message: "Registration Cancelled!" });
 }
 
 const updateRegistration = async (req, res) => {
     let { id } = req.params;
+    console.log("registrration update");
     let { userPhone, userMessage } = req.body;
-    console.log(req.body);
-    console.log(id);
-    await Registration.findByIdAndUpdate(id, { phoneNumber: userPhone, message: userMessage },{new:true});
-    const redirectUrl = req.session.redirectUrl || "/";
-    res.redirect(redirectUrl);
+    
+    await Registration.findByIdAndUpdate(id, { phoneNumber: userPhone, message: userMessage }, { new: true });
+    res.status(200).json({ success: true, message: "Registration Details Updated Succesfully 🎉" });
 }
 
 module.exports = { showAllRegistration, workshopRegistration, destroyRegistration, updateRegistration };
