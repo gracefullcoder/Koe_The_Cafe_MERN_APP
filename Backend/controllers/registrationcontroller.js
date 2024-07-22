@@ -16,7 +16,7 @@ const destroyRegistration = async (req, res) => {
         {
             $pull: { registrations: registrationData._id }
         }, { new: true });
-    
+
     res.status(200).json({ success: true, message: "Registration Cancelled!" });
 }
 
@@ -24,9 +24,9 @@ const updateRegistration = async (req, res) => {
     let { id } = req.params;
     console.log("registrration update");
     let { userPhone, userMessage } = req.body;
-    
+
     await Registration.findByIdAndUpdate(id, { phoneNumber: userPhone, message: userMessage }, { new: true });
     res.status(200).json({ success: true, message: "Registration Details Updated Succesfully 🎉" });
 }
 
-module.exports = { showAllRegistration, workshopRegistration, destroyRegistration, updateRegistration };
+module.exports = { workshopRegistration, destroyRegistration, updateRegistration };
