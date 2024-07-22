@@ -264,7 +264,7 @@ ReactDOM.createRoot(document.querySelector("#root")).render(
   // <React.StrictMode>
   <AuthProvider>
     <>
-      <ToastContainer style={{ width: "40%", textAlign: "center" }} limit={2} />
+      <ToastContainer style={{ width: "100%", padding: "2rem", maxWidth: "65rem", textAlign: "center" }} limit={2} />
       <RouterProvider router={router} />
     </>
   </AuthProvider>
