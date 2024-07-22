@@ -1,0 +1,402 @@
+.header .btn {
+  display: none;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: transparent;
+  padding-block: 40px;
+  z-index: 4;
+  border-block-end: 1px solid transparent;
+  transition: var(--transition-1);
+
+  .container {
+    padding-inline: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-img {
+    width: 14rem;
+    height: auto;
+    border-radius: 1rem;
+  }
+}
+
+.header.active {
+  padding-block: 20px;
+  background-color: var(--eerie-black-4);
+  border-color: var(--black-alpha-15);
+}
+
+.header.hide {
+  transform: translateY(-100%);
+  transition-delay: 250ms;
+}
+
+.nav-open-btn {
+  padding: 12px;
+  padding-inline-end: 0;
+}
+
+.nav-open-btn .line {
+  width: 30px;
+  height: 2px;
+  background-color: white;
+  margin-block: 4px;
+  transform-origin: left;
+  animation: menuBtn 400ms ease-in-out alternate infinite;
+}
+
+.nav-open-btn .line-2 {
+  animation-delay: 150ms;
+}
+
+.nav-open-btn .line-3 {
+  animation-delay: 300ms;
+}
+
+@keyframes menuBtn {
+  0% {
+    transform: scaleX(1);
+  }
+
+  100% {
+    transform: scaleX(0.5);
+  }
+}
+
+
+
+.navbar {
+  position: fixed;
+  background-color: var(--smoky-black-1);
+  top: 0;
+  left: -360px;
+  bottom: 0;
+  max-width: 360px;
+  width: 100%;
+  padding-inline: 30px;
+  padding-block-end: 50px;
+  overflow-y: auto;
+  visibility: hidden;
+  z-index: 2;
+  transition: var(--transition-2);
+}
+
+.navbar.active {
+  visibility: visible;
+  transform: translateX(360px);
+}
+
+.navbar .close-btn {
+  color: var(--white);
+  border: 1px solid currentColor;
+  padding: 4px;
+  border-radius: var(--radius-circle);
+  margin-inline-start: auto;
+  margin-block: 30px 20px;
+}
+
+.navbar .close-btn ion-icon {
+  --ionicon-stroke-width: 40px;
+}
+
+.navbar .close-btn:is(:hover, :focus-visible) {
+  color: var(--gold-crayola);
+}
+
+.navbar .logo {
+  max-width: max-content;
+  margin-inline: auto;
+  margin-block-end: 60px;
+}
+
+.navbar-list {
+  border-block-end: 1px solid var(--white-alpha-20);
+  margin-block-end: 100px;
+}
+
+.navbar-item {
+  border-block-start: 1px solid var(--white-alpha-20);
+}
+
+.navbar-link {
+  position: relative;
+  font-size: var(--fontSize-label-2);
+  text-transform: uppercase;
+  padding-block: 10px;
+  max-width: unset;
+
+  &:is(:hover, :focus-visible, .active) {
+    span {
+      color: var(--gold-crayola);
+      transform: translateX(20px);
+    }
+
+    .separator {
+      opacity: 1;
+    }
+  }
+
+  span {
+    transition: var(--transition-1);
+  }
+
+  .separator {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%) rotate(45deg);
+    opacity: 0;
+    transition: var(--transition-1);
+  }
+}
+
+.navbar-link::after {
+  display: none;
+}
+
+.navbar-title {
+  margin-block-end: 15px;
+}
+
+.navbar-text {
+  margin-block: 10px;
+}
+
+.navbar .body-4 {
+  color: var(--quick-silver);
+}
+
+.sidebar-link {
+  transition: var(--transition-1);
+}
+
+.sidebar-link:is(:hover, :focus-visible) {
+  color: var(--gold-crayola);
+}
+
+.navbar .text-center .separator {
+  margin-block: 30px;
+  margin-inline: auto;
+}
+
+.navbar .contact-label {
+  margin-block-end: 10px;
+}
+
+.navbar::-webkit-scrollbar-thumb {
+  background-color: var(--white-alpha-10);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: var(--black-alpha-80);
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition-2);
+  z-index: 1;
+}
+
+.overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.account-hamburger-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .notification-badge-div {
+    position: relative;
+
+    .notification-badge {
+      position: absolute;
+      top: 0rem;
+      right: 0;
+      height: 1rem;
+      width: 1rem;
+      background-color: red;
+      border-radius: 50%;
+    }
+
+    #profilepicture {
+      border-radius: 50%;
+      height: 4.5rem;
+      width: 4.5rem;
+      margin: 0px;
+      cursor: pointer;
+      /* position: absolute; */
+      /* right: 2%; */
+    }
+  }
+}
+
+.account-options {
+  position: absolute;
+  right: 4%;
+  top: 11rem;
+  background-color: var(--smoky-black-1);
+  padding: 3rem;
+  border-radius: 2rem;
+  transition: 0.5s ease 0.2s;
+
+  &:hover {
+    box-shadow: 3px 3px 6px var(--gold-crayola);
+    transform: scale(1.03);
+  }
+
+
+  .account-field-name {
+    text-align: center;
+    padding-block-end: 2rem;
+    font-size: var(--fontSize-body-1);
+  }
+
+
+  .account-field,
+  .account-field-name {
+    position: relative;
+    padding-block: 1rem;
+    border-block-end: 1px solid var(--white-alpha-20);
+    font-size: var(--fontSize-body-3);
+    font-weight: 500;
+  }
+
+
+  .account-field-link {
+    position: relative;
+    transition: 0.5s ease;
+
+    &:hover {
+      /* text-decoration: underline var(--gold-crayola); */
+      color: var(--gold-crayola);
+      transform: scale(1.1);
+    }
+
+    span {
+      padding: 0rem 3rem 0rem 3rem;
+      text-transform: uppercase;
+    }
+
+    .separator {
+      position: absolute;
+      top: 50%;
+    }
+  }
+}
+
+
+@media (max-width: 575px) {
+  .header .logo-img {
+    width: 10rem;
+  }
+}
+
+@media (min-width: 575px) {
+
+  .header {
+    top: 51px;
+  }
+
+  .header.active {
+    top: 0;
+  }
+
+  .header .btn {
+    display: block;
+    margin-inline-start: auto;
+  }
+
+  .header .signin-text {
+    display: none;
+  }
+}
+
+
+@media (min-width: 768px) {
+
+  .navbar-list {
+    margin-inline: 30px;
+  }
+}
+
+
+
+@media (min-width: 1200px) {
+
+  .nav-open-btn,
+  .navbar>*:not(.navbar-list),
+  .header .overlay {
+    display: none;
+  }
+
+  .header .container {
+    max-width: unset;
+  }
+
+  .navbar,
+  .navbar.active,
+  .navbar-list {
+    all: unset;
+  }
+
+  .navbar,
+  .navbar.active {
+    margin-inline: auto 20px;
+  }
+
+  .navbar-list {
+    display: flex;
+    gap: 30px;
+  }
+
+  .navbar-item {
+    border-block-start: none;
+  }
+
+  .navbar .separator {
+    display: none;
+  }
+
+  .navbar-link {
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--letterSpacing-1);
+
+    &:is(:hover, :focus-visible, .active) span {
+      transform: unset;
+    }
+
+    &::after {
+      display: block;
+    }
+  }
+
+
+  .navbar-link.active::after {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  .header .btn {
+    margin-inline-start: 0;
+  }
+}
+
+
+@media (min-width: 1400px) {
+  .navbar {
+    margin-inline: auto;
+  }
+}
