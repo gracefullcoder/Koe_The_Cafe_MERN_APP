@@ -1,0 +1,36 @@
+@import "./base/base";
+@import "./abstract/mixins";
+
+//components
+@import "./components/topBar";
+@import "./components/navbar";
+@import "./components/loginForm";
+@import "./components/carousel";
+@import "./components/button";
+@import "./components/footer";
+@import "./components/backToTop";
+@import "./components/seatstructure";
+@import "./components/dashboardTopbar";
+@import "./components/cart";
+@import "./components/orderCard";
+@import "./components/ratingCard";
+@import "./components/analyticsContainer";
+@import "./components/orderSummary";
+@import "./components/filter";
+@import "./components/404Error";
+
+//section
+@import "./section/hero";
+@import "./section/workshop";
+@import "./section/about";
+@import "./section/event";
+@import "./section/feature";
+@import "./section/testimonial";
+@import "./section/reservation";
+@import "./section/specialitiies";
+@import "./section/addTestimonial";
+@import "./section/userDashboard";
+@import "./section/adminDashBoard";
+@import "./section/menusSection";
+@import "./section/menu";
+@import "./section/analytics";
