@@ -1,0 +1,59 @@
+.analytics-dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    // place-items: center; 
+    // display: grid;
+    // grid-template-columns: repeat(auto-fill ,minmax(300px,1fr));
+    margin-block-start: 5rem;
+    gap: 2rem;
+
+    .analytics-box {
+        width: 30rem;
+        padding: 2rem 2.5rem;
+        background-color: $surface-300;
+
+
+        .details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            i {
+                font-size: 2.5rem;
+                color: $primary-500;
+            }
+
+            .details-title {
+                color: $primary-500;
+            }
+
+            .percent {
+                font-size: 2rem;
+            }
+
+            .fa-arrow-trend-up {
+                color: lightgreen;
+            }
+
+            .fa-arrow-trend-down {
+                color: red;
+            }
+
+        }
+
+    }
+
+    .order-summary {
+        grid-column: span 2;
+        grid-row: span 3;
+        width: 100%;
+    }
+}
+
+.detailed-analytics {
+    display: flex;
+    gap: 5rem;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}

@@ -1,0 +1,40 @@
+.analytics-container {
+
+    max-width: 60rem;
+    width: 100%;
+    margin-block-start: 4rem;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: $surface-100;
+
+    .analytics-title{
+        color: $primary-500;
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 2rem 0rem 0rem 3rem;
+    }
+
+    .analytics-data {
+        width: 100%;
+        overflow-y: scroll;
+        height: 50rem;
+    }
+}
+
+
+.trending-container,.traffic-container{
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+
+.traffic-container{
+    .mail-btns{
+        display: flex;
+        justify-content: space-around;
+        gap: 1rem;
+        margin-block: 1rem;
+    }
+}
