@@ -8,7 +8,7 @@ connectDB()
 
 async function connectDB() {
   const connectionString = process.env.MONGO_ATLAS_URL;
-  await mongoose.connect(connectionString);
+  mongoose.connect(connectionString);
 }
 
 module.exports = connectDB;
