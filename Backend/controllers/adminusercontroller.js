@@ -120,7 +120,7 @@ module.exports.assignAdmin = async (req, res) => {
     }
 
     const user = await User.findByIdAndUpdate(id, { $set: { role: role } });
-    res.status(200).json({ success: true, message: `${user.fullname} is now Admin!` });
+    res.status(200).json({ success: true, message: `${user.fullname} is now Admin!`, role });
 }
 
 
@@ -160,8 +160,8 @@ module.exports.updateUser = async (req, res, next) => {
             if (err) throw next(new ExpressError(400, "Please Enter Valid file Name!"));
 
             imagekit.upload({
-                file: data,   
-                fileName: myFile,   
+                file: data,
+                fileName: myFile,
                 folder: "/Koe_Cafe/profilephoto"
             },
                 async function (error, result) {
@@ -186,7 +186,7 @@ module.exports.updateUser = async (req, res, next) => {
                                 })
                                 .catch(error => {
                                     console.log(error);
-                                    throw error; 
+                                    throw error;
                                 });
                         }
                         fs.unlinkSync(fileLocation);
