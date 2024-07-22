@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import dishImg from "../../assets/images/menu-1.png";
 import { useLocation, Link } from "react-router-dom";
 import { useCartContext } from "../../context/CartContext";
 import { CartIcon, Cart } from "../cart/Cart";
 import { PrimaryButton } from "../reuseable/Button.jsx";
 import { addToCart, increaseQty, decreaseQty, removeFromCart } from "./cartFunctions.js";
-import Header from "../header/Header.jsx";
 import { monitorActivity } from "../../helperfunction.js";
 import Dish from "./Dish.jsx";
 

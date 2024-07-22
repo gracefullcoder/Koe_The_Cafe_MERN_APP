@@ -1,8 +1,21 @@
-import React, { useState } from "react";
-import { useNavigate ,Link} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuthContext } from "../../context/AuthContext";
+import { toastMessage } from "../../helperfunction";
+
 export default function LoginForm() {
+
+  const { user } = useAuthContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+      toastMessage({ success: true, message: "Already Logged In!" })
+    }
+  }, [user])
+
 
   let [loginCredentials, setloginCredentials] = useState({
     username: "",
@@ -24,7 +37,6 @@ export default function LoginForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // "Access-Control-Allow-Credentials": true,
         },
         body: JSON.stringify({
           username: loginCredentials.username,
@@ -39,10 +51,10 @@ export default function LoginForm() {
           autoClose: 2000,
         });
         navigate("/");
-      }else{
-        toast.error(`Failed to Authenticate Incorrect Username or Password`,{
-          position:"top-center",
-          autoClose:3000,
+      } else {
+        toast.error(`Failed to Authenticate Incorrect Username or Password`, {
+          position: "top-center",
+          autoClose: 3000,
         })
       }
     } catch {
@@ -56,16 +68,16 @@ export default function LoginForm() {
     }
   }
 
-  async function redirectToGoogle(event){
+  async function redirectToGoogle(event) {
     event.preventDefault();
-    window.open(`${import.meta.env.VITE_SERVER_ENDPOINT}/auth/login/google`,"_self");
+    window.open(`${import.meta.env.VITE_SERVER_ENDPOINT}/auth/login/google`, "_self");
   }
- 
-  
+
+
   return (
     <div className="loginForm">
-      <div className="wrapper">
-        <div className="title">Login Form</div>
+      {!user && <div className="wrapper">
+        <div className="auth-title">Login Form</div>
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="field">
             <input
@@ -135,7 +147,7 @@ export default function LoginForm() {
             <Link to="/auth/signup">Signup now</Link>
           </div>
         </form>
-      </div>
+      </div>}
     </div>
   );
 }

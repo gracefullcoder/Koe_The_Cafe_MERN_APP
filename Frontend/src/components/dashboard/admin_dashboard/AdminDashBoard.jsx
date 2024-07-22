@@ -1,9 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import DashBoardSection from "../DashBoardSection";
-import { DashBoardNavbar } from '../DashBoardNavbar';
-import AdminNavLinks from './AdminNavLinks';
+import { DashBoardNavbar } from "../DashBoardNavbar";
+import AdminNavLinks from "./AdminNavLinks";
+import { useAuthContext } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { toastMessage } from "../../../helperfunction";
 
 function AdminDashBoard() {
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    console.log(user);
+    if (user && user.role) {
+      setIsAdmin(true);
+    }
+    else {
+      navigate("/")
+      toastMessage({ success: false, message: "Not an Admin User!" })
+    }
+  }, [user]);
+
   const [close, setClose] = useState("");
 
   function toggleClose() {
@@ -12,10 +30,19 @@ function AdminDashBoard() {
 
   return (
     <>
-      <DashBoardNavbar close={close} toggleClose={toggleClose} navTitle={'Admin'} navLinksList={<AdminNavLinks/>}/>
-      <DashBoardSection close={close} toggleClose={toggleClose} />
+      {isAdmin && (
+        <>
+          <DashBoardNavbar
+            close={close}
+            toggleClose={toggleClose}
+            navTitle={"Admin"}
+            navLinksList={<AdminNavLinks />}
+          />
+          <DashBoardSection close={close} toggleClose={toggleClose} />
+        </>
+      )}
     </>
-  )
+  );
 }
 
 export default AdminDashBoard;

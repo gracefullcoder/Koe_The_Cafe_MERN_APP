@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Footer from "../footer/Footer.jsx";
 import { SecondaryButton } from "../reuseable/Button.jsx";
@@ -8,9 +7,16 @@ import { toastMessage } from "../../helperfunction.js";
 import { useAuthContext } from "../../context/AuthContext.jsx";
 
 function AddTestimonial() {
-  let navigate = useNavigate();
   const { user } = useAuthContext();
-  console.log(user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+      toastMessage({ success: true, message: "Log In to add testimonial!" })
+    }
+  }, [user]);
+
   let [testimonial, setTestimonial] = useState({
     review: "",
     suggestion: "",
@@ -18,8 +24,8 @@ function AddTestimonial() {
   });
 
   useEffect(() => {
-    window.scroll(0,0);
-  },[])
+    window.scroll(0, 0);
+  }, [])
 
   async function handleTestimonial(event) {
     try {
@@ -46,69 +52,74 @@ function AddTestimonial() {
 
   return (
     <>
-      {/* <Navbar /> */}
-      <section className="section form-section text-center" >
-        <div className="container">
-          <h2 className="headline-1 section-title text-center">
-            We'd Love to Hear From You!
-          </h2>
-          <br />
-          <p className="text-center title-1">
-            Your feedback is important to us. Please take a moment to share your
-            experience and thoughts about our services.
-          </p>
-
-          <form encType="multipart/form-data" onSubmit={handleTestimonial} className="testimonial-form">
-            <div className="must-field-container">
-              <p className="field-label">
-                Your Review
-              </p>
-              <input
-                type="text"
-                name="review"
-                className='input-field'
-                placeholder="REVIEW"
-                value={testimonial.review}
-                onChange={(event) => handleInputChangeObj(event, setTestimonial)}
-                required
-              />
-              <p className="must-field">
-                *
-              </p>
-            </div>
-            <p className="field-label">
-              Any Suggestions
-            </p>
-            <input
-              type="text"
-              id="suggestion"
-              name="suggestion"
-              className='input-field'
-              placeholder="SUGGESTION"
-              value={testimonial.suggestion}
-              onChange={(event) => handleInputChangeObj(event, setTestimonial)}
-            />
-            {!user.profilepicture.isUpdated &&
-              <>
-                <p className="field-label">
-                  Update Your Profile Picture
+      {
+        user && (
+          <>
+            <section className="section form-section text-center" >
+              <div className="container">
+                <h2 className="headline-1 section-title text-center">
+                  We'd Love to Hear From You!
+                </h2>
+                <br />
+                <p className="text-center title-1">
+                  Your feedback is important to us. Please take a moment to share your
+                  experience and thoughts about our services.
                 </p>
-                <input
-                  type="file"
-                  id="myFile"
-                  name="myFile"
-                  className='input-field'
-                  value={testimonial.myFile}
-                  onChange={(event) => handleInputChangeObj(event, setTestimonial)}
-                />
-              </>
-            }
 
-            <SecondaryButton text1={"Add Testimonial"} text2={"Submit!"} />
-          </form>
-        </div>
-      </section>
-      <Footer />
+                <form encType="multipart/form-data" onSubmit={handleTestimonial} className="testimonial-form">
+                  <div className="must-field-container">
+                    <p className="field-label">
+                      Your Review
+                    </p>
+                    <input
+                      type="text"
+                      name="review"
+                      className='input-field'
+                      placeholder="REVIEW"
+                      value={testimonial.review}
+                      onChange={(event) => handleInputChangeObj(event, setTestimonial)}
+                      required
+                    />
+                    <p className="must-field">
+                      *
+                    </p>
+                  </div>
+                  <p className="field-label">
+                    Any Suggestions
+                  </p>
+                  <input
+                    type="text"
+                    id="suggestion"
+                    name="suggestion"
+                    className='input-field'
+                    placeholder="SUGGESTION"
+                    value={testimonial.suggestion}
+                    onChange={(event) => handleInputChangeObj(event, setTestimonial)}
+                  />
+                  {!user.profilepicture.isUpdated &&
+                    <>
+                      <p className="field-label">
+                        Update Your Profile Picture
+                      </p>
+                      <input
+                        type="file"
+                        id="myFile"
+                        name="myFile"
+                        className='input-field'
+                        value={testimonial.myFile}
+                        onChange={(event) => handleInputChangeObj(event, setTestimonial)}
+                      />
+                    </>
+                  }
+
+                  <SecondaryButton text1={"Add Testimonial"} text2={"Submit!"} />
+                </form>
+              </div>
+            </section>
+            <Footer />
+          </>
+        )
+      }
     </>
   );
 }

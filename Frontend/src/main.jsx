@@ -58,7 +58,7 @@ const router = createBrowserRouter([
       </CartProvider>
     ),
     loader: App.loader,
-    errorElement: <NotFound/>
+    errorElement: <NotFound />
   },
   {
     path: "/auth/login",
@@ -264,7 +264,7 @@ ReactDOM.createRoot(document.querySelector("#root")).render(
   // <React.StrictMode>
   <AuthProvider>
     <>
-      <ToastContainer style={{ width: "40%", textAlign: "center" }} limit={2}/>
+      <ToastContainer style={{ width: "40%", textAlign: "center" }} limit={2} />
       <RouterProvider router={router} />
     </>
   </AuthProvider>
