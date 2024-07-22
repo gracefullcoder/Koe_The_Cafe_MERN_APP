@@ -1,0 +1,36 @@
+.testimonial {
+  position: relative;
+  padding-block: 12rem 15rem;
+  min-height: 80rem;
+
+  overflow: hidden;
+  z-index: 1;
+
+  .btn {
+    margin-inline: auto;
+  }
+}
+
+.testimonial-slider {
+  .profile-img {
+    margin-inline: auto;
+    border-radius: 2rem;
+    height: 10rem;
+    width: 10rem;
+  }
+
+  .profile-name {
+    color: var(--gold-crayola);
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letterSpacing-3);
+  }
+
+  .testimonial-text {
+    margin-bottom: 3rem;
+    max-width: 110rem;
+    margin-inline: auto;
+    text-align: center;
+    font-family: 'Forum', cursive;;
+  }
+}
