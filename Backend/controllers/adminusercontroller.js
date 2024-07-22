@@ -1,4 +1,4 @@
-const { ExpressError} = require("../utils/wrapAsyncAndExpressError");
+const { ExpressError } = require("../utils/wrapAsyncAndExpressError");
 const User = require("../models/user.js");
 const path = require("path");
 const fs = require('fs');
@@ -7,14 +7,53 @@ const Registration = require('../models/registration.js');
 const Booking = require("../models/booking.js");
 const Testimonial = require("../models/testimonials.js");
 const Workshop = require("../models/workshop.js");
-const Notification = require("../models/notifications.js");
-const sendMail = require("../config/gmail.js");
+const PreviewImage = require("../models/previewImage.js");
 
-// module.exports.selectSection = async (req, res) => {
-//     let { section } = req.body;
-//     section = "/admin/" + section.toString().toLowerCase();
-//     res.redirect(section);
-// }
+module.exports.previewImage = async (req, res, next) => {
+    const prevImage = await PreviewImage.find();
+    const myFile = req.file.originalname;
+    const fileLocation = path.join("./uploads", myFile);
+
+    fs.readFile(fileLocation, async (err, data) => {
+        if (err) {
+            console.error("Error reading file:", err);
+            return next(new ExpressError(500, "Error reading file."));
+        }
+
+        imagekit.upload({
+            file: data,
+            fileName: myFile,
+            folder: "/Koe_Cafe/previewImage"
+        }, async (error, result) => {
+            if (error) {
+                console.error("Error uploading image:", error);
+                return next(new ExpressError(406, "Error in uploading image! Add a valid image."));
+            } else {
+                const image = result.url;
+                const imageid = result.fileId;
+                let document;
+
+                if (prevImage.length > 0) {
+                    document = await PreviewImage.findOneAndReplace({ _id: prevImage[0]._id }, { image, imageid });
+                    const oldimageid = document.imageid;
+
+                    imagekit.deleteFile(oldimageid)
+                        .then(response => {
+                            console.log("Deleted old image:", response);
+                        })
+                        .catch(deleteError => {
+                            console.error("Error deleting old image:", deleteError);
+                        });
+                } else {
+                    document = await PreviewImage.create({ image, imageid });
+                }
+
+                fs.unlinkSync(fileLocation);
+                return res.status(200).json({ success: true, message: "Preview Image Updated Successfully", image });
+            }
+        });
+    });
+}
 
 
 module.exports.showUsers = async (req, res) => {
@@ -30,12 +69,13 @@ module.exports.showUsers = async (req, res) => {
             normalUsers.push(user);
         }
     }
-    // console.log(normalUsers, adminUsers);
-    res.render("admindashboard/manageusers.ejs", { adminUsers, normalUsers });
+    console.log(normalUsers, adminUsers);
+    res.status(200).json({ adminUsers, normalUsers });
 }
 
 
 module.exports.destroyUser = async (req, res) => {
+    console.log("request to delete user");
     let { id } = req.params;
     let userData = await User.findById(id);
     // console.log("this is", userData);
@@ -50,14 +90,12 @@ module.exports.destroyUser = async (req, res) => {
         return registration.workshop;
     })
 
-    // console.log(userData);
-    // console.log(workshopIds);
+
     let workshopdata = await Workshop.updateMany({ _id: { $in: workshopIds } },
         {
             $pull: { registrations: { $in: registrationsId } }
         }, { new: true });
 
-    // console.log(workshopdata);
     if (userData.profilepicture.isUpdated) {
         imagekit.deleteFile(userData.profilepicture.imageid)
             .then(response => {
@@ -68,79 +106,52 @@ module.exports.destroyUser = async (req, res) => {
                 throw error;
             });
     }
-    // console.log(user);
     await User.findByIdAndDelete(id);
-    res.redirect("/admin/users");
+    res.status(200).json({ success: true, message: "User Deleted Succesfully!" });
 }
 
 
 module.exports.assignAdmin = async (req, res) => {
     let { id } = req.params;
-    let user = await User.findById(id);
-    user.role = {
+    const role = {
         admin: true,
         creatorname: req.user.fullname,
         creatoremail: req.user.username
     }
 
-    await User.findByIdAndUpdate(id, user);
-    res.redirect("/admin/users");
+    const user = await User.findByIdAndUpdate(id, { $set: { role: role } });
+    res.status(200).json({ success: true, message: `${user.fullname} is now Admin!` });
 }
 
 
 module.exports.unAssignAdmin = async (req, res) => {
     let { id } = req.params;
-    let user = await User.findById(id);
-    let data = await User.findByIdAndUpdate(id, { $unset: { role: true } }, { new: true }); //unset option use hota hai to remove key from object mongoose(unset role true)
-    res.redirect("/admin/users");
-}
-
-module.exports.notification = async (req, res) => {
-    let { title, message, htmlContent } = req.body;
-    let createdAt = new Date();
-    let newNotification = new Notification({title,message,createdAt});
-    await newNotification.save();
-    await User.updateMany({},{$inc:{notificationRemaining : 1}});
-    if (htmlContent) {
-        let googleLoggedinUsers = await User.find({ 'federatedCredentials.subject': { $exists: true } }, { _id: 0, username: 1 });
-        googleLoggedinUsers = googleLoggedinUsers.map((user) => user.username);
-        // console.log(googleLoggedinUsers);
-        const mailData = {
-            from: 'Koe the Cafe🍵<codingvaibhav247@gmail.com>',
-            to: googleLoggedinUsers,
-            subject: title,
-            text: message,
-            html: htmlContent
-        }
-        sendMail(mailData).then(result => console.log(`mail sent successfully this is result : ${result}`))
-            .catch(err => console.log("error bheja ye", err))
-    }
-
-    res.send("Notification Added Successfully !");
+    let user = await User.findByIdAndUpdate(id, { $unset: { role: true } }, { new: true });
+    res.status(200).json({ success: true, message: `${user.fullname} is now Normal User!` });
 }
 
 
 module.exports.renderEditForm = async (req, res) => {
     let { id } = req.params;
     let user = await User.findById(id);
-    res.render("admindashboard/edituser.ejs", { user });
+    res.status(200).json({ id: user._id, fullname: user.fullname, DOB: user.DOB, gender: user.gender });
 }
 
 
 module.exports.updateUser = async (req, res, next) => {
     let { id } = req.params;
     console.log(req.body);
-    let { fullname, gender, DOB, imagecheckbox } = req.body;
+    let { fullname, gender, DOB } = req.body;
     fullname = fullname.toString();
     gender = gender.toString();
-    // console.log("-------", req.file)
-    if (!imagecheckbox) {
+
+    if (!req.file) {
         let document = await User.findOneAndUpdate({ _id: id }, { fullname: fullname, gender: gender, DOB: DOB });
-        return res.redirect("/admin/users"); //yaha pe else hai nahi tho return lagana must
+        return res.json({ success: true, message: `${fullname} Updated Successfully!` })
     }
     else {
         if (!req.file) {
-            throw next(new ExpressError(400, "Image not Added, Please select required image")); //throw / return and next as parameter
+            throw next(new ExpressError(400, "Image not Added, Please select required image"));
         }
 
         let myFile = req.file.originalname;
@@ -149,8 +160,8 @@ module.exports.updateUser = async (req, res, next) => {
             if (err) throw next(new ExpressError(400, "Please Enter Valid file Name!"));
 
             imagekit.upload({
-                file: data,   //required
-                fileName: myFile,   //required
+                file: data,   
+                fileName: myFile,   
                 folder: "/Koe_Cafe/profilephoto"
             },
                 async function (error, result) {
@@ -175,11 +186,11 @@ module.exports.updateUser = async (req, res, next) => {
                                 })
                                 .catch(error => {
                                     console.log(error);
-                                    throw error; //promise chaining catch and This error will propagate to the next catch block(wrapAsync) 
+                                    throw error; 
                                 });
                         }
                         fs.unlinkSync(fileLocation);
-                        res.redirect("/admin/users");
+                        res.json({ success: true, message: `${fullname} Updated Successfully!` })
                     }
                 });
         });
