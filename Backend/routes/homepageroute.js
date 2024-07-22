@@ -7,7 +7,7 @@ const upload = multer({ storage: storage });
 const { validateRegistration, validateBookingUpdate, validateUserUpdate, validateBooking, validateBookingTiming } = require("../middlewares/homepagemiddleware.js");
 const { wrapAsync } = require("../utils/wrapAsyncAndExpressError.js")
 const { isLogedIn } = require("../middlewares/authmiddlewares.js");
-const { loadMainPage, tableBooking, workshopRegistration, renderUserDashboard, updateUser, showNotifications, userAction } = require("../controllers/homepagecontroller.js");
+const { loadMainPage, tableBooking, workshopRegistration, renderUserDashboard, updateUser, showNotifications } = require("../controllers/homepagecontroller.js");
 const { destroyBooking, updateBooking } = require("../controllers/bookingcontroller.js");
 const { destroyRegistration, updateRegistration } = require("../controllers/registrationcontroller.js");
 const { validateTestimonial } = require("../middlewares/adminmiddlewares.js");
@@ -16,9 +16,6 @@ router.route("/")
     .get(wrapAsync(loadMainPage))
 
     .post(isLogedIn, validateBooking, validateBookingTiming, wrapAsync(tableBooking));
-
-router.post("/traffic", wrapAsync(userAction));
-
 
 router.post('/register/:id', isLogedIn, validateRegistration, wrapAsync(workshopRegistration));
 

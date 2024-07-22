@@ -11,7 +11,6 @@ const fs = require('fs');
 const { imagekit } = require("../config/imagekitconfig.js");
 const Notification = require("../models/notifications.js");
 const Menu = require("../models/menu.js");
-const TrafficAnalysis = require("../models/analytics.js");
 
 const loadMainPage = async (req, res) => {
     console.log("requested to load main page");
@@ -28,17 +27,6 @@ const loadMainPage = async (req, res) => {
     // console.log(req.user);
     res.status(200).json(allSection);
 }
-
-const userAction = async (req, res) => {
-    let activity = req.body;
-    console.log(activity);
-    let userName = req.user ? req.user.username : 'anonymous';
-    const newTraffic = new TrafficAnalysis({ ...activity, userName: userName || "Newly Visited" });
-    await newTraffic.save();
-
-    res.status(200).json({ success: true });
-}
-
 
 
 const tableBooking = async (req, res) => {
@@ -186,4 +174,4 @@ const showNotifications = async (req, res) => {
 }
 
 
-module.exports = { loadMainPage, tableBooking, workshopRegistration, renderUserDashboard, updateUser, showNotifications, userAction };
+module.exports = { loadMainPage, tableBooking, workshopRegistration, renderUserDashboard, updateUser, showNotifications };
