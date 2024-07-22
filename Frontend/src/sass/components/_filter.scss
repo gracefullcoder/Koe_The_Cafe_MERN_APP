@@ -1,0 +1,14 @@
+.filter-options {
+    display: flex;
+    width: fit-content;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-end;
+    margin-block: 2rem;
+    margin-inline-start: auto ;
+
+    .filter-label{
+        margin-bottom: 2rem; 
+        font-size: 2rem;
+    }
+}
