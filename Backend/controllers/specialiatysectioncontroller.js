@@ -4,7 +4,7 @@ const { ExpressError } = require("../utils/wrapAsyncAndExpressError.js");
 
 const showSpecialitySliders = async (req, res) => {
     let specialSliders = await Specialslider.find();
-    res.json(specialSliders);
+    res.status(200).json(specialSliders);
 }
 
 const createSpecialitySlider = async (req, res, next) => {

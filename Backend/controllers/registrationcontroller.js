@@ -2,12 +2,6 @@ const Registration = require("../models/registration.js");
 const Workshop = require("../models/workshop.js");
 const User = require("../models/user.js");
 
-
-const showAllRegistration = async (req, res) => {
-    let registrations = await Registration.find().populate("user");
-    res.render("workshop/workshopregistrations.ejs", { registrations });
-}
-
 const workshopRegistration = async (req, res) => { //workshop ki id hai
     let { id } = req.params;
 
