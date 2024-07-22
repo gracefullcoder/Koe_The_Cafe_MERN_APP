@@ -1,0 +1,50 @@
+.workshop {
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  form {
+    max-width: 400px;
+    margin: 2rem auto;
+
+    label {
+      color: var(--gold-crayola);
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.countdown-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+
+  .countdown-item {
+    text-align: center;
+
+    .countdown-number {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .countdown-label {
+      font-size: 1rem;
+      color: var(--gold-crayola);
+    }
+  }
+}
+
+// input[type="text"],
+// input[type="number"] {
+//   width: 100%;
+//   padding: 10px;
+//   margin-bottom: 16px;
+//   background-color: #f8f8f8;
+//   border: 1px solid #ddd;
+//   border-radius: 4px;
+//   box-sizing: border-box;
+// }
