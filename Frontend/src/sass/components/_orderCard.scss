@@ -56,7 +56,7 @@
 
 .detailed-order.menu-container {
     .dish-box {
-        justify-content: space-between;
+        justify-content: space-around;
     }
 }
 
@@ -65,7 +65,7 @@
     display: flex;
     gap: 2rem;
 
-    .status-time{
+    .status-time {
         display: none;
     }
 }
@@ -90,7 +90,7 @@
 .timeline-status.deactivate {
     color: grey;
 
-    img{
+    img {
         filter: brightness(0.3);
     }
 
@@ -107,20 +107,28 @@
         background-color: $primary-500;
     }
 
-    .status-time{
+    .status-time {
         display: block;
     }
 }
 
 .detailed-order {
     .accounting {
-        margin-block:2rem;
+        margin-block: 2rem;
         color: $primary-500;
         display: flex;
         justify-content: space-around;
 
-        button{
+        button {
             color: $primary-500;
+        }
+
+        .total {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
         }
     }
 }
@@ -134,3 +142,21 @@
 // .status-line.active {
 //     background-color: $primary-500;
 // }
+
+@media(max-width:520px) {
+    .order-card {
+        min-width: unset;
+
+        .card-top {
+            padding: 0.5rem;
+            // flex-wrap: wrap;
+            font-size: 0.9em;
+            // justify-content: center;
+        }
+
+        .order-id,
+        .order-status {
+            gap: 0.5rem;
+        }
+    }
+}

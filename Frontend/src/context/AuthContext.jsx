@@ -1,4 +1,5 @@
 import react, { createContext, useContext, useEffect, useState } from "react";
+import PreLoad from "../components/preload/PreLoad";
 
 const AuthContext = createContext();
 
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   
   return (
     <AuthContext.Provider value={{ user, setUser }}>
-      {!loading ? children : <h1>Loading...</h1>}
+      {!loading ? children : <PreLoad />}
     </AuthContext.Provider>
   );
 };

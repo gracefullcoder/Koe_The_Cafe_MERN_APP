@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "./AuthContext";
+import PreLoad from "../components/preload/PreLoad";
 
 const CartContext = createContext();
 
@@ -31,7 +32,7 @@ export const CartProvider = ({ children }) => {
     }, [])
 
     return (<CartContext.Provider value={[cart, setCart]}>
-        {loading ? children : <h1>Getting cart ready!</h1>}
+        {loading ? children : <PreLoad />}
     </CartContext.Provider >)
 }
 

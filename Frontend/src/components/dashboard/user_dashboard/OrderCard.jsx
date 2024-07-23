@@ -130,7 +130,7 @@ function OrderCard({ orderDetail }) {
                             <hr />
                             <div className='accounting'>
                                 <button onClick={() => toggleView("rating")}>Rate Order</button>
-                                <span style={{ display: "flex", gap: '1rem' }}>
+                                <span className='total'>
                                     <pre>
                                         Sub-Total :
                                     </pre>
