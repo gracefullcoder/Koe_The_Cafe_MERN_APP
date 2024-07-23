@@ -150,13 +150,21 @@
         .card-top {
             padding: 0.5rem;
             // flex-wrap: wrap;
-            font-size: 0.9em;
+            font-size: 0.85em;
             // justify-content: center;
+        }
+
+        .card-bottom {
+            padding: 2rem 1.5rem;
         }
 
         .order-id,
         .order-status {
             gap: 0.5rem;
+        }
+
+        .order-id .logo{
+            width: 4.5rem;
         }
     }
 }
