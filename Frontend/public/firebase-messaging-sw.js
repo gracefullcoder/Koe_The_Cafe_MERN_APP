@@ -3,13 +3,13 @@ importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js')
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBtuKlwUxYA-1fYpoPUGVD2e8CeO5DAvtw",
-  authDomain: "koe-the-kafe.firebaseapp.com",
-  projectId: "koe-the-kafe",
-  storageBucket: "koe-the-kafe.appspot.com",
-  messagingSenderId: "85120969518",
-  appId: "1:85120969518:web:50867b9e03ee49356d28bf",
-  measurementId: "G-RF5RHCZH9G"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 firebase.initializeApp(firebaseConfig);
