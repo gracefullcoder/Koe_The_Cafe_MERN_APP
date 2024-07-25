@@ -25,7 +25,7 @@ router.route("/login")
 
 
 router.get("/login/failure", async (req, res) => {
-    res.status(400).json({ success: false, message: "Failed to Authenticate" });
+    res.redirect(`${process.env.FRONTEND_DOMAIN}/auth/signup/google`);
 })
 
 router.post("/signup", isAlreadyLogin, validateUser, wrapAsync(async (req, res) => {

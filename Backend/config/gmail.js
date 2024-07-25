@@ -16,7 +16,7 @@ async function sendMail(mailData) {
         const transport = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                type: 'oAuth2',
+                type: 'OAuth2',
                 user: 'codingvaibhav247@gmail.com',
                 clientId: process.env.CLIENT_ID,
                 clientSecret: process.env.CLIENT_SECRET,

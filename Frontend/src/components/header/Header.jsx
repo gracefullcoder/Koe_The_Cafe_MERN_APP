@@ -223,13 +223,13 @@ export default memo(function Header({ user, onLogout }) {
               </>
             ) : (
               <>
-                <Link to="/auth/login" className="btn btn-secondary">
+                <Link to="/auth/signup" className="btn btn-secondary">
                   <span className="text-1">Login</span>
                   <span className="text-2" aria-hidden="true">
                     Sign Up!
                   </span>
                 </Link>
-                <Link to="/auth/login" className="signin-text">
+                <Link to="/auth/signup" className="signin-text">
                   Sign in
                 </Link>
               </>
