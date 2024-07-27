@@ -17,7 +17,6 @@ function Dish() {
         await deleteSectionData(dishId, `admin/menusection/dish/${menuId}`, setDishes);
     }
 
-    console.log(dishes);
     return (
         <section>
             <div className="table-container">

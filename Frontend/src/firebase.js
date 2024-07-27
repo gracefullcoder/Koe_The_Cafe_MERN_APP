@@ -4,13 +4,13 @@ import { toast } from "react-toastify";
 import { toastMessage } from "./helperfunction";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBtuKlwUxYA-1fYpoPUGVD2e8CeO5DAvtw",
-  authDomain: "koe-the-kafe.firebaseapp.com",
-  projectId: "koe-the-kafe",
-  storageBucket: "koe-the-kafe.appspot.com",
-  messagingSenderId: "85120969518",
-  appId: "1:85120969518:web:50867b9e03ee49356d28bf",
-  measurementId: "G-RF5RHCZH9G"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
@@ -30,7 +30,7 @@ export const generateToken = async (userId) => {
 
   let permission = await Notification.requestPermission();
   if (permission === "granted") {
-    const token = await getToken(messaging, { vapidKey: "BCeMqK_AWyGgdzOkHw3tbj75qVdmuDL6p0-8YMrc_Gqx8oGWyWOBIth9CXfqV6SFY4RDFkDRQBsZTvLDL0w2AhM" });
+    const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
     console.log(token);
     const saveTokenUrl = `${import.meta.env.VITE_SERVER_ENDPOINT}/admin/notification/${userId}`
     const fetchData = await fetch(saveTokenUrl, {

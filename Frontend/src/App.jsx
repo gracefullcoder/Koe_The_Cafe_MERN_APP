@@ -33,7 +33,6 @@ function App() {
   let homePageData = useLoaderData(App.loader);
 
   useEffect(() => {
-    console.log("i m in useffect to load main page")
     setHomePage(homePageData);
     if (homePageData.user) setUser(true);
 
@@ -84,7 +83,6 @@ App.loader = async function getHomePage() {
     });
 
     const homePageData = await fetchHomePage.json();
-    console.log(homePageData);
     if (fetchHomePage.ok) {
       return homePageData;
     } else {

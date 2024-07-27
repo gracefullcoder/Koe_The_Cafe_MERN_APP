@@ -10,7 +10,6 @@ function OrderTable({ ordersDetail, socket, setOrdersDetails }) {
 
     const updateStatus = async (event, orderId) => {
         const status = event.target.value;
-        console.log(status);
         const updatedData = await patchData("order/manage", { orderId, status });
         if (updatedData.success == true) {
             socket.emit("order-updated", { orderId, status });
@@ -28,7 +27,6 @@ function OrderTable({ ordersDetail, socket, setOrdersDetails }) {
 
     const updateDishStatus = async (event, orderId, subOrderId, index) => {
         const status = event.target.value;
-        console.log(status);
         const updatedData = await patchData("order/manage", {
             orderId,
             status,

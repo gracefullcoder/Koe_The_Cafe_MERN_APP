@@ -13,7 +13,6 @@ function UserDetails() {
   const [fileName, setFileName] = useState("");
   const navigate = useNavigate();
 
-  console.log(user);
 
   useEffect(() => {
     if (!user) {

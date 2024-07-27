@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { actionPerformed, monitorActivity } from "../../helperfunction.js";
 
 const Workshop = ({ workshop, isWorkshop, isUser }) => {
-  console.log("workshop is called");
+  // console.log("workshop is called");
 
   let [workshopRegistration, setWorkshopRegistartion] = useState({
     userPhone: "",
@@ -17,7 +17,6 @@ const Workshop = ({ workshop, isWorkshop, isUser }) => {
       const startCountDown = setInterval(() => { updateCountdown(workshop.time) }, 1000);
       return (() => {
         clearInterval(startCountDown)
-        console.log("timer Unmounted")
       })
     } else {
       updateCountdown(workshop.time)
@@ -78,9 +77,7 @@ const Workshop = ({ workshop, isWorkshop, isUser }) => {
       id="workshop"
     >
       <div className="container">
-        {/* <p style={{ visibility: "hidden" }} className="gettime">
-          {workshop.time}
-        </p> */}
+        
         <p className="section-subtitle label-2">{workshop.label}</p>
 
         <h2 className="headline-1 section-title" id="countdown-title">

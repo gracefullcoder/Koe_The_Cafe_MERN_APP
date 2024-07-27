@@ -12,7 +12,6 @@ function AdminDashBoard() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    console.log(user);
     if (user && user.role) {
       setIsAdmin(true);
     }

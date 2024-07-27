@@ -3,7 +3,6 @@ import { toastMessage } from '../../../helperfunction';
 
 function BookingForm({ booking, index, makeChange, setUserBookings }) {
     const invalidUpdate = () => {
-        console.log("clicked");
         toastMessage({ success: false, message: "Can't Update this field, Delete this booking and create new Booking." });
     }
 

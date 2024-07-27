@@ -33,7 +33,7 @@ function Order() {
                 console.log("in to update suborder", subOrderId);
                 setOrdersDetails((prevData) => (
                     prevData.map((ordersDetail) => {
-                        console.log(ordersDetail, "aandar");
+
                         const orders = ordersDetail.orders.map((order) => {
                             if (order._id === subOrderId) return { ...order, status: status };
                             else return order;
@@ -53,7 +53,6 @@ function Order() {
 
         return () => {
             const orderIds = orderIdsRef.current;
-            console.log(orderIds);
             socket.off("connect");
             socket.off("updated-status");
             socket.emit("remove-orders", orderIds, () => {

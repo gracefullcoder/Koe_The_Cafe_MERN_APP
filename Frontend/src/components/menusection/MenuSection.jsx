@@ -80,7 +80,7 @@ const MenuSection = ({ menus }) => {
                     {menus &&
                         menus.map((menu, index) => (
                             <div className="service-card" key={menu._id}>
-                                <a className="has-before hover:shine">
+                                <Link to={"/menu"} state={{ dishes: menu.dishes, title: menu.title }} className="has-before hover:shine">
                                     <figure className="card-banner img-holder">
                                         <IKImage
                                             urlEndpoint='https://ik.imagekit.io/vaibhav11'
@@ -88,7 +88,7 @@ const MenuSection = ({ menus }) => {
                                             className="img-cover"
                                             alt="Menu-image"
                                             transformation={[{
-                                                quality:100,
+                                                quality: 100,
                                                 height: 400,
                                                 width: 300
                                             }]}
@@ -96,13 +96,15 @@ const MenuSection = ({ menus }) => {
                                         />
 
                                     </figure>
-                                </a>
-                                <div className="card-content">
-                                    <h3 className="title-4 card-title">
-                                        <a>{menu.title}</a>
-                                    </h3>
-                                    <Link to={"/menu"} state={{ dishes: menu.dishes, title: menu.title }} className="btn-text btn-view-menu hover-underline label-2">View Menu</Link>
-                                </div>
+                                </Link>
+                                <Link to={"/menu"} state={{ dishes: menu.dishes, title: menu.title }} >
+                                    <div className="card-content">
+                                        <h3 className="title-4 card-title">
+                                            <a>{menu.title}</a>
+                                        </h3>
+                                        <p className="btn-text btn-view-menu hover-underline label-2">View Menu</p>
+                                    </div>
+                                </Link>
                             </div>
                         ))
                     }

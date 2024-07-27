@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuthContext } from "./AuthContext";
 import PreLoad from "../components/preload/PreLoad";
+import displayRazorpay from "../razorpay";
 
 const CartContext = createContext();
 
@@ -23,7 +24,6 @@ export const CartProvider = ({ children }) => {
             })
 
             const responseData = await fetchUrl.json();
-            console.log(responseData);
             setCart({ active: false, orders: responseData.cart });
             setLoading(true);
         }
