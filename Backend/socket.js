@@ -95,7 +95,7 @@ const socketConnections = (io) => {
         })
 
         socket.on("order-updated", (data) => {
-            console.log("order updated");
+            console.log("order updated",data);
             const socketId = orderIdToSocket.get(data.orderId);
             io.to(socketId).emit("updated-status", data);
         })

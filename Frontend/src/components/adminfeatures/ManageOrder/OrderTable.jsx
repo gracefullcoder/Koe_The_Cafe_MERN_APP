@@ -11,8 +11,9 @@ function OrderTable({ ordersDetail, socket, setOrdersDetails }) {
     const updateStatus = async (event, orderId) => {
         const status = event.target.value;
         const updatedData = await patchData("order/manage", { orderId, status });
+        console.log(updatedData);
         if (updatedData.success == true) {
-            socket.emit("order-updated", { orderId, status });
+            socket.emit("order-updated", { orderId, status, updatedTime: updatedData.updatedTime });
             setOrderStatus(status);
             setSubOrderStatus((prev) => prev.map(() => status));
             if (status == "Served") {

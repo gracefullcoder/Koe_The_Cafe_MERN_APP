@@ -110,7 +110,7 @@ router.route("/manage", isAdmin)
             order = await Order.findOneAndUpdate({ _id: orderId, 'orders._id': subOrderId }, { $set: { 'orders.$.status': status } })
         }
         else { order = await Order.findOneAndUpdate({ _id: orderId }, { status: status, 'orders.$[].status': status }) }
-        res.status(200).json({ success: true, message: "Order Updated Successfully!", updatedTime: order.updatedAt });
+        res.status(200).json({ success: true, message: "Order Updated Successfully!", updatedTime: new Date() });
     }))
 
 module.exports = router;

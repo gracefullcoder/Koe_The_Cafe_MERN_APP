@@ -27,7 +27,7 @@ function Order() {
 
     useEffect(() => {
         socket.on("updated-status", ({ orderId, status, subOrderId, updatedTime }) => {
-            console.log("received updated status");
+            console.log("received updated status",updatedTime);
 
             if (subOrderId) {
                 console.log("in to update suborder", subOrderId);
@@ -35,7 +35,7 @@ function Order() {
                     prevData.map((ordersDetail) => {
 
                         const orders = ordersDetail.orders.map((order) => {
-                            if (order._id === subOrderId) return { ...order, status: status };
+                            if (order._id === subOrderId) return { ...order, status: status, updatedAt: updatedTime };
                             else return order;
                         })
                         return { ...ordersDetail, orders };
@@ -44,7 +44,7 @@ function Order() {
             } else {
                 setOrdersDetails((prevData) => (
                     prevData.map((ordersDetail) => {
-                        if (ordersDetail._id === orderId) return { ...ordersDetail, status: status, orders: ordersDetail.orders.map(order => ({ ...order, status: status })) };
+                        if (ordersDetail._id === orderId) return { ...ordersDetail, status: status, orders: ordersDetail.orders.map(order => ({ ...order, status: status, updatedAt: updatedTime })) };
                         return ordersDetail;
                     })
                 ));

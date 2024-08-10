@@ -5,12 +5,15 @@ import { HeaderLink, TopBar } from "./TopBar.jsx";
 import { Link } from "react-router-dom";
 import { CartIcon } from "../cart/Cart.jsx";
 import { linkVisited } from "../../helperfunction.js";
+import { useAuthContext } from "../../context/AuthContext.jsx";
 
 export default memo(function Header({ user, onLogout }) {
   // console.log("header is called");
   let [lastScroll, setLastScroll] = useState(0);
   let [headerState, setHeaderState] = useState("header");
   let [account, setAccount] = useState(false);
+
+  let {setUser} = useAuthContext();
 
   useEffect(() => {
     function hideHeader() {
@@ -61,8 +64,7 @@ export default memo(function Header({ user, onLogout }) {
           autoClose: 2000,
         });
         onLogout();
-        // const jsonData = await logoutRequest.json();
-        // console.log(jsonData);
+        setUser(null);
       }
     } catch (error) {
       console.log(error, "Failed to logout!");
