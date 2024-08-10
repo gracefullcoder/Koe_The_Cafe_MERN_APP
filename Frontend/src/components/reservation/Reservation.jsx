@@ -64,7 +64,7 @@ function validateBookingData(data) {
 
 
 function Reservation({ isUser, userId }) {
-  console.log("reservation is called");
+  // console.log("reservation is called");
   let [reservationData, setReservationData] = useState({
     name: "",
     phone: "",

@@ -2,7 +2,7 @@ import { memo } from "react";
 import EventCard from "./EventCard";
 
 function Event({ events }) {
-  console.log("called", events)
+  // console.log("called", events)
   return (
     <section className="section event bg-black-10" aria-label="event" id="events">
       <div className="container">

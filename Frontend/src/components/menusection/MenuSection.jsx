@@ -100,7 +100,7 @@ const MenuSection = ({ menus }) => {
                                 <Link to={"/menu"} state={{ dishes: menu.dishes, title: menu.title }} >
                                     <div className="card-content">
                                         <h3 className="title-4 card-title">
-                                            <a>{menu.title}</a>
+                                            <p>{menu.title}</p>
                                         </h3>
                                         <p className="btn-text btn-view-menu hover-underline label-2">View Menu</p>
                                     </div>

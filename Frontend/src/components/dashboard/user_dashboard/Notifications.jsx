@@ -25,13 +25,14 @@ function Notifications() {
             };
             grantPermission();
         }
+    });
 
+    useEffect(() => {
         onMessage(messaging, (payload) => {
             console.log('Message received. ', payload);
             toast(`${payload.notification.body}`);
         });
-
-    }, []);
+    })
 
     useEffect(() => {
         const getNotifications = async () => {

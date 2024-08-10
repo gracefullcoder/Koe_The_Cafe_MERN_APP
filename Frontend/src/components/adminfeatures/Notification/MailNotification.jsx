@@ -22,8 +22,6 @@ const MailNotification = ({ users }) => {
         const responseData = await fetchNotification.json();
 
         toastMessage(responseData);
-
-        console.log('Form submitted:', { title, message, htmlContent });
     };
 
     const addUser = (event) => {
@@ -40,6 +38,28 @@ const MailNotification = ({ users }) => {
             setMail(prev => ({ ...prev, mailUsers: [...prev.mailUsers, ...users] }))
         }
     }, [users])
+
+    useEffect(() => {
+        async function generateAuth() {
+            const grantAuth = `${import.meta.env.VITE_SERVER_ENDPOINT}/admin/notification/auth/gmail`;
+            console.log(grantAuth);
+            let authUrl = await fetch(grantAuth, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            })
+            authUrl = await authUrl.json();
+            console.log(authUrl);
+
+            if (!authUrl.token) {
+                window.open(authUrl.url, "_self");
+            }
+        }
+
+        generateAuth();
+    }, [])
 
     return (
         <section className="text-center create-notification">
