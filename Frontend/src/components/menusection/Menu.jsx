@@ -56,7 +56,7 @@ function Menu() {
 
                     <div className="menu-container">
                         {dishes.map((dish, index) => (
-                            <div className="dish-box" key={dish._id}>
+                            dish.available && <div className="dish-box" key={dish._id}>
                                 <Dish dish={dish} />
                                 <div className="order-options">
                                     {dish.quantity == 0 ? <PrimaryButton text1={<i className="fa-solid fa-plus"></i>} text2={"Add It"}
@@ -80,7 +80,7 @@ function Menu() {
                                             <i
                                                 className="fa-solid fa-plus"
                                                 onClick={() => {
-                                                    if(!user) navigate("/auth/login");
+                                                    if (!user) navigate("/auth/login");
                                                     else increaseQty(dish._id, setCart);
                                                 }}
                                             ></i>
@@ -90,6 +90,7 @@ function Menu() {
                                     {/* <p>Total: {dish.quantity * dish.price} </p> */}
                                 </div>
                             </div>
+
                         ))}
                     </div>
                 </div>

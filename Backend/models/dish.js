@@ -29,7 +29,11 @@ const dishSchema = new Schema(
                 type: String,
             },
             rating: Number
-        }]
+        }],
+        available: {
+            type: Boolean,
+            default: true
+        }
     }
 );
 

@@ -22,7 +22,7 @@ const loadMainPage = async (req, res) => {
     let specialSection = await Specialslider.find();
     let testimonials = await Testimonial.find().populate({ path: "user", select: 'fullname profilepicture' });
     let events = await Event.find();
-    const menus = await Menu.find().populate("dishes");
+    const menus = await Menu.find({available:true}).populate("dishes");
     let allSection = { heroSliders, menus, workshop, specialSection, testimonials, events, user: req.user, isWorkshop: isWorkshop };
     // console.log(req.user);
     res.status(200).json(allSection);

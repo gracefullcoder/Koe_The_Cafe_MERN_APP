@@ -75,23 +75,30 @@ const destroyDish = async (req, res) => {
     res.status(200).json({ success: true, message: "Dish removed!" });
 }
 
+const editDish = async (req,res) => {
+    const {available} = req.body;
+    const {id} = req.params;
+    const dish = await Dish.findByIdAndUpdate(id,{available});
+    res.status(200).json({success:true,message:`${dish.dishName} ${available ? "Enabled" : "Disabled"} Successfully`});
+}
 
 const updateMenu = async (req, res) => {
-    const { title } = req.body;
+    let { title, available } = req.body;
     const { id } = req.params;
+    available = available == "yes" ? true : false;
     console.log(req.body);
     if (!req.file) {
-        await Menu.findByIdAndUpdate(id, { title: title });
+        await Menu.findByIdAndUpdate(id, { title: title, available });
     }
     else {
         const fileName = req.file.originalname;
         const folderName = createFolderName(title);
         const { fileUrl, fileId } = await uploadFile(fileName, `menusection/${folderName}`);
-        const oldMenu = await Menu.findByIdAndUpdate(id, { title, image: fileUrl, imageId: fileId });
+        const oldMenu = await Menu.findByIdAndUpdate(id, { title, image: fileUrl, imageId: fileId ,available});
         oldMenu.imageId && await deleteFile(oldMenu.imageId);
     }
     return res.status(200).json({ success: true, message: "Menu Upadted successfully!" });
 }
 
 
-module.exports = { createMenu, showMenu, destroyMenu, addDish, destroyDish, updateMenu };
+module.exports = { createMenu, showMenu, destroyMenu, addDish, destroyDish, updateMenu,editDish };

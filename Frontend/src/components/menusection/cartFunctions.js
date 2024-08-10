@@ -15,7 +15,7 @@ const handleEvent = async (route, data) => {
         const responseData = await fetchUrl.json();
         toastMessage(responseData)
 
-        if (fetchUrl.ok) return true;
+        if (responseData.success) return true;
         return false;
     }
     catch (error) {

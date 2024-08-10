@@ -1,6 +1,7 @@
 const express = require("express");
 const { wrapAsync } = require("../utils/wrapAsyncAndExpressError");
 const User = require("../models/user");
+const Dish = require("../models/dish");
 const router = express.Router();
 
 router.get("/", wrapAsync(async (req, res) => {
@@ -13,7 +14,8 @@ router.get("/", wrapAsync(async (req, res) => {
 router.patch("/add", wrapAsync(async (req, res) => {
     const { dish } = req.body;
     const userId = req.user._id;
-    console.log(dish);
+    const { available } = await Dish.findById(dish._id);
+    if (!available) return res.status(200).json({ success: false, message: `${dish.dishName} is not available right now!` });
     await User.findByIdAndUpdate(userId, { $push: { cart: { dish: dish._id, quantity: 1 } } });
     console.log('add request');
     res.status(200).json({ success: true, message: `${dish.dishName} added to cart 😋!` })

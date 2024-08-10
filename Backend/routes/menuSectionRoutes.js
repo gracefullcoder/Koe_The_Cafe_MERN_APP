@@ -4,7 +4,7 @@ const router = express.Router();
 const multer = require("multer");
 const { storage } = require("../config/imagekitconfig");
 const upload = multer({ storage: storage });
-const { showMenu, createMenu, destroyMenu, addDish, destroyDish, updateMenu } = require("../controllers/menusectionController");
+const { showMenu, createMenu, destroyMenu, addDish, destroyDish, updateMenu, editDish } = require("../controllers/menusectionController");
 
 
 router.route("/")
@@ -17,7 +17,8 @@ router.route("/:id")
     .delete(wrapAsync(destroyMenu));
 
 router.route("/dish/:id")
-    .post(upload.single("myFile"), wrapAsync(addDish));
+    .post(upload.single("myFile"), wrapAsync(addDish))
+    .patch(wrapAsync(editDish));
 
 router.delete("/dish/:menuId/:dishId", destroyDish);
 

@@ -4,6 +4,7 @@ import { useParams, useLocation } from 'react-router-dom'
 import CreateDish from './CreateDish';
 import { SecondaryButton } from '../../reuseable/Button';
 import { deleteSectionData } from '../CustomizationAssets/CustomizationFunction';
+import { patchData } from '../../../helperfunction';
 function Dish() {
     const { menuId } = useParams();
     let [dishes, setDishes] = useState([]);
@@ -15,6 +16,18 @@ function Dish() {
 
     const removeDish = async (dishId) => {
         await deleteSectionData(dishId, `admin/menusection/dish/${menuId}`, setDishes);
+    }
+
+    const editDish = async (dish) => {
+        let responseData = await patchData(`admin/menusection/dish/${dish._id}`, { available: !dish.available });
+        if (responseData.success) setDishes((prevDishes) => (
+            prevDishes.map(prevDish => {
+                if (prevDish._id == dish._id) {
+                    return { ...prevDish, available: !prevDish.available };
+                }
+                return prevDish
+            })
+        ))
     }
 
     return (
@@ -44,7 +57,7 @@ function Dish() {
                                     <SecondaryButton text1={"Delete"} text2={"Delete"} fnx={() => removeDish(dish._id)} />
                                 </td>
                                 <td>
-                                    <SecondaryButton text1={"Edit!"} text2={"Edit!"} />
+                                    <SecondaryButton text1={dish.available ? "Disable" : "Enable"} text2={"Make Changes!"} fnx={() => { editDish(dish) }} />
                                 </td>
                             </tr>
                         ))}

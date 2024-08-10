@@ -18,7 +18,11 @@ const menuSchema = new Schema(
                 type: Schema.ObjectId,
                 ref: "Dish"
             }
-        ]
+        ],
+        available: {
+            type: Boolean,
+            default: true
+        }
     }
 );
 
