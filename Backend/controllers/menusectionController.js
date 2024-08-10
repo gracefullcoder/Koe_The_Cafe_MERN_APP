@@ -75,11 +75,11 @@ const destroyDish = async (req, res) => {
     res.status(200).json({ success: true, message: "Dish removed!" });
 }
 
-const editDish = async (req,res) => {
-    const {available} = req.body;
-    const {id} = req.params;
-    const dish = await Dish.findByIdAndUpdate(id,{available});
-    res.status(200).json({success:true,message:`${dish.dishName} ${available ? "Enabled" : "Disabled"} Successfully`});
+const editDish = async (req, res) => {
+    const { available } = req.body;
+    const { id } = req.params;
+    const dish = await Dish.findByIdAndUpdate(id, { available });
+    res.status(200).json({ success: true, message: `${dish.dishName} ${available ? "Enabled" : "Disabled"} Successfully` });
 }
 
 const updateMenu = async (req, res) => {
@@ -88,17 +88,25 @@ const updateMenu = async (req, res) => {
     available = available == "yes" ? true : false;
     console.log(req.body);
     if (!req.file) {
-        await Menu.findByIdAndUpdate(id, { title: title, available });
+        const menu = await Menu.findByIdAndUpdate(id, { title: title, available });
+        if (!available) {
+            let dishes = menu.dishes;
+            await Dish.updateMany({ _id: { $in: dishes } }, { available: false });
+        }
     }
     else {
         const fileName = req.file.originalname;
         const folderName = createFolderName(title);
         const { fileUrl, fileId } = await uploadFile(fileName, `menusection/${folderName}`);
-        const oldMenu = await Menu.findByIdAndUpdate(id, { title, image: fileUrl, imageId: fileId ,available});
+        const oldMenu = await Menu.findByIdAndUpdate(id, { title, image: fileUrl, imageId: fileId, available });
+        if (!available) {
+            let dishes = oldMenu.dishes;
+            await Dish.updateMany({ _id: { $in: { dishes } } }, { available: false });
+        }
         oldMenu.imageId && await deleteFile(oldMenu.imageId);
     }
-    return res.status(200).json({ success: true, message: "Menu Upadted successfully!" });
+    return res.status(200).json({ success: true, message: "Menu Updated successfully!" });
 }
 
 
-module.exports = { createMenu, showMenu, destroyMenu, addDish, destroyDish, updateMenu,editDish };
+module.exports = { createMenu, showMenu, destroyMenu, addDish, destroyDish, updateMenu, editDish };
