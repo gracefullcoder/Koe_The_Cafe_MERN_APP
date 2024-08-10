@@ -1,6 +1,6 @@
 const { google } = require("googleapis");
 require('dotenv').config();
-const OAuthToken = require('../models/oauthToken');
+const OAuthToken = require('../models/oAuthToken');
 
 const oAuth2Client = new google.auth.OAuth2(
     process.env.CLIENT_ID,
