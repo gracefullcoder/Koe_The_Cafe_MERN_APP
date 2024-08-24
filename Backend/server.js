@@ -89,7 +89,7 @@ const session_options = {
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'Lax'
+    sameSite: 'None'
   }
 };
 
@@ -123,7 +123,6 @@ passport.use(new GoogleStrategy({
     try {
       console.log(profile);
       let existingUser = await User.findOne({ username: profile.emails[0].value })
-      console.log(existingUser);
       console.log(req.session);
       if (!existingUser) {
 
