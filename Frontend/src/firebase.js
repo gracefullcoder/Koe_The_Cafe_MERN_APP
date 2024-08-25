@@ -32,7 +32,7 @@ export const generateToken = async (userId) => {
   if (permission === "granted") {
     const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
     console.log(token);
-    const saveTokenUrl = `${import.meta.env.VITE_SERVER_ENDPOINT}/admin/notification/${userId}`
+    const saveTokenUrl = `${import.meta.env.VITE_SERVER_ENDPOINT}/pushnotification/${userId}`
     const fetchData = await fetch(saveTokenUrl, {
       method: "POST",
       headers: {

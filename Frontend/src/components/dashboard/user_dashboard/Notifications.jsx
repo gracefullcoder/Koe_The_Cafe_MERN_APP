@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { generateToken, messaging } from '../../../firebase.js';
-import { onMessage } from 'firebase/messaging';
+import { onMessage, getToken } from 'firebase/messaging';
 import { toast } from 'react-toastify';
 import { Filter } from '../../Filter/Filter.jsx';
 import { useAuthContext } from '../../../context/AuthContext.jsx';
+
 function Notifications() {
 
     let [notifications, setNotifications] = useState({
@@ -14,22 +15,35 @@ function Notifications() {
 
     const { user, setUser } = useAuthContext();
 
+    const tokenGenerated = useRef(false);
+
 
     useEffect(() => {
-        console.log(user.notification);
-        if (user.notification.pushMessage === 'NA') {
-            const grantPermission = async () => {
-                await generateToken(user._id)
+        const grantPermission = async () => {
+            const token = await getToken(messaging, { vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY });
+            const hasToken = `${import.meta.env.VITE_SERVER_ENDPOINT}/pushnotification/token`;
+            const fetchTokenDetails = await fetch(hasToken, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({ token: token })
+            })
+            const tokenDetails = await fetchTokenDetails.json();
+            
+            if (!tokenDetails.token) {
+                await generateToken(user._id);
                 setUser((prevData) => ({ ...prevData, notification: { ...prevData.notification, pushMessage: 'accept' } }))
-                console.log("done caklled for permission");
-            };
-            grantPermission();
-        }
-    });
+            }
+
+            tokenGenerated.current = true;
+        };
+        !tokenGenerated.current && grantPermission();
+    }, []);
 
     useEffect(() => {
         onMessage(messaging, (payload) => {
-            console.log('Message received. ', payload);
             toast(`${payload.notification.body}`);
         });
     })
@@ -51,7 +65,6 @@ function Notifications() {
             if (fetchNotifications.ok) {
                 const total = response.Notifications.length;
                 const numOfUnreads = user.notification.notificationsRemaining;
-                console.log(numOfUnreads, total);
                 let newNotification = response.Notifications.slice(total - numOfUnreads);
                 let oldNotification = response.Notifications.slice(0, total - numOfUnreads);
 
@@ -80,10 +93,8 @@ function Notifications() {
         setNotifications((prevData) => {
             const newNotification = prevData.newNotification;
             const markedMessage = newNotification.splice(index, 1);
-            console.log(markedMessage);
             const oldNotification = prevData.oldNotification;
             oldNotification.push(markedMessage[0])
-            console.log(newNotification, oldNotification)
             return { newNotification: newNotification, oldNotification: oldNotification }
         })
     }

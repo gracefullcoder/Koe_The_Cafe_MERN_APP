@@ -48,6 +48,7 @@ const menuSectionRouter = require("./routes/menuSectionRoutes.js");
 const cartRouter = require("./routes/cartroute.js");
 const orderRouter = require("./routes/orderroutes.js");
 const trafficRouter = require("./routes/trafficroutes.js");
+const pushNotificationRoter = require("./routes/pushnotificationroute.js");
 
 
 app.set("trust proxy", 1);
@@ -183,6 +184,8 @@ app.use("/cart", isLogedIn, cartRouter);
 app.use("/order", isLogedIn, orderRouter);
 
 app.use("/admin", isAdmin, adminRouter);
+
+app.use("/pushnotification",isLogedIn,pushNotificationRoter);
 
 app.use("/admin/herosection", isAdmin, herosectionRouter);
 

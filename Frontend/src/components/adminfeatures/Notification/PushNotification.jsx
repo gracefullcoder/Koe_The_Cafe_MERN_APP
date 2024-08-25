@@ -3,19 +3,18 @@ import { PrimaryButton } from '../../reuseable/Button';
 import { toastMessage } from '../../../helperfunction';
 
 const PushNotification = () => {
-  const [title, setTitle] = useState('');
-  const [message, setMessage] = useState('');
+  const [notification, setNotification] = useState({ title: '', message: '', icon: '', link: '' });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const url = `${import.meta.env.VITE_SERVER_ENDPOINT}/admin/notification/pushnotification`;
+    const url = `${import.meta.env.VITE_SERVER_ENDPOINT}/pushnotification/send`;
     const fetchNotification = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       credentials: 'include',
-      body: JSON.stringify({ title, message })
+      body: JSON.stringify(notification)
     })
 
     const responseData = await fetchNotification.json();
@@ -24,9 +23,11 @@ const PushNotification = () => {
     console.log(fetchNotification);
 
     toastMessage(responseData);
-
-    console.log('Form submitted:', { title, message });
   };
+
+  const handleInputChange = (e) => {
+    setNotification(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  }
 
   return (
     <section className="text-center create-notification">
@@ -37,8 +38,9 @@ const PushNotification = () => {
           <input
             className='input-field'
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={notification.title}
+            onChange={handleInputChange}
+            name='title'
             placeholder="Title"
             required
           />
@@ -46,10 +48,30 @@ const PushNotification = () => {
         <p>Message</p>
         <textarea
           className='input-field'
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={notification.message}
+          onChange={handleInputChange}
+          name='message'
           placeholder="Message for users to be notified on website and mail"
           style={{ height: '8rem' }}
+        />
+        <p>Icon Link</p>
+        <input
+          className='input-field'
+          type="text"
+          value={notification.icon}
+          onChange={handleInputChange}
+          name='icon'
+          placeholder="Icon Link"
+        />
+        <p>Redirect Link</p>
+        <input
+          className='input-field'
+          type="text"
+          value={notification.link}
+          onChange={handleInputChange}
+          name='link'
+          placeholder="Link to open when user clicks notification"
+          // required
         />
         <PrimaryButton text1={"Create Notification"} text2={"Create it!"} />
       </form>

@@ -1,5 +1,5 @@
-importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
+importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging.js');
 
 
 const firebaseConfig = {
@@ -23,8 +23,8 @@ messaging.onBackgroundMessage((payload) => {
   // Customize notification here
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
-    body: payload.notification.body,
-    icon: payload.notification.image
+    icon:"https://ik.imagekit.io/vaibhav11/Koe_Cafe/Additional/shape-4.png?updatedAt=1720483080805",
+    body: payload.data.body,
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
