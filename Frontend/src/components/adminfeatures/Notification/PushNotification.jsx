@@ -3,7 +3,7 @@ import { PrimaryButton } from '../../reuseable/Button';
 import { toastMessage } from '../../../helperfunction';
 
 const PushNotification = () => {
-  const [notification, setNotification] = useState({ title: '', message: '', icon: '', link: '' });
+  const [notification, setNotification] = useState({ title: '', message: '', group: '', link: '' });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -54,14 +54,14 @@ const PushNotification = () => {
           placeholder="Message for users to be notified on website and mail"
           style={{ height: '8rem' }}
         />
-        <p>Icon Link</p>
+        <p>group Link</p>
         <input
           className='input-field'
           type="text"
-          value={notification.icon}
+          value={notification.group}
           onChange={handleInputChange}
-          name='icon'
-          placeholder="Icon Link"
+          name='group'
+          placeholder="group Link"
         />
         <p>Redirect Link</p>
         <input

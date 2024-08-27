@@ -9,12 +9,12 @@ const { wrapAsync } = require("../utils/wrapAsyncAndExpressError.js");
 router.post("/send", isAdmin, wrapAsync(async (req, res) => {
     const accessToken = await generateAccessToken();
 
-    const { title, message, icon, link: redirectLink } = req.body;
+    const { title, message, group, link: redirectLink } = req.body;
 
     console.log(req.body, redirectLink)
 
     const url = `https://fcm.googleapis.com//v1/projects/koe-the-kafe/messages:send`;
-    const notificationKeyUrl = "https://fcm.googleapis.com/fcm/notification?notification_key_name=vaibhavnews";
+    const notificationKeyUrl = `https://fcm.googleapis.com/fcm/notification?notification_key_name=${group}`;
 
     // const pushnotificationData = await PushNotification.find({}, { _id: 0, token: 1 });
     // const tokens = pushnotificationData.map((Notification) => (Notification.token));
@@ -29,6 +29,7 @@ router.post("/send", isAdmin, wrapAsync(async (req, res) => {
             "project_id": process.env.FIREBASE_PROJECT_ID
         }
     })
+
     const responseKey = await fetchKey.json();
 
     const groupKey = responseKey.notification_key;
@@ -61,7 +62,6 @@ router.post("/send", isAdmin, wrapAsync(async (req, res) => {
     })
 
     const responseData = await fetchUrl.json();
-    // console.log(fetchUrl, "++", responseData);
 
     res.status(200).json({ success: true, message: "Created Push Notification Successfully" })
 }))
@@ -84,7 +84,7 @@ router.post("/:id", wrapAsync(async (req, res) => {
 
     const accessToken = await generateAccessToken();
 
-    const notificationKeyUrl = "https://fcm.googleapis.com/fcm/notification?notification_key_name=vaibhavnews";
+    const notificationKeyUrl = "https://fcm.googleapis.com/fcm/notification?notification_key_name=vaibhav";
 
     const fetchKey = await fetch(notificationKeyUrl, {
         method: "GET",
@@ -111,7 +111,7 @@ router.post("/:id", wrapAsync(async (req, res) => {
         },
         body: JSON.stringify({
             "operation": "add",
-            "notification_key_name": "vaibhavnews",
+            "notification_key_name": "vaibhav",
             "notification_key": groupKey,
             "registration_ids": [token]
         })
@@ -124,12 +124,12 @@ router.post("/:id", wrapAsync(async (req, res) => {
     res.status(200).json({ success: true, message: "Thanks To Subscribe for notification!" });
 }))
 
-router.post("/group/:name", wrapAsync(async (req, res) => {
-    const { name } = req.params;
+router.get("/group/:name/:token", wrapAsync(async (req, res) => {
+    const { name, token } = req.params;
     const url = `https://fcm.googleapis.com/fcm/notification`;
     const accessToken = await generateAccessToken();
 
-    // const notificationKeyUrl = "https://fcm.googleapis.com/fcm/notification?notification_key_name=vaibhavnews";
+    // const notificationKeyUrl = "https://fcm.googleapis.com/fcm/notification?notification_key_name=vaibhav";
 
     const pushnotificationData = await PushNotification.find({}, { _id: 0, token: 1 });
     const tokens = pushnotificationData.map((Notification) => (Notification.token));
@@ -146,8 +146,8 @@ router.post("/group/:name", wrapAsync(async (req, res) => {
         },
         body: JSON.stringify({
             "operation": "create",
-            "notification_key_name": "vaibhavnews",
-            "registration_ids": tokens
+            "notification_key_name": "vaibhav",
+            "registration_ids": [token]
         })
     })
 
