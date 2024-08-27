@@ -13,7 +13,6 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 export const messaging = getMessaging(app);
@@ -54,6 +53,21 @@ export const generateToken = async (userId) => {
     });
     console.log("denied");
   }
+}
+
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then((registration) => {
+      console.log('Service Worker registered with scope:', registration.scope);
+      registration.active.postMessage({
+        type: 'FIREBASE_CONFIG',
+        config: firebaseConfig
+      });
+    })
+    .catch((error) => {
+      console.log('Service Worker registration failed:', error);
+    });
 }
 
 
