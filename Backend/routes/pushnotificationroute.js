@@ -146,8 +146,8 @@ router.get("/group/:name/:token", wrapAsync(async (req, res) => {
         },
         body: JSON.stringify({
             "operation": "create",
-            "notification_key_name": "vaibhav",
-            "registration_ids": [token]
+            "notification_key_name": name,
+            "registration_ids": tokens
         })
     })
 
@@ -164,6 +164,63 @@ router.post("/tokens/all", wrapAsync(async (req, res) => {
     res.json(tokens);
 }))
 
+
+router.get("/remove/:name", wrapAsync(async (req, res) => {
+    const { name } = req.params; // Use this if you want to pass group names dynamically
+    const url = `https://fcm.googleapis.com/fcm/notification`;
+    const accessToken = await generateAccessToken();
+    console.log(accessToken);
+
+    const pushnotificationData = await PushNotification.find({}, { _id: 0, token: 1 });
+    const tokens = pushnotificationData.map((notification) => notification.token);
+    console.log(tokens);
+
+    const notificationKey = await getNotificationKeyByName(name,accessToken); 
+
+    if (!notificationKey) {
+        return res.status(404).json({ error: "Notification key not found" });
+    }
+
+    // Remove group by sending a request with the "remove" operation
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+            "access_token_auth": true,
+            "project_id": process.env.FIREBASE_PROJECT_ID
+        },
+        body: JSON.stringify({
+            "operation": "remove",
+            "notification_key_name": name, // Use dynamic name if needed
+            "notification_key": notificationKey, // Provide the stored notification key
+            "registration_ids": tokens // Pass the tokens you want to remove
+        })
+    });
+
+    const groupDetails = await response.json();
+    res.json(groupDetails);
+}));
+
+async function getNotificationKeyByName(name,accessToken) {
+    const notificationKeyUrl = `https://fcm.googleapis.com/fcm/notification?notification_key_name=${name}`;
+
+    const fetchKey = await fetch(notificationKeyUrl, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+            "access_token_auth": true,
+            "project_id": process.env.FIREBASE_PROJECT_ID
+        }
+    })
+
+    const responseKey = await fetchKey.json();
+
+    const groupKey = responseKey.notification_key;
+    console.log(groupKey);
+    return groupKey;
+}
 
 
 
