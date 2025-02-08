@@ -88,7 +88,7 @@ export default function LoginForm() {
               value={loginCredentials.username}
               required
             />
-            <label htmlFor="useremail">Email Address</label>
+            {!loginCredentials.username && <label htmlFor="useremail">Email Address</label>}
           </div>
           <div className="field">
             <input
@@ -99,7 +99,7 @@ export default function LoginForm() {
               value={loginCredentials.password}
               required
             />
-            <label htmlFor="userpassword">Password</label>
+            {!loginCredentials.password && <label htmlFor="userpassword">Password</label>}
           </div>
           <span></span>
           <div className="field">

@@ -13,6 +13,7 @@ const Notification = require("../models/notifications.js");
 const Menu = require("../models/menu.js");
 
 const loadMainPage = async (req, res) => {
+    console.log(req.sessionId)
     console.log("requested to load main page");
     let heroSliders = await Heroslider.find();
     let workshop = await Workshop.findOne().sort({ time: -1 });

@@ -15,32 +15,29 @@ async function setOverlappingBookings(slotDetails) {
         return (userTime.minutes >= bookedTime.minutes ? true : false);
     }
 
-    console.log(bookings, slotDetails);
-
     const bookedSeats = bookings.map((booking) => {
 
         const bookedStartTime = parseTime(booking.startTime);
         const bookedEndTime = parseTime(booking.endTime);
 
-
-        if (!(timeInterval(userStartTime, bookedStartTime) && timeInterval(userStartTime, bookedEndTime))) {
-            return booking;
+        if (timeInterval(userStartTime, bookedStartTime)) {
+            if (!timeInterval(userStartTime, bookedEndTime)) {
+                return booking;
+            }
+        } else {
+            if (!timeInterval(bookedStartTime, userEndTime)) {
+                return booking;
+            }
         }
-
-        if (!(timeInterval(bookedStartTime, userStartTime) && timeInterval(bookedStartTime, userEndTime))) {
-            return booking;
-        }
-
     })
-    console.log(bookedSeats);
+
 
     const newSeatMapping = new Map();
     bookedSeats.forEach((booking) => {
-        booking.seats.forEach((seat) => {
+        booking?.seats?.forEach((seat) => {
             newSeatMapping.set(seat, "booked");
         })
     })
-    console.log("i m the new", newSeatMapping);
     return newSeatMapping;
 }
 
@@ -95,7 +92,7 @@ const socketConnections = (io) => {
         })
 
         socket.on("order-updated", (data) => {
-            console.log("order updated",data);
+            console.log("order updated", data);
             const socketId = orderIdToSocket.get(data.orderId);
             io.to(socketId).emit("updated-status", data);
         })

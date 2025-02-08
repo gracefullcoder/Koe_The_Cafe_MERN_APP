@@ -194,7 +194,7 @@ function SignupForm() {
                   value={signupData.fullname}
                   onChange={handleSignupData}
                 />
-                <label>Full Name</label>
+                {!signupData.fullname && <label>Full Name</label>}
               </div>
               <div id="nameError" className="auth-error">
                 <p>{error.nameError}</p>
@@ -251,7 +251,7 @@ function SignupForm() {
                   value={signupData.useremail}
                   onChange={handleSignupData}
                 />
-                <label>Email Address</label>
+                {!signupData.useremail && <label>Email Address</label>}
               </div>
               <div id="emailError" className="auth-error">
                 <p>{error.emailError}</p>
@@ -264,7 +264,7 @@ function SignupForm() {
                   value={signupData.userpassword}
                   onChange={handleSignupData}
                 />
-                <label>Password</label>
+                {!signupData.userpassword && <label>Password</label>}
               </div>
               <div id="passwordError" className="auth-error">
                 <p>{error.passwordError}</p>

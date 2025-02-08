@@ -2,6 +2,8 @@ import React, { memo } from "react";
 import sliderBackground from "../../assets/images/testimonial-bg.jpg";
 import { Link } from "react-router-dom";
 import { pageVisited } from "../../helperfunction";
+import { IKImage } from "imagekitio-react";
+
 
 function TestimonialSlider({ testimonial, isUser, isActive, isTestimonial }) {
   return (
@@ -23,14 +25,19 @@ function TestimonialSlider({ testimonial, isUser, isActive, isTestimonial }) {
         {testimonial.user.fullname}
       </p>
 
-      <img
+      <IKImage
+        urlEndpoint='https://ik.imagekit.io/vaibhav11'
         src={testimonial.user.profilepicture.imagelink}
-        width="100"
-        height="100"
-        loading="lazy"
-        alt="testimonial.name"
         className="profile-img"
+        alt="testimonial-user-profile-image"
+        transformation={[{
+          quality: 100,
+          height: 120,
+          width: 120
+        }]}
+        loading="lazy"
       />
+
       <p className="headline-2 testimonial-text">{testimonial.review}</p>
       {isUser ? (
         isTestimonial ? (
@@ -38,7 +45,7 @@ function TestimonialSlider({ testimonial, isUser, isActive, isTestimonial }) {
         ) : (
           <Link to="/testimonial" className="btn btn-secondary" onClick={() => pageVisited("Add Testimonial")}>
             <span className="text text-1">Add Testimonial!</span>
-          
+
             <span className="text text-2" aria-hidden="true">
               Add Testimonial!
             </span>

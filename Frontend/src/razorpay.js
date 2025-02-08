@@ -81,7 +81,6 @@ async function displayRazorpay({totalAmount, paymentUrl, userName,successUrl,ord
                 updateChanges();
             }
             toastMessage(orderResult);
-
         },
         prefill: {
             name: "user",
