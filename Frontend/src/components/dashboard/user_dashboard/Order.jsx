@@ -2,11 +2,14 @@ import React, { useEffect, useState, useMemo, useRef } from 'react'
 import OrderCard from './OrderCard';
 import { getData } from "../../../helperfunction.js";
 import { io } from "socket.io-client";
+import { useAuthContext } from '../../../context/AuthContext.jsx';
 
 function Order() {
     const [ordersDetails, setOrdersDetails] = useState([]);
     const socket = useMemo(() => io(`${import.meta.env.VITE_SERVER_ENDPOINT}`), []);
     const orderIdsRef = useRef([]);
+    const {user} = useAuthContext();
+    console.log(user);
 
     useEffect(() => {
         const getOrders = async () => {
@@ -34,11 +37,17 @@ function Order() {
                 setOrdersDetails((prevData) => (
                     prevData.map((ordersDetail) => {
 
-                        const orders = ordersDetail.orders.map((order) => {
-                            if (order._id === subOrderId) return { ...order, status: status, updatedAt: updatedTime };
-                            else return order;
-                        })
-                        return { ...ordersDetail, orders };
+                        if(ordersDetail._id == orderId) {
+                            const orders = ordersDetail.orders.map((order) => {
+                                if (order._id === subOrderId) return { ...order, status: status, updatedAt: updatedTime };
+                                else return order;
+                            })
+                            return { ...ordersDetail, orders };
+
+                        }
+                        else{
+                            return ordersDetail;
+                        }
                     })
                 ));
             } else {
@@ -69,7 +78,7 @@ function Order() {
             <div className='orders'>
                 {
                     ordersDetails.map((orderDetail) => (
-                        <OrderCard orderDetail={orderDetail} key={orderDetail._id} />
+                        <OrderCard orderDetail={orderDetail} key={orderDetail._id} user = {user}/>
                     ))
                 }
             </div>

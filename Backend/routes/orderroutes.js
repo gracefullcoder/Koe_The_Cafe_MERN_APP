@@ -32,7 +32,7 @@ router.post("/payment/success", wrapAsync(async (req, res) => {
 
     let totalAmount = orderDetails.reduce((acc, order) => { return acc + (order.dish.price * order.quantity) }, 0);
     const userId = req.user;
-    const newOrder = new Order({ orders: orderDetails, totalAmount: totalAmount, user: userId });
+    const newOrder = new Order({ orders: orderDetails, totalAmount: totalAmount, user: userId,paymentId: razorpayPaymentId});
     const order = await newOrder.save();
     await User.findByIdAndUpdate(userId, { $push: { 'orders': order._id }, cart: [] });
     let io = req.app.get('socket.io');
@@ -55,7 +55,7 @@ router.route("/")
             path: 'orders',
             options: { sort: { createdAt: -1 } }
         });
-        // console.log(orderDetails);
+        
         res.status(200).json(orderDetails.orders);
     }))
 

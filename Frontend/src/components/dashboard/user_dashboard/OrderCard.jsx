@@ -7,8 +7,10 @@ import served from "../../../assets/images/icons/served.png";
 import cancelled from "../../../assets/images/icons/cancelled.png"
 import { getTime12hrs } from '../../../helperfunction';
 import RatingCard from "./RatingCard";
+import {generatePDF } from './generatebill'
 
-function OrderCard({ orderDetail }) {
+
+function OrderCard({ orderDetail,user }) {
 
     let [view, setView] = useState(false);
 
@@ -156,7 +158,7 @@ function OrderCard({ orderDetail }) {
                                 </div>
                                 <div className='order-status'>
                                     <span>{orderDetail.status} </span>
-                                    <i className="fa-solid fa-check"></i>
+                                    {orderDetail.status=="Served" &&<i className="fa-solid fa-download" onClick={()=>generatePDF(orderDetail,user)} style={{cursor:"pointer"}}></i>}
                                 </div>
                             </div>
                             <div className='card-bottom'>

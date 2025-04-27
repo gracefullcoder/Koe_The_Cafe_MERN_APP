@@ -40,6 +40,9 @@ const orderSchema = new Schema({
         type: Schema.ObjectId,
         ref: "User"
     },
+    paymentId: {
+        type: String
+    },
     review: {
         rating: {
             type: Number
