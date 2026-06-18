@@ -101,7 +101,7 @@ router.route("/manage", isAdmin)
     .get(wrapAsync(async (req, res) => {
         const Orders = await Order.find().populate({ path: 'user', select: { fullname: 1, _id: 1 } }).sort({ createdAt: -1 });
         res.status(200).json(Orders);
-    }))
+    })) 
 
     .patch(wrapAsync(async (req, res) => {
         let { orderId, status, subOrderId } = req.body;

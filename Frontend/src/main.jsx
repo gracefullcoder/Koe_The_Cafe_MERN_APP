@@ -57,7 +57,8 @@ const router = createBrowserRouter([
         <App />
       </CartProvider>
     ),
-    loader: App.loader
+    loader: App.loader,
+    errorElement: <NotFound />
   },
   {
     path: "/auth/login",
